@@ -1,6 +1,25 @@
+/* =========================================================
+   GLOBAL / BASE STYLE
+   ========================================================= */
+
 body {
   background: #0d1117;
 }
+
+/* Form default layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  padding: 10px;
+}
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
 
 .mainbody > div {
   background: #161b22;
@@ -12,15 +31,25 @@ body {
   border-radius: 10px;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* =========================================================
+   PICK PLAYERS SECTION
+   (HTML: .pick-players)
+   ========================================================= */
+/* menggunakan style form global */
+
+/* =========================================================
+   SCORE SECTION
+   (HTML: .score)
+   ========================================================= */
+
+.score form {
+  display: block;
 }
 
-input {
-  padding: 10px;
-}
+/* =========================================================
+   PLAYER POINT INPUT
+   (HTML: .player)
+   ========================================================= */
 
 .player form {
   display: grid;
@@ -29,6 +58,8 @@ input {
   justify-content: stretch;
 }
 
+/* tombol add point */
+
 .player button {
   border: 1px solid white;
   padding: 10px;
@@ -36,13 +67,41 @@ input {
   background-color: cornflowerblue;
   border-radius: 5px;
   font-size: larger;
+  cursor: pointer;
 }
 
 .player button:hover {
   background-color: blue;
-  font-size: larger;
   color: white;
 }
+
+/* =========================================================
+   POINT SELECTION BOX
+   (HTML: .form-point , .point)
+   ========================================================= */
+
+.form-point {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-around;
+  gap: 40px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.point {
+  display: grid;
+  border: 1px solid white;
+  padding: 20px;
+  justify-items: start;
+  background-color: rgb(10, 5, 26);
+  border-radius: 10px;
+}
+
+/* =========================================================
+   LIVE SCORE BOARD
+   (HTML: .livescore)
+   ========================================================= */
 
 .livescore {
   margin-top: 20px;
@@ -52,6 +111,8 @@ input {
   gap: 10px;
 }
 
+/* default score box */
+
 .livescore p {
   border: 1px solid white;
   padding: 10px;
@@ -60,6 +121,12 @@ input {
   border-radius: 5px;
 }
 
+/* =========================================================
+   SCORE ELEMENTS
+   ========================================================= */
+
+/* point score */
+
 .score .livescore .point {
   width: 50px;
   text-align: center;
@@ -67,15 +134,24 @@ input {
   margin-left: 20px;
 }
 
+/* game score */
+
 .score .livescore .game {
   width: 70px;
   background-color: rgb(10, 5, 26);
   text-align: center;
 }
 
+/* set column */
+
 .setside {
   margin-right: 25px;
 }
+
+/* =========================================================
+   MATCH RESULT
+   (HTML: .result)
+   ========================================================= */
 
 .result {
   border: 1px solid white;
@@ -88,6 +164,10 @@ input {
 .result p {
   font-size: x-large;
 }
+
+/* =========================================================
+   SERVE OPTION UI (OPTIONAL COMPONENT)
+   ========================================================= */
 
 .serve-container {
   max-width: 300px;
@@ -118,6 +198,10 @@ input {
   color: #0d6efd;
 }
 
+/* =========================================================
+   GENERIC BUTTON STYLE
+   ========================================================= */
+
 .submit-btn {
   margin-top: 15px;
   width: 100%;
@@ -133,24 +217,4 @@ input {
 .submit-btn:hover {
   background: #0b5ed7;
   transform: translateY(-1px);
-}
-.score form {
-  display: block;
-}
-
-.form-point {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-around;
-  gap: 40px;
-  margin-bottom: 20px;
-  width: 50%;
-}
-.point {
-  display: grid;
-  border: 1px solid white;
-  padding: 20px;
-  justify-items: start;
-  background-color: rgb(10, 5, 26);
-  border-radius: 10px;
 }

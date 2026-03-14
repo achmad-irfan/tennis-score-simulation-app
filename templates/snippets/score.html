@@ -1,0 +1,53 @@
+<div class="score">
+        <h3>Score</h3>
+        <div class="player">
+          <!-- Pick point Winner -->
+          {% include 'snippets/pick_point.html' %}
+          <!-- End of Pick point Winner -->
+        </div>
+        <div class="livescore">
+          <!-- Scoring -->
+          {% include 'snippets/scoring.html' %}
+          <!-- End of Scoring -->
+
+          <div class="setside">
+            <p class="game">{{set1_won}}</p>
+            <p class="game">{{set2_won}}</p>
+          </div>
+          <div class="gameside">
+            <p class="game">{{set1_p1}}</p>
+            <p class="game">{{set1_p2}}</p>
+          </div>
+          {% if current_set > 0 %}
+          <div class="gameside">
+            <p class="game">{{set2_p1}}</p>
+            <p class="game">{{set2_p2}}</p>
+          </div>
+          {% endif %} {% if current_set > 1 %}
+          <div class="gameside">
+            <p class="game">{{set3_p1}}</p>
+            <p class="game">{{set3_p2}}</p>
+          </div>
+
+          {% endif %} {% if not tiebreak %}
+          <div class="pointside">
+            <p class="point">{{pt1}}</p>
+            <p class="point">{{pt2}}</p>
+          </div>
+          {% endif %} {% if tiebreak %}
+          <div class="pointside">
+            <p class="point">{{tb1}}</p>
+            <p class="point">{{tb2}}</p>
+          </div>
+          {% endif %}
+          <div class="pointside">
+            <p class="point">{{tp1}}</p>
+            <p class="point">{{tp2}}</p>
+          </div>
+        </div>
+        {% if finish %}
+        <div class="result">
+          <p>{{winner}} def. {{loser}} {{score}}</p>
+        </div>
+        {% endif %}
+      </div>
