@@ -1,20 +1,44 @@
-<form method="post">
-  {% csrf_token %}
-  <div class="form-point">
-    <div class="point">
-      <h3>{{p1|title}}</h3>
-      <label><input type="radio" name="point" value="p1_ace" /> Ace</label>
-      <label><input type="radio" name="point" value="p1_winner" /> Winner</label>
-      <label><input type="radio" name="point" value="p1_ue" /> UE lawan</label>
-      <label><input type="radio" name="point" value="p1_df" /> DF lawan</label>
+<div class="player">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-point">
+      <div class="point">
+        <h3>{{p1|title}}</h3>
+        {% if current_server == "p1" %}
+        <label>
+          <input type="radio" name="serve_type" value="first" checked />
+          1st Serve
+        </label>
+
+        <label>
+          <input type="radio" name="serve_type" value="second" />
+          2nd Serve
+        </label>
+        <label><input type="radio" name="point" value="p1_ace" /> Ace</label>
+        <label><input type="radio" name="point" value="p1_df" /> DF</label>
+        {% endif %}
+        <label><input type="radio" name="point" value="p1_winner" /> Winner</label>
+        <label><input type="radio" name="point" value="p1_ue" /> UE</label>
+      </div>
+      <div class="point">
+        <h3>{{p2|title}}</h3>
+        {% if current_server == "p2" %}
+        <label>
+          <input type="radio" name="serve_type" value="first" checked />
+          1st Serve
+        </label>
+
+        <label>
+          <input type="radio" name="serve_type" value="second" />
+          2nd Serve
+        </label>
+        <label><input type="radio" name="point" value="p2_ace" /> Ace</label>
+        <label><input type="radio" name="point" value="p2_df" /> DF</label>
+        {% endif %}
+        <label><input type="radio" name="point" value="p2_ue" /> UE</label>
+        <label><input type="radio" name="point" value="p2_winner" /> Winner</label>
+      </div>
     </div>
-    <div class="point">
-      <h3>{{p2|title}}</h3>
-      <label><input type="radio" name="point" value="p2_ace" /> Ace</label>
-      <label><input type="radio" name="point" value="p2_winner" /> Winner</label>
-      <label><input type="radio" name="point" value="p2_ue" /> UE lawan</label>
-      <label><input type="radio" name="point" value="p2_df" /> DF lawan</label>
-    </div>
-  </div>
-  <button type="submit">Add Point</button>
-</form>
+    <button type="submit">Add Point</button>
+  </form>
+</div>

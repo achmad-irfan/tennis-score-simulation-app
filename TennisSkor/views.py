@@ -7,15 +7,10 @@ def Skor(request):
     # Ambil data user
     p1 = request.GET.get("p1") or request.session.get("p1_name")
     p2 = request.GET.get("p2") or request.session.get("p2_name")
-    print(f"p1 = {p1}")
-    print(f"p2 = {p2}")
-    
+   
     
     # Pick first server
     firstserver = request.GET.get("firstserve")
-    print(f"firstserver : {firstserver}")
-    print(f"Apakah firstserver None?  {firstserver==None}")
-    
     
     
     # Cek session sebelumnya
@@ -24,7 +19,7 @@ def Skor(request):
     #Buat Objek
     m = score.Match(p1, p2, firstserver or "p1")
     
-    print(f"servise pertama = {m.current_server}")
+    
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         m.p1.pt = match["pt1"]
@@ -33,6 +28,14 @@ def Skor(request):
         m.p2.set  = match["g2"]
         m.p1.tb = match["tb1"]
         m.p2.tb = match["tb2"]
+        m.p1.ace= match['ace1']
+        m.p2.ace= match['ace2']
+        m.p1.df= match['df1']
+        m.p2.df= match['df2']
+        m.p1.winner= match['winner1']
+        m.p2.winner= match['winner2']
+        m.p1.ue= match['ue1']
+        m.p2.ue= match['ue2']
         m.p1.totalpoint = match["tp1"]
         m.p2.totalpoint = match["tp2"]
         m.current_set = match["current_set"]
@@ -46,11 +49,12 @@ def Skor(request):
             
     
     # Cek Pemenang Poin
-    pointWinner = request.POST.get("player")
-    if pointWinner == "p1":
-        m.win_point("p1","p2")
-    elif pointWinner == "p2":
-        m.win_point("p2","p1")
+    pointWinner = request.POST.get("point")
+    
+    if pointWinner in("p1_ace" , "p1_winner" , "p2_df" , "p2_ue"):
+        m.win_point("p1","p2",pointWinner)
+    elif pointWinner in("p1_df" , "p2_ace" , "p1_ue" , "p2_winner"):
+        m.win_point("p2","p1",pointWinner)
     
     scores = m.get_score() 
     
@@ -65,6 +69,14 @@ def Skor(request):
         "tb2": scores["p2"]['tb'],
         "tp1": scores["p1"]['tp'],
         "tp2": scores["p2"]['tp'],
+        "ace1": scores["p1"]['ace'],
+        "ace2": scores["p2"]['ace'],
+        "df1": scores["p1"]['df'],
+        "df2": scores["p2"]['df'],
+        "winner1" : scores['p1']['winner'],
+        "winner2" : scores['p2']['winner'],
+        "ue1" : scores['p1']['ue'],
+        "ue2" : scores['p2']['ue'],
         "current_set": m.current_set,
         "set1_won": scores["p1"]["set_won"],
         "set2_won": scores["p2"]["set_won"],
@@ -76,6 +88,7 @@ def Skor(request):
         "current_server":scores['current_server']
     }
     
+    labels= ["Ace", "DF", "Winner", "Unforced Error"]
     context = {
         "p1": p1,
         "p2": p2,
@@ -87,10 +100,18 @@ def Skor(request):
         "set2_p2": scores["p2"]["set"][1],
         "set3_p1": scores["p1"]["set"][2],
         "set3_p2": scores["p2"]["set"][2],
+        "ace1": scores["p1"]['ace'],
+        "ace2": scores["p2"]['ace'],
         "tb1": scores["p1"]["tb"],
         "tb2": scores["p2"]["tb"],
         "tp1": scores["p1"]["tp"],
         "tp2": scores["p2"]["tp"],
+        "df1": scores["p1"]['df'],
+        "df2": scores["p2"]['df'],
+        "ue1" : scores['p1']['ue'],
+        "ue2" : scores['p2']['ue'],
+        "winner1" : scores['p1']['winner'],
+        "winner2" : scores['p2']['winner'],
         "current_set": m.current_set,
         "set1_won": scores["p1"]["set_won"],
         "set2_won": scores["p2"]["set_won"],
@@ -99,15 +120,15 @@ def Skor(request):
         "winner": scores['result']['winner'].name if scores['result']['winner'] else None,
         "loser": scores['result']['loser'].name if scores['result']['loser'] else None,
         "score": scores['score'],
-        "current_server":scores['current_server']
+        "current_server":scores['current_server'],
+        "labels":labels
     }
     
     
-    print(context)
+    
     
     return render(request,'index.html', context)
             
     
     
-
     

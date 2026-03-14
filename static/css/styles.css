@@ -9,7 +9,7 @@ body {
 /* Form default layout */
 form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 
@@ -41,6 +41,14 @@ input {
    SCORE SECTION
    (HTML: .score)
    ========================================================= */
+.score {
+  display: grid;
+  grid-template-areas:
+    "pick score"
+    "finish finish";
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
 
 .score form {
   display: block;
@@ -51,14 +59,10 @@ input {
    (HTML: .player)
    ========================================================= */
 
-.player form {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  justify-content: stretch;
-}
-
 /* tombol add point */
+.player {
+  grid-area: "pick";
+}
 
 .player button {
   border: 1px solid white;
@@ -86,7 +90,6 @@ input {
   justify-content: space-around;
   gap: 40px;
   margin-bottom: 20px;
-  width: 50%;
 }
 
 .point {
@@ -104,11 +107,10 @@ input {
    ========================================================= */
 
 .livescore {
-  margin-top: 20px;
-  width: 40%;
   display: flex;
   flex-direction: row;
   gap: 10px;
+  grid-area: "score";
 }
 
 /* default score box */
@@ -159,6 +161,7 @@ input {
   text-align: center;
   background-color: rgb(7, 1, 48);
   border-radius: 20px;
+  grid-area: "finish";
 }
 
 .result p {
@@ -217,4 +220,53 @@ input {
 .submit-btn:hover {
   background: #0b5ed7;
   transform: translateY(-1px);
+}
+
+/* ==============================
+   Styling Tabel Statistik
+   ============================== */
+
+.statistic table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: separate; /* supaya border-radius bisa bekerja */
+  border-spacing: 0;
+  background-color: #161b22;
+  color: white;
+  font-family: Arial, sans-serif;
+  border-radius: 10px;
+  overflow: hidden; /* supaya border-radius muncul */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.statistic th,
+.statistic td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.statistic th {
+  background-color: #0d1117;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.statistic tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.statistic td:first-child {
+  font-weight: bold;
+  color: #36a2eb;
+}
+
+.statistic td:last-child {
+  font-weight: bold;
+  color: #ff6384;
+}
+
+.statistic td:nth-child(2) {
+  font-weight: normal;
+  color: #ffffff;
 }
