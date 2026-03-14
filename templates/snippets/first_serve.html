@@ -1,0 +1,17 @@
+<form method="GET">
+  <!-- Kirim data p1/p2 supaya tidak hilang -->
+  <input type="hidden" name="p1" value="{{p1}}" />
+  <input type="hidden" name="p2" value="{{p2}}" />
+
+  <!-- Pilih server -->
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="firstserve" value="p1" id="p1" />
+    <label class="form-check-label" for="p1">{{p1}}</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="firstserve" value="p2" id="p2" />
+    <label class="form-check-label" for="p2">{{p2}}</label>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

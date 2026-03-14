@@ -1,0 +1,20 @@
+<form method="post">
+  {% csrf_token %}
+  <div class="form-point">
+    <div class="point">
+      <h3>{{p1|title}}</h3>
+      <label><input type="radio" name="point" value="p1_ace" /> Ace</label>
+      <label><input type="radio" name="point" value="p1_winner" /> Winner</label>
+      <label><input type="radio" name="point" value="p1_ue" /> UE lawan</label>
+      <label><input type="radio" name="point" value="p1_df" /> DF lawan</label>
+    </div>
+    <div class="point">
+      <h3>{{p2|title}}</h3>
+      <label><input type="radio" name="point" value="p2_ace" /> Ace</label>
+      <label><input type="radio" name="point" value="p2_winner" /> Winner</label>
+      <label><input type="radio" name="point" value="p2_ue" /> UE lawan</label>
+      <label><input type="radio" name="point" value="p2_df" /> DF lawan</label>
+    </div>
+  </div>
+  <button type="submit">Add Point</button>
+</form>

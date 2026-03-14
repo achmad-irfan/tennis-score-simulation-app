@@ -11,36 +11,25 @@
     <a href="{% url 'home' %}">Home</a>
     <div class="mainbody">
       <!-- Pick Players -->
-      <div class="pick-players">
-        <h3>Pick Players</h3>
-        <form method="get">
-          <label>Pick Player 1</label>
-          <input id="p1" type="text" name="p1" placeholder="Pemain 1" />
-          <label>Pick Player 2</label>
-          <input id="p2" type="text" name="p2" placeholder="Pemain 2" />
-          <button id="submit" type="submit">Submit</button>
-        </form>
-      </div>
+      {% include 'snippets/pick_player.html' %}
       <!-- End of Pick Players -->
-
-      <!-- ====================== -->
-      <!-- ====================== -->
-
+       
       <!-- Skor Pertandingan -->
       <div class="score">
         <h3>Score</h3>
-        <h5>Pick point player</h5>
         <div class="player">
-          <form method="post">
-            {% csrf_token %}
-            <button name="player" value="p1">{{p1}}</button>
-            <button name="player" value="p2">{{p2}}</button>
-          </form>
+          <!-- Pick point Winner -->
+          {% include 'snippets/pick_point.html' %}
+          <!-- End of Pick point Winner -->
         </div>
         <div class="livescore">
-          <div class="name">
-            <p>{{p1}}</p>
-            <p>{{p2}}</p>
+          <!-- Scoring -->
+          {% include 'snippets/scoring.html' %}
+          <!-- End of Scoring -->
+
+          <div class="setside">
+            <p class="game">{{set1_won}}</p>
+            <p class="game">{{set2_won}}</p>
           </div>
           <div class="gameside">
             <p class="game">{{set1_p1}}</p>
@@ -68,7 +57,16 @@
             <p class="point">{{tb2}}</p>
           </div>
           {% endif %}
+          <div class="pointside">
+            <p class="point">{{tp1}}</p>
+            <p class="point">{{tp2}}</p>
+          </div>
         </div>
+        {% if finish %}
+        <div class="result">
+          <p>{{winner}} def. {{loser}} {{score}}</p>
+        </div>
+        {% endif %}
       </div>
       <!-- End of Skor Pertandingan -->
 
@@ -82,5 +80,6 @@
       <!-- End of Statistik -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="{% static 'js/javascript.js' %}"></script>
   </body>
 </html>
