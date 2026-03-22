@@ -1,27 +1,43 @@
-<div class="player">
-  <form method="post">
-    {% csrf_token %}
-    <div class="form-point">
-      <div class="point">
-        <h3>{{p1|title}}</h3>
+<form class="general" method="post">
+  {% csrf_token %}
+  <h4 class="generalh4">Pick Point</h4>
+  <div class="form-point">
+    <div class="point">
+      <span>
+        {% if current_server == "p1" %}
+        <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
+        {% endif %}
+      </span>
+      <h3>{{p1|title}}</h3>
+      <div class="serve_type shot">
         {% if current_server == "p1" %}
         <label>
           <input type="radio" name="serve_type" value="first" checked />
           1st Serve
         </label>
-
         <label>
           <input type="radio" name="serve_type" value="second" />
           2nd Serve
         </label>
-        <label><input type="radio" name="point" value="p1_ace" /> Ace</label>
-        <label><input type="radio" name="point" value="p1_df" /> DF</label>
-        {% endif %}
-        <label><input type="radio" name="point" value="p1_winner" /> Winner</label>
-        <label><input type="radio" name="point" value="p1_ue" /> UE</label>
       </div>
-      <div class="point">
-        <h3>{{p2|title}}</h3>
+      <div class="shot_type shot">
+        <label><input type="radio" name="point" value="p1_ace" /><span>Ace</span></label>
+        {% if serve_type != "first" %}
+        <label><input type="radio" name="point" value="p1_df" />DF</label>
+        {% endif %} {% endif %}
+        <label><input type="radio" name="point" value="p1_winner" />Winner</label>
+        <label><input type="radio" name="point" value="p1_fe" />Forced Error</label>
+        <label><input type="radio" name="point" value="p1_ue" />Unforced Error</label>
+      </div>
+    </div>
+    <div class="point">
+      <span>
+        {% if current_server == "p2" %}
+        <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
+        {% endif %}
+      </span>
+      <h3>{{p2|title}}</h3>
+      <div class="serve_type shot">
         {% if current_server == "p2" %}
         <label>
           <input type="radio" name="serve_type" value="first" checked />
@@ -32,13 +48,44 @@
           <input type="radio" name="serve_type" value="second" />
           2nd Serve
         </label>
-        <label><input type="radio" name="point" value="p2_ace" /> Ace</label>
-        <label><input type="radio" name="point" value="p2_df" /> DF</label>
+      </div>
+      <div class="shot_type shot">
+        <label><input type="radio" name="point" value="p2_ace" />Ace</label>
+        <label><input type="radio" name="point" value="p2_df" />DF</label>
         {% endif %}
-        <label><input type="radio" name="point" value="p2_ue" /> UE</label>
-        <label><input type="radio" name="point" value="p2_winner" /> Winner</label>
+        <label><input type="radio" name="point" value="p2_winner" />Winner</label>
+        <label><input type="radio" name="point" value="p2_fe" />Forced Error</label>
+        <label><input type="radio" name="point" value="p2_ue" />Unforced Error</label>
       </div>
     </div>
-    <button type="submit">Add Point</button>
-  </form>
-</div>
+  </div>
+  <button type="submit">Add Point</button>
+</form>
+
+<script>
+  const firstServe = document.querySelectorAll('input[value="first"]');
+  const secondServe = document.querySelectorAll('input[value="second"]');
+  const dfOptions = document.querySelectorAll('input[value$="_df"]');
+
+  function hideDF() {
+    dfOptions.forEach((option) => {
+      option.parentElement.style.display = "none";
+    });
+  }
+
+  function showDF() {
+    dfOptions.forEach((option) => {
+      option.parentElement.style.display = "inline-block";
+    });
+  }
+
+  firstServe.forEach((radio) => {
+    radio.addEventListener("change", hideDF);
+  });
+
+  secondServe.forEach((radio) => {
+    radio.addEventListener("change", showDF);
+  });
+
+  hideDF();
+</script>

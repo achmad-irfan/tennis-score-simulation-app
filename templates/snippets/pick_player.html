@@ -1,10 +1,68 @@
-<div class="pick-players">
-  <h3>Pick Players</h3>
-  <form method="get">
-    <label>Pick Player 1</label>
-    <input id="p1" type="text" name="p1" placeholder="Pemain 1" />
-    <label>Pick Player 2</label>
-    <input id="p2" type="text" name="p2" placeholder="Pemain 2" />
-    <button id="submit" type="submit">Submit</button>
-  </form>
+<div class="pickNprofile">
+  <div class="pick-players general">
+    <form method="get">
+      <h4 class="generalh4">Pick Players</h4>
+      <label for="player">Choose Player 1:</label>
+      <select name="p1" id="p1">
+        <option value="" selected disabled>-- Select Player --</option>
+        {% for player in players %}
+        <option value="{{player.name}}">{{player.name}}</option>
+        {% endfor %}
+      </select>
+
+      <label for="player">Choose Player 2:</label>
+      <select name="p2" id="p2">
+        <option value="" selected disabled>-- Select Player --</option>
+        {% for player in players %}
+        <option value="{{player.name}}">{{player.name}}</option>
+        {% endfor %}
+      </select>
+      <button id="submit" type="submit">Submit</button>
+      <button type="submit" formaction="{% url 'home' %}">Reset</button>
+    </form>
+  </div>
+  <div class="profiles general">
+    <h4 class="generalh4">Player Profiles</h4>
+    <table class="player-compare">
+      <thead>
+        <tr>
+          <th>{{ p1_profile.name }}</th>
+          <th></th>
+          <th>{{ p2_profile.name }}</th>
+        </tr>
+        <tr>
+          <th><img src="{{p1_profile.photo}}" alt="" /></th>
+          <th></th>
+          <th><img src="{{p2_profile.photo}}" alt="" /></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ p1_profile.country }}</td>
+          <td>Country</td>
+          <td>{{ p2_profile.country }}</td>
+        </tr>
+        <tr>
+          <td>{{ p1_profile.titles }}</td>
+          <td>Titles</td>
+          <td>{{ p2_profile.titles }}</td>
+        </tr>
+        <tr>
+          <td>{{ p1_profile.finals }}</td>
+          <td>Finals</td>
+          <td>{{ p2_profile.finals }}</td>
+        </tr>
+        <tr>
+          <td>{{ p1_profile.best_ranking }}</td>
+          <td>Best Ranking</td>
+          <td>{{ p2_profile.best_ranking }}</td>
+        </tr>
+        <tr>
+          <td>{{ p1_profile.height }} cm</td>
+          <td>Height</td>
+          <td>{{ p2_profile.height }} cm</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

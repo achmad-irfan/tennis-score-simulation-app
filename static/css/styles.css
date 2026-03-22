@@ -6,267 +6,574 @@ body {
   background: #0d1117;
 }
 
-/* Form default layout */
-form {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-input {
-  padding: 10px;
-}
-
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-
-.mainbody > div {
-  background: #161b22;
-  color: white;
-  width: 95%;
+.mainbody {
+  width: 75%;
   margin: 20px auto;
-  border: 1px solid white;
+}
+/* Form default layout */
+h2 {
+  color: white;
+  background: #161b22;
   padding: 20px;
+  text-align: center;
   border-radius: 10px;
 }
-
-/* =========================================================
-   PICK PLAYERS SECTION
-   (HTML: .pick-players)
-   ========================================================= */
-/* menggunakan style form global */
-
-/* =========================================================
-   SCORE SECTION
-   (HTML: .score)
-   ========================================================= */
-.score {
-  display: grid;
-  grid-template-areas:
-    "pick score"
-    "finish finish";
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+.pickNprofile {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.general {
+  padding: 30px;
+  background: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  margin-top: 20px;
 }
 
-.score form {
-  display: block;
+.pick-players {
+  flex: 3;
 }
 
-/* =========================================================
-   PLAYER POINT INPUT
-   (HTML: .player)
-   ========================================================= */
-
-/* tombol add point */
-.player {
-  grid-area: "pick";
+.profiles {
+  flex: 5;
 }
-
-.player button {
-  border: 1px solid white;
-  padding: 10px;
+/* Title */
+.generalh4 {
   text-align: center;
-  background-color: cornflowerblue;
-  border-radius: 5px;
-  font-size: larger;
-  cursor: pointer;
+  margin-bottom: 10px;
+  color: #58a6ff;
 }
 
-.player button:hover {
-  background-color: blue;
+/* Labels */
+.pick-players label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Select boxes */
+.pick-players select {
+  width: 100%;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border 0.3s;
+  background-color: #0d1117;
   color: white;
 }
 
-/* =========================================================
-   POINT SELECTION BOX
-   (HTML: .form-point , .point)
-   ========================================================= */
+/* Focus effect on select */
+.pick-players select:focus {
+  border-color: #007bff;
+  outline: none;
+}
 
-.form-point {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-around;
-  gap: 40px;
+/* Submit button */
+.pick-players button {
+  width: 100%;
+  padding: 12px;
+  background-color: #5aa5f4;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
   margin-bottom: 20px;
 }
 
-.point {
-  display: grid;
-  border: 1px solid white;
-  padding: 20px;
-  justify-items: start;
-  background-color: rgb(10, 5, 26);
-  border-radius: 10px;
+/* Button hover effect */
+.pick-players button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
-/* =========================================================
-   LIVE SCORE BOARD
-   (HTML: .livescore)
-   ========================================================= */
-
-.livescore {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  grid-area: "score";
-}
-
-/* default score box */
-
-.livescore p {
-  border: 1px solid white;
-  padding: 10px;
-  width: 200px;
-  background-color: rgb(10, 5, 26);
-  border-radius: 5px;
-}
-
-/* =========================================================
-   SCORE ELEMENTS
-   ========================================================= */
-
-/* point score */
-
-.score .livescore .point {
-  width: 50px;
-  text-align: center;
-  background-color: rgb(10, 5, 26);
-  margin-left: 20px;
-}
-
-/* game score */
-
-.score .livescore .game {
-  width: 70px;
-  background-color: rgb(10, 5, 26);
-  text-align: center;
-}
-
-/* set column */
-
-.setside {
-  margin-right: 25px;
-}
-
-/* =========================================================
-   MATCH RESULT
-   (HTML: .result)
-   ========================================================= */
-
-.result {
-  border: 1px solid white;
-  padding: 15px;
-  text-align: center;
-  background-color: rgb(7, 1, 48);
-  border-radius: 20px;
-  grid-area: "finish";
-}
-
-.result p {
-  font-size: x-large;
-}
-
-/* =========================================================
-   SERVE OPTION UI (OPTIONAL COMPONENT)
-   ========================================================= */
-
-.serve-container {
-  max-width: 300px;
-  margin: auto;
-  text-align: center;
-}
-
-.serve-option {
-  border: 2px solid #e5e5e5;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.serve-option:hover {
-  border-color: #0d6efd;
-  background-color: #f5f9ff;
-}
-
-.form-check-input {
-  margin-right: 8px;
-}
-
-.form-check-input:checked + label {
-  font-weight: 600;
-  color: #0d6efd;
-}
-
-/* =========================================================
-   GENERIC BUTTON STYLE
-   ========================================================= */
-
-.submit-btn {
-  margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #0d6efd;
+.player-compare {
+  width: 70%;
+  margin: 30px auto;
+  border-collapse: collapse;
+  font-family: "Segoe UI", sans-serif;
+  background: #161b22;
   color: white;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.submit-btn:hover {
-  background: #0b5ed7;
-  transform: translateY(-1px);
+.player-compare th {
+  background: #0d1117;
+  padding: 12px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.player-compare td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-compare tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.player-compare img {
+  border-radius: 8px;
+  width: 100px;
+  height: 100px;
 }
 
 /* ==============================
-   Styling Tabel Statistik
+   MAIN SCORE CONTAINER
+   ============================== */
+.score {
+  display: grid;
+  grid-template-columns: 4fr 5fr;
+  gap: 20px;
+  grid-template-areas:
+    "pick score"
+    "result result";
+}
+
+/* ==============================
+   LIVE SCORE WRAPPER
    ============================== */
 
-.statistic table {
-  width: 80%;
-  margin: 20px auto;
-  border-collapse: separate; /* supaya border-radius bisa bekerja */
-  border-spacing: 0;
-  background-color: #161b22;
-  color: white;
-  font-family: Arial, sans-serif;
-  border-radius: 10px;
-  overflow: hidden; /* supaya border-radius muncul */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+/* ==============================
+   SCORE GRID
+   ============================== */
+.livescoreAll {
+  grid-area: score;
+}
+.livescore {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
-.statistic th,
-.statistic td {
-  padding: 12px 15px;
+/* ==============================
+   PLAYER NAME (dari snippet)
+   ============================== */
+.livescore h3 {
+  width: 170px;
+  text-align: right;
+  font-weight: 600;
+}
+
+.livescore > div > p {
+  font-size: 13px;
+}
+
+.livescore > div:nth-child(2) {
+  margin-right: 20px;
+}
+
+.livescore > div:last-child {
+  margin-left: 20px;
+}
+
+/* ==============================
+   SET COLUMN (SET WON)
+   ============================== */
+
+/* ==============================
+   STATUS TEXT
+   ============================== */
+.livescoreAll p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #8b949e;
+}
+
+.name {
+  display: flex;
+  width: 300px;
+}
+
+/* ==============================
+   RESULT BOX
+   ============================== */
+.result {
+  margin-top: 25px;
+  padding: 20px;
+  background: linear-gradient(135deg, #1f6feb, #58a6ff);
+  border-radius: 12px;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  grid-area: result;
 }
 
-.statistic th {
-  background-color: #0d1117;
+.result p {
+  font-size: 20px;
   font-weight: bold;
+  color: white;
+}
+
+/* ==============================
+   HOVER EFFECT (optional)
+   ============================== */
+
+label:hover {
+  transform: scale(1.25);
+  transition: 0.2s;
+}
+
+.livescore > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.livescore > div > p {
+  background-color: #0d1117;
+  border-radius: 5px;
+  padding: 15px;
+  text-align: center;
   font-size: 16px;
 }
 
+.livescore > div:first-child p {
+  text-align: left;
+}
+
+.serve-icon {
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  background-color: transparent;
+}
+
+/* ==============================
+   CONTAINER
+   ============================== */
+
+/* ==============================
+   GRID 2 PLAYER
+   ============================== */
+/* ==============================
+   PLAYER CARD
+   ============================== */
+.form-point {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  gap: 10px;
+}
+
+.point {
+  background: #0d1117;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: 0.2s;
+}
+
+.point:hover {
+  border-color: #58a6ff;
+}
+.score form {
+  grid-area: pick;
+}
+/* ==============================
+   PLAYER NAME
+   ============================== */
+.point span {
+  display: grid;
+  justify-content: center;
+  height: 20px;
+}
+
+.point h3 {
+  text-align: center;
+  margin-bottom: 13px;
+  color: #58a6ff;
+  font-size: 20px;
+}
+
+/* ==============================
+   SECTION BOX
+   ============================== */
+.shot {
+  margin-bottom: 15px;
+}
+
+/* ==============================
+   RADIO BUTTON STYLE (MODERN 🔥)
+   ============================== */
+.shot label {
+  margin: 5px 5px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+/* hide radio default */
+.shot input[type="radio"] {
+  display: none;
+}
+
+/* hover */
+.shot label:hover {
+  background: #21262d;
+}
+
+/* checked effect */
+.shot input[type="radio"]:checked + * {
+  font-weight: bold;
+}
+
+.shot input[type="radio"]:checked + span,
+.shot input[type="radio"]:checked {
+  outline: none;
+}
+
+/* trick: highlight label when checked */
+.shot input[type="radio"]:checked + label,
+.shot label:has(input:checked) {
+  background: #238636;
+  border-color: #2ea043;
+  color: white;
+}
+
+/* ==============================
+   SERVE TYPE STYLE
+   ============================== */
+.serve_type label {
+  background: #1f2937;
+}
+
+.serve_type label:has(input:checked) {
+  background: #1f6feb;
+}
+
+/* ==============================
+   SUBMIT BUTTON
+   ============================== */
+button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #238636, #2ea043);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #2ea043, #3fb950);
+}
+
+/* ==============================
+   STATISTIC CONTAINER
+   ============================== */
+.statistic {
+  max-width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  background: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.statistic h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #58a6ff;
+}
+
+/* ==============================
+   TABLE BASE
+   ============================== */
+.statistic table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* HEADER */
+.statistic thead th {
+  padding: 12px;
+  background: #0d1117;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8b949e;
+  text-align: center;
+}
+
+/* ==============================
+   BODY
+   ============================== */
+.statistic tbody td {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* garis antar row */
+.statistic tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* hover effect */
 .statistic tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.statistic td:first-child {
-  font-weight: bold;
-  color: #36a2eb;
+/* ==============================
+   KOLOM KHUSUS
+   ============================== */
+
+/* player kiri */
+.statistic tbody td:first-child {
+  font-weight: 600;
+  color: #3fb950; /* hijau */
 }
 
-.statistic td:last-child {
-  font-weight: bold;
-  color: #ff6384;
+/* player kanan */
+.statistic tbody td:last-child {
+  font-weight: 600;
+  color: #6c6aaa; /* merah */
 }
 
-.statistic td:nth-child(2) {
-  font-weight: normal;
-  color: #ffffff;
+/* kolom tengah (label) */
+.statistic tbody td:nth-child(2) {
+  color: #c9d1d9;
+  font-weight: 500;
+}
+
+/* ==============================
+   SEPARATOR (TYPE ROW)
+   ============================== */
+.statistic .type td {
+  padding: 6px;
+  background: transparent;
+  border-bottom: none;
+}
+
+.statistic .type td::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #30363d, transparent);
+  margin: 5px 0;
+}
+
+/* ==============================
+   SPECIAL VALUE STYLE
+   ============================== */
+
+/* highlight value besar */
+.statistic td strong {
+  color: #ffd700;
+}
+
+/* ratio style (misal 3/5) */
+.statistic td {
+  letter-spacing: 0.5px;
+}
+
+table img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+  padding: 0;
+  margin: 0;
+}
+
+tr td {
+  position: relative;
+}
+
+.containerp1 {
+  background-color: #3fb950;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: center;
+  color: #000;
+}
+
+.containerp2 {
+  background-color: #6c6aaa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+  align-items: center;
+}
+
+.last-points {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.player-points {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-points p {
+  padding: 15px;
+  background-color: #0d1117;
+  width: 100%;
+  border-radius: 5px;
+}
+.points {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  background-color: #0d1117;
+  justify-content: end;
+  border-radius: 5px;
+}
+
+.player-points span {
+  text-align: start;
+}
+
+.game.winner {
+  font-weight: 800;
+}
+/* base dot */
+.dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #444;
+  transition: all 0.3s ease;
+}
+
+/* menang */
+.dot.win {
+  background-color: #00ffcc;
+  box-shadow: 0 0 6px #00ffcc;
+}
+
+/* kalah */
+.dot.lose {
+  background-color: #555;
+  opacity: 0.4;
 }

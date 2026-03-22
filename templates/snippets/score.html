@@ -2,42 +2,66 @@
   <!-- Pick point Winner -->
   {% include 'snippets/pick_point.html' %}
   <!-- End of Pick point Winner -->
+  <div class="general livescoreAll">
+    <h4 class="generalh4">Live Score</h4>
+    <div class="livescore">
+      <!-- Scoring -->
+      {% include 'snippets/score_player.html' %}
+      <!-- End of Scoring -->
+      <div class="setside">
+        <p class="game">{{set1_won}}</p>
+        <p class="game">{{set2_won}}</p>
+      </div>
+      <div class="gameside">
+        <p class="game {% if set_winner.0 == "p1" %}winner{% endif %}">{{set1_p1}}</p>
+        <p class="game {% if set_winner.0 == "p2" %}winner{% endif %}">{{set1_p2}}</p>
+      </div>
+      {% if current_set > 0 %}
+      <div class="gameside">
+        <p class="game {% if set_winner.1 == "p1" %}winner{% endif %}">{{set2_p1}}</p>
+        <p class="game {% if set_winner.1 == "p2" %}winner{% endif %}">{{set2_p2}}</p>
+      </div>
+      {% endif %} {% if current_set > 1 %}
+      <div class="gameside">
+        <p class="game {% if set_winner.2 == "p1" %}winner{% endif %}">{{set3_p1}}</p>
+        <p class="game {% if set_winner.2 == "p2" %}winner{% endif %}">{{set3_p2}}</p>
+      </div>
 
-  <div class="livescore">
-    <!-- Scoring -->
-    {% include 'snippets/scoring.html' %}
-    <!-- End of Scoring -->
-
-    <div class="setside">
-      <p class="game">{{set1_won}}</p>
-      <p class="game">{{set2_won}}</p>
+      {% endif %} {% if not tiebreak %}
+      <div class="pointside">
+        <p class="points">{{pt1}}</p>
+        <p class="points">{{pt2}}</p>
+      </div>
+      {% endif %} {% if tiebreak %}
+      <div class="pointside">
+        <p class="points">{{tb1}}</p>
+        <p class="points">{{tb2}}</p>
+      </div>
+      {% endif %}
     </div>
-    <div class="gameside">
-      <p class="game">{{set1_p1}}</p>
-      <p class="game">{{set1_p2}}</p>
-    </div>
-    {% if current_set > 0 %}
-    <div class="gameside">
-      <p class="game">{{set2_p1}}</p>
-      <p class="game">{{set2_p2}}</p>
-    </div>
-    {% endif %} {% if current_set > 1 %}
-    <div class="gameside">
-      <p class="game">{{set3_p1}}</p>
-      <p class="game">{{set3_p2}}</p>
-    </div>
-
-    {% endif %} {% if not tiebreak %}
-    <div class="pointside">
-      <p class="point">{{pt1}}</p>
-      <p class="point">{{pt2}}</p>
-    </div>
-    {% endif %} {% if tiebreak %}
-    <div class="pointside">
-      <p class="point">{{tb1}}</p>
-      <p class="point">{{tb2}}</p>
-    </div>
+    {% if status %}
+    <p>{{status}}</p>
     {% endif %}
+    <div class="last-points">
+      <h6>Last 20 Points</h6>
+      <div class="player-points">
+       <p>{{p1}}</p> 
+        <div class="points">
+       {% for p in lastpoints %}
+       <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
+        {% endfor %}
+        </div>
+        </div>
+
+        <div class="player-points">
+          <p>{{p2}}</p>
+          <div class="points">
+          {% for p in lastpoints %}
+        <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>
+        {% endfor %}
+        </div>
+         </div>
+</div>
   </div>
   {% if finish %}
   <div class="result">
