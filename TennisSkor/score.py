@@ -79,11 +79,11 @@ class Match:
         opponent.pt = 0
 
     def check_set_finished(self, player, opponent):
-        if player.set[self.current_set] == 2 and opponent.set[self.current_set] == 2:
+        if player.set[self.current_set] == 6 and opponent.set[self.current_set] == 6:
             self.check_tiebreak(player, opponent)
             return
 
-        if player.set[self.current_set] >= 3 and (player.set[self.current_set] - opponent.set[self.current_set] >= 2):
+        if player.set[self.current_set] >= 1 and (player.set[self.current_set] - opponent.set[self.current_set] >= 1):
             print(f"set {self.current_set+1} selesai")
             self.current_set += 1
             player.pt = 0

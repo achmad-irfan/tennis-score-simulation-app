@@ -1,5 +1,5 @@
 <div class="name">
-  <p id="p1">
+  <p class="match {% if winner == p1 %}winner{% endif %}" id="p1">
     <span class="flag">
       <img width="30" height="24" src="{{p1_profile.flag}}" alt="tennis-ball" />
     </span>
@@ -10,7 +10,7 @@
       {% endif %} {% endif %}
     </span>
   </p>
-  <p id="p2">
+  <p id="p2" class="match {% if winner == p2 %}winner{% endif %}">
     <span class="flag">
       <img width="30" height="24" src="{{p2_profile.flag}}" alt="tennis-ball" />
     </span>

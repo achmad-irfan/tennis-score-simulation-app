@@ -1,4 +1,4 @@
-<form class="general" method="post">
+<form class="general" id="pointForm" method="post">
   {% csrf_token %}
   <h4 class="generalh4">Pick Point</h4>
   <div class="form-point">
@@ -8,7 +8,7 @@
         <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
         {% endif %} {% endif %}
       </span>
-      <h3>{{p1|title}}</h3>
+      <h6>{{p1|title}}</h6>
       <div class="serve_type shot">
         {% if current_server == "p1" %}
         <label>
@@ -36,7 +36,7 @@
         <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
         {% endif %} {% endif %}
       </span>
-      <h3>{{p2|title}}</h3>
+      <h6>{{p2|title}}</h6>
       <div class="serve_type shot">
         {% if current_server == "p2" %}
         <label>
@@ -59,9 +59,11 @@
       </div>
     </div>
   </div>
-  <button type="submit">Add Point</button>
+  <button type="submit" name="submit_shot" value="1">Add Point</button>
 </form>
-
+{% if error %}
+<div id="error-msg" data-message="{{ error }}" style="display: none"></div>
+{% endif %}
 <script>
   const firstServe = document.querySelectorAll('input[value="first"]');
   const secondServe = document.querySelectorAll('input[value="second"]');

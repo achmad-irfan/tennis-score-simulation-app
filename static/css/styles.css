@@ -288,11 +288,11 @@ label:hover {
   height: 20px;
 }
 
-.point h3 {
+.point h6 {
   text-align: center;
-  margin-bottom: 13px;
+  margin-bottom: 20px;
   color: #58a6ff;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 /* ==============================
@@ -554,9 +554,11 @@ tr td {
   text-align: start;
 }
 
-.game.winner {
+.game.winner,
+.match.winner {
   font-weight: 800;
 }
+
 /* base dot */
 .dot {
   width: 15px;

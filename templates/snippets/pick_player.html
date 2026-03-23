@@ -17,9 +17,13 @@
         <option value="{{player.name}}">{{player.name}}</option>
         {% endfor %}
       </select>
-      <button id="submit" type="submit">Submit</button>
+      <button id="submit" name="submit" type="submit" value="1">Submit</button>
       <button type="submit" formaction="{% url 'home' %}">Reset</button>
     </form>
+
+    {% if error %}
+    <div id="error-msg" data-message="{{ error }}" style="display: none"></div>
+    {% endif %}
   </div>
   <div class="profiles general">
     <h4 class="generalh4">Player Profiles</h4>

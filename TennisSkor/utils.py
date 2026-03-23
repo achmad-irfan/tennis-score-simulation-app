@@ -1,5 +1,6 @@
 from .score import Match, Player
 from .list_wta_players import players
+from django.shortcuts import render
 
 player_attrs= [
             "pt", "set", "tb", "ace", "df", "winner", "ue",
@@ -24,7 +25,12 @@ def profile(player_list, name):
             return player
     return None
         
-
+def player_validation(request, p1,p2):
+    if request.GET.get("submit"):
+            if not p1 or not p2:
+                return "Pilih kedua pemain dulu!"
+    return None
+                
 def restore(request,p1,p2,firstserver):
     # Cek sesi sebelumnya
     match = request.session.get('match')
@@ -116,5 +122,6 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         "players":players,
         "current_server" : scores["current_server"]
         })
+    
     
     return context

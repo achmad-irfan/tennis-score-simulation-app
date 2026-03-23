@@ -11,22 +11,36 @@ def Skor(request):
     p1,p2,firstserver = utils.get_players_from_request(request)
     
     # Validasi input
-    if not p1 or not p2:
-        return render(request, 'index.html', {
-        "players": list_wta_players.players,
-        "error": "Pilih kedua pemain dulu!"
-    })
+    if request.GET.get("submit"):
+        if (not p1 or not p2) or (p1 == p2):
+            error = "Pick 2 different players!!"
+            return render(request, 'index.html', {
+            "p1": p1,
+            "p2": p2,
+            "players": list_wta_players.players,
+            "error": error
+        })
+    
     
     # Membuat profile pemain 
     p1_profile= utils.profile(list_wta_players.players, p1)
     p2_profile= utils.profile(list_wta_players.players, p2)
     
     # Restrore session jika ada session sebelumnya
-    m = utils.restore(request, p1,p2,firstserver)
-    
+    m = utils.restore(request, p1,p2,firstserver)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,m)
+    
+    # Validasi input pemenang poin
+    if request.POST.get("submit_shot"):
+        if not pointWinner or not serve_type:
+            error = "Pilih pemenang poin"
+            return render(request, 'index.html', {
+            "p1": p1,
+            "p2": p2,
+            "error": error
+        })
     
     # Memasukan nilai atribut baru 
     scores = m.get_score() 
@@ -36,5 +50,6 @@ def Skor(request):
     
     # Context
     context= utils.get_context(scores,p1,p2,p1_profile, p2_profile)
-    print(context['current_tie_break'])
+    print(context['winner'])
+    print(context['set_winner'])
     return render(request, 'index.html', context)
