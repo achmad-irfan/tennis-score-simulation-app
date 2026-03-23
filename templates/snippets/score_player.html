@@ -5,9 +5,9 @@
     </span>
     {{ p1|title}} ({{p1_profile.country}})
     <span class="serve-icon">
-      {% if current_server == "p1" %}
+      {% if not finish %} {% if current_server == "p1" %}
       <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
-      {% endif %}
+      {% endif %} {% endif %}
     </span>
   </p>
   <p id="p2">
@@ -16,9 +16,9 @@
     </span>
     {{ p2|title}} ({{p2_profile.country}})
     <span class="serve-icon">
-      {% if current_server == "p2" %}
+      {% if not finish %} {% if current_server == "p2" %}
       <img width="20" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
-      {% endif %}
+      {% endif %} {% endif %}
     </span>
   </p>
 </div>
