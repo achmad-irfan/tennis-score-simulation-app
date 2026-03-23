@@ -137,11 +137,11 @@ class Match:
             shot_player.double_fault +=1
             self.status= f"*Double Fault from {shot_player}"
             
-        elif shot == "forced_error":
+        elif shot == "fe":
             shot_player.forced_error += 1
             self.status= f"*Forced Error from {shot_player}"
             
-        elif shot == "unforced_error":
+        elif shot == "ue":
             shot_player.unforced_error +=1
             self.status= f"*Unforced Error from {shot_player}"
             

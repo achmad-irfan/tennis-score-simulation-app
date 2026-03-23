@@ -112,7 +112,9 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         "match_winner": scores['match_winner'],
         "match_loser": scores['match_loser'],
         "players":players,
-        "current_server" : scores["current_server"]
+        "current_server" : scores["current_server"],
+        "return_pct1": scores["p1"]["return_pct"],
+        "return_pct2": scores["p2"]["return_pct"]
         })
     
     return context
