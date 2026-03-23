@@ -84,7 +84,7 @@ class Match:
             self.check_tiebreak(player, opponent)
             return
 
-        if player.set[self.current_set] >= 1 and (player.set[self.current_set] - opponent.set[self.current_set] >= 1):
+        if player.set[self.current_set] >= 6 and (player.set[self.current_set] - opponent.set[self.current_set] >= 2):
             print(f"set {self.current_set+1} selesai")
             self.current_set += 1
             player.pt = 0
