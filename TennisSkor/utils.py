@@ -1,23 +1,12 @@
 from .score import Match, Player
 from .list_wta_players import players
-from django.shortcuts import render
-
-player_attrs= [
-            "pt", "set", "tb", "ace", "df", "winner", "ue",
-            "firstservetotal", "secondservetotal", "totalservice",
-            "firstservewin", "secondservewin", "breakpoint", "breakpointwon",
-            "returnpoint", "returnpointwon", "totalpoint", "fe", "set_won"
-        ]
-match_attrs= ['current_tie_break','current_set','lastpoints', 'finish', "status", "set_winner", "tiebreak", "score"]
-
-total_stats = ["ace", "df", "winner", "ue", "fe", "totalpoint"]
-service_stats = ["first_serve", "return","first_serve_win", "second_serve_win","break_point_won"]
+from .score import player_attrs, total_stats, match_attrs, service_stats
 
 def get_players_from_request(request):
     p1= request.GET.get("p1")
     p2= request.GET.get("p2")
-    firstserver = request.GET.get("firstserve", "p1")
-    return p1,p2,firstserver
+    first_server = request.GET.get("first_server", "p1")
+    return p1,p2,first_server
     
 def profile(player_list, name):
     for player in player_list:
@@ -43,8 +32,9 @@ def restore(request,p1,p2,firstserver):
             setattr(m.p1,attr, match[f"{attr}1"])
             setattr(m.p2,attr, match[f"{attr}2"])
             
-        for attr in match_attrs:
-            setattr(m, attr,match[attr] )
+        for group, attrs in match_attrs.items():
+            for attr in attrs:
+                setattr(m, attr, match[attr])
             
         m.tiebreak = match.get("tiebreak", False)
         m.winner = match.get('winner')
@@ -70,16 +60,17 @@ def save_session(request, p1, p2, scores):
     for attr in player_attrs:
         session_data[f"{attr}1"] = scores['p1'][attr]
         session_data[f"{attr}2"] = scores['p2'][attr]
-
-    for attr in match_attrs:
-        session_data[attr] = scores[attr]
+        
+    for group, attrs in match_attrs.items():
+            for attr in attrs:
+                session_data[attr]= scores[attr]
 
     session_data.update({
         "p1": p1,
         "p2": p2,
-        "tiebreak": scores['tiebreak'],
-        "winner": scores['result']['winner'].name if scores['result']['winner'] else None,
-        "loser": scores['result']['loser'].name if scores['result']['loser'] else None,
+        "is_tiebreak": scores['is_tiebreak'],
+        "match_winner": scores['match_winner'],
+        "match_loser": scores['match_loser'],
         "score": scores['score'],
         "current_server": scores['current_server']
     })
@@ -94,8 +85,9 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
             context[f"{attr}1"]= scores['p1'][attr]
             context[f"{attr}2"]= scores['p2'][attr]
             
-    for attr in match_attrs:
-        context[f"{attr}"]= scores[attr]
+    for group, attrs in match_attrs.items():
+        for attr in attrs:
+            context[f"{attr}"]= scores[attr]
         
     for attr in total_stats:
         context[f"total_{attr}1"]= scores['p1'][f"total_{attr}"]
@@ -117,11 +109,10 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         "set2_p2": scores["p2"]["set"][1],
         "set3_p1": scores["p1"]["set"][2],
         "set3_p2": scores["p2"]["set"][2],
-        "winner": scores['result']['winner'].name if scores['result']['winner'] else None,
-        "loser": scores['result']['loser'].name if scores['result']['loser'] else None,
+        "match_winner": scores['match_winner'],
+        "match_loser": scores['match_loser'],
         "players":players,
         "current_server" : scores["current_server"]
         })
-    
     
     return context

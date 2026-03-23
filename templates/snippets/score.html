@@ -31,8 +31,8 @@
       {% endif %} 
       {% if not tiebreak and not finish %}
       <div class="pointside">
-        <p class="points">{{pt1}}</p>
-        <p class="points">{{pt2}}</p>
+        <p class="points">{{point1}}</p>
+        <p class="points">{{point2}}</p>
       </div>
       {% endif %} {% if tiebreak and not finish %}
       <div class="pointside">
@@ -49,7 +49,7 @@
       <div class="player-points">
        <p>{{p1}}</p> 
         <div class="points">
-       {% for p in lastpoints %}
+       {% for p in last_points %}
        <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
         {% endfor %}
         </div>
@@ -58,7 +58,7 @@
         <div class="player-points">
           <p>{{p2}}</p>
           <div class="points">
-          {% for p in lastpoints %}
+          {% for p in last_points %}
         <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>
         {% endfor %}
         </div>
