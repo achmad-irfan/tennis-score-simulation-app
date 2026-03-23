@@ -47,6 +47,7 @@ class Match:
     def check_match_finish(self,player,opponent):
         if player.set_won ==  2 or opponent.set_won == 2:
             self.finish=True
+            self.current_set -= 1
             if player.set_won > opponent.set_won:
                 self.winner= player
                 self.loser=opponent
