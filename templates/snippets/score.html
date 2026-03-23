@@ -9,8 +9,8 @@
       {% include 'snippets/score_player.html' %}
       <!-- End of Scoring -->
       <div class="setside">
-        <p class="game">{{set1_won}}</p>
-        <p class="game">{{set2_won}}</p>
+        <p class="game">{{set_won1}}</p>
+        <p class="game">{{set_won2}}</p>
       </div>
       <div class="gameside">
         <p class="game {% if set_winner.0 == "p1" %}winner{% endif %}">{{set1_p1}}</p>
@@ -43,7 +43,7 @@
     <p>{{status}}</p>
     {% endif %}
     <div class="last-points">
-      <h6>Last 20 Points</h6>
+      <h6>Last 15 Points</h6>
       <div class="player-points">
        <p>{{p1}}</p> 
         <div class="points">
