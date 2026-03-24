@@ -252,7 +252,7 @@ class Match:
             
     def calc_pct(self, win, total):          
         return round((win / total) * 100) if total else 0        
-  
+    
     def get_score(self):
         new_stats={}
         for stat in total_stats:
