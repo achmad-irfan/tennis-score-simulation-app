@@ -1,4 +1,4 @@
-from .score import Match, Player
+from .score import Match, Player, MatchSerializer
 from .list_wta_players import players
 from .score import player_attrs, total_stats, match_attrs, service_stats
 
@@ -53,7 +53,8 @@ def post_winner(request, m):
     
     return pointWinner,serve_type
 
-def save_session(request, p1, p2, scores):
+def save_session(request, match: Match):
+    scores = MatchSerializer(match).to_dict()
     session_data = {}
 
     for attr in player_attrs:
@@ -65,8 +66,8 @@ def save_session(request, p1, p2, scores):
                 session_data[attr]= scores[attr]
 
     session_data.update({
-        "p1": p1,
-        "p2": p2, 
+        "p1": match.p1.name,
+        "p2": match.p2.name, 
         "match_winner": scores['match_winner'] if scores['match_winner'] else None,
         "match_loser": scores['match_loser'] if scores['match_winner'] else None,
         "current_server": scores['current_server'], 
@@ -77,7 +78,8 @@ def save_session(request, p1, p2, scores):
     request.session["match"] = session_data
     
 
-def get_context(scores,p1,p2,p1_profile, p2_profile):
+def get_context(match: Match, p1_profile, p2_profile ):
+    scores = MatchSerializer(match).to_dict()
     context={}
     for attr in player_attrs:
         if attr != "set":
@@ -98,8 +100,8 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         
     
     context.update( {
-        "p1": p1,
-        "p2": p2,
+        "p1": match.p1.name,
+        "p2": match.p2.name,
         "p1_profile": p1_profile,
         "p2_profile": p2_profile,
         "set1_p1": scores["p1"]["sets"][0],

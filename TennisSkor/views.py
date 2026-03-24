@@ -43,12 +43,18 @@ def Skor(request):
         })
     
     # Memasukan nilai atribut baru 
-    scores = m.get_score() 
+    scores = score.MatchSerializer(m).to_dict()
     
     # Menyimpan dalam session
-    utils.save_session(request,p1,p2,scores)
+    utils.save_session(request,scores)
     
     # Context
-    context= utils.get_context(scores,p1,p2,p1_profile, p2_profile)
-    print(f"set winner : {context['set_winner']}")
-    return render(request, 'index.html', context)   
+    context= scores.copy()
+    context.update({
+    "p1_profile": p1_profile,
+    "p2_profile": p2_profile,
+    "players": list_wta_players.players,
+        })
+    
+    return render(request, 'index.html', context)
+    

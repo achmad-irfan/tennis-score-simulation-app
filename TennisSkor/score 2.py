@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 # Atribut dalam objek player
 player_attrs= [
             "point", "tiebreak_point_win", "ace", "double_fault", "winner", 
@@ -250,59 +248,45 @@ class Match:
     
     def change_server_tiebreak(self):
         if self.current_tiebreak % 2 == 1:
-            self.change_server()      
+            self.change_server()
+            
+    def calc_pct(self, win, total):          
+        return round((win / total) * 100) if total else 0        
     
-    
-class MatchSerializer:
-    def __init__(self, match):
-        self.match = match
+    def get_score(self):
+        new_stats = {f"total_{s}": getattr(self.p1, s) + getattr(self.p2, s) for s in total_stats}
+        players = {"p1": self.p1, "p2": self.p2}
+        score = {}
 
-    def player_data(self, player):
-        # Ambil semua atribut player + persentase stats + sets
-        data = {attr: getattr(player, attr) for attr in player_attrs}
-        data['sets'] = deepcopy(player.sets)
+        for key, p in players.items():
+        # Ambil semua atribut dasar
+            player_data = {attr: getattr(p, attr) for attr in player_attrs}
+            
+            player_data['sets'] = p.sets
 
-        # Persentase service & points
-        total_service = player.total_service
-        data.update({
-            "first_serve_pct": self.calc_pct(player.first_serve_total, total_service),
-            "second_serve_win_pct": self.calc_pct(player.second_serve_win, player.second_serve_total),
-            "first_serve_win_pct": self.calc_pct(player.first_serve_win, player.first_serve_total),
-            "return_point_pct": self.calc_pct(player.return_point_win, player.return_point),
-            "break_point_win_pct": self.calc_pct(player.break_point_win, player.break_point),
+            # Hitung persentase dan total stats
+            player_data.update({
+                "first_serve_pct": self.calc_pct(p.first_serve_total, p.total_service),
+                "return_point_pct": self.calc_pct(p.return_point_win, p.return_point),
+                "first_serve_win_pct": self.calc_pct(p.first_serve_win, p.first_serve_total),
+                "second_serve_win_pct": self.calc_pct(p.second_serve_win, p.second_serve_total),
+                "break_point_win_pct": self.calc_pct(p.break_point_win, p.break_point),
+            })
+            for stat in total_stats:
+                player_data[f"total_{stat}"] = self.calc_pct(getattr(p, stat), new_stats[f"total_{stat}"])
+
+            score[key] = player_data
+
+    # Tambahkan atribut match
+        for attrs in match_attrs.values():
+            for attr in attrs:
+                score[attr] = getattr(self, attr)
+                
+        score.update({
+            "match_winner": self.match_winner.name if self.match_winner else None,
+            "match_loser": self.match_loser.name if self.match_loser else None,
+            "current_server": "p1" if self.current_server == self.p1 else "p2",
         })
 
-        return data
-
-    def calc_pct(self, win, total):
-        return round((win / total) * 100) if total else 0
-
-    def totals_data(self):
-        # Hitung persentase total stats antar pemain
-        totals = {}
-        for stat in total_stats:
-            total = getattr(self.match.p1, stat) + getattr(self.match.p2, stat)
-            totals[f"total_{stat}_pct_p1"] = self.calc_pct(getattr(self.match.p1, stat), total)
-            totals[f"total_{stat}_pct_p2"] = self.calc_pct(getattr(self.match.p2, stat), total)
-        return totals
-
-    def match_info(self):
-        # Ambil info match
-        return {
-            "current_server": "p1" if self.match.current_server == self.match.p1 else "p2",
-            "match_winner": getattr(self.match.match_winner, "name", None),
-            "match_loser": getattr(self.match.match_loser, "name", None),
-            "status": getattr(self.match, "status", None),
-            "current_set": getattr(self.match, "current_set", None),
-            "finish": getattr(self.match, "finish", False),
-        }
-
-    def to_dict(self):
-        # Kembalikan dictionary final skor + info match + totals
-        return {
-            "p1": self.player_data(self.match.p1),
-            "p2": self.player_data(self.match.p2),
-            "totals": self.totals_data(),
-            **self.match_info()
-        }
+        return score
     
