@@ -50,5 +50,5 @@ def Skor(request):
     
     # Context
     context= utils.get_context(scores,p1,p2,p1_profile, p2_profile)
-    print(context)
-    return render(request, 'index.html', context)
+    print(f"set winner : {context['set_winner']}")
+    return render(request, 'index.html', context)   

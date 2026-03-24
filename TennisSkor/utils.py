@@ -37,8 +37,6 @@ def restore(request,p1,p2,firstserver):
                 setattr(m, attr, match[attr])
             
         m.tiebreak = match.get("tiebreak", False)
-        m.winner = match.get('winner')
-        m.loser = match.get('loser')
         m.current_server = m.p1 if match['current_server'] == "p1" else m.p2
         m.p1.sets = match.get("sets1", [0,0,0])
         m.p2.sets = match.get("sets2", [0,0,0])
@@ -69,11 +67,11 @@ def save_session(request, p1, p2, scores):
     session_data.update({
         "p1": p1,
         "p2": p2, 
-        "is_tiebreak": scores['is_tiebreak'],
-        "match_winner": scores['match_winner'],
-        "match_loser": scores['match_loser'],
-        "score": scores['score'],
-        "current_server": scores['current_server'], "sets1": scores['p1']['sets'],"sets2": scores['p2']['sets']
+        "match_winner": scores['match_winner'] if scores['match_winner'] else None,
+        "match_loser": scores['match_loser'] if scores['match_winner'] else None,
+        "current_server": scores['current_server'], 
+        "sets1": scores['p1']['sets'],
+        "sets2": scores['p2']['sets']
     })
 
     request.session["match"] = session_data
@@ -110,12 +108,8 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         "set2_p2": scores["p2"]["sets"][1],
         "set3_p1": scores["p1"]["sets"][2],
         "set3_p2": scores["p2"]["sets"][2],
-        "match_winner": scores['match_winner'],
-        "match_loser": scores['match_loser'],
         "players":players,
-        "current_server" : scores["current_server"],
-        "return_point_pct1": scores["p1"]["return_point_pct"],
-        "return_point_pct2": scores["p2"]["return_point_pct"],"sets1": scores['p1']['sets'],"sets2": scores['p2']['sets']
+        "current_server" : scores["current_server"],"sets1": scores['p1']['sets'],"sets2": scores['p2']['sets']
         })
-
+    
     return context

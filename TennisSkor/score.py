@@ -1,10 +1,10 @@
 # Atribut dalam objek player
 player_attrs= [
-            "point", "tiebreak_point_won", "ace", "double_fault", "winner", 
+            "point", "tiebreak_point_win", "ace", "double_fault", "winner", 
             "unforced_error", "first_serve_total", "second_serve_total", 
             "total_service", "first_serve_win", "second_serve_win", 
-            "break_point", "break_point_won", "return_point", 
-            "return_point_won", "total_point", "forced_error", "set_won", 
+            "break_point", "break_point_win", "return_point", 
+            "return_point_win", "total_point", "forced_error", "set_win", 
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
@@ -24,7 +24,7 @@ total_stats = ["ace", "double_fault", "winner",
               "unforced_error", "forced_error", "total_point"]
 
 service_stats = ["first_serve", "return_point","first_serve_win", 
-                 "second_serve_win","break_point_won"]
+                 "second_serve_win","break_point_win"]
 
 class Player:
     def __init__(self,name):
@@ -53,31 +53,31 @@ class Match:
                     setattr(self, attr, default)
         
     def check_match_finish(self,player,opponent):
-        if player.set_won ==  2 or opponent.set_won == 2:
+        if player.set_win ==  2 or opponent.set_win == 2:
             self.finish=True
-            if player.set_won > opponent.set_won:
-                self.match_winner = "p1" if player == self.p1 else "p2"
-                self.match_loser  = "p1" if opponent == self.p1 else "p2"
+            if player.set_win > opponent.set_win:
+                self.match_winner = player
+                self.match_loser  = opponent
             else:
-                self.match_winner = "p1" if opponent == self.p1 else "p2"
-                self.match_loser  = "p1" if player == self.p1 else "p2"
+                self.match_winner = opponent
+                self.match_loser  = player
             self.scoring()
             print("Finish")
         
     def tiebreak_scoring(self,player,opponent):
         self.current_tiebreak +=1
         self.change_server_tiebreak()
-        player.tiebreak_point_won += 1
+        player.tiebreak_point_win += 1
         player.total_point +=1
-        if player.tiebreak_point_won >= 7 and (player.tiebreak_point_won - opponent.tiebreak_point_won) >= 2:
+        if player.tiebreak_point_win >= 7 and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
             player.sets[self.current_set] = 7
             opponent.sets[self.current_set] = 6
             print("Set selesai via tiebreak")
             self.current_set += 1
             self.is_tiebreak = False
-            player.set_won +=1
-            player.tiebreak_point_won = 0
-            opponent.tiebreak_point_won = 0
+            player.set_win +=1
+            player.tiebreak_point_win = 0
+            opponent.tiebreak_point_win = 0
             self.check_match_finish(player,opponent)
  
     def check_tiebreak(self,player, opponent):
@@ -91,12 +91,12 @@ class Match:
             self.check_tiebreak(player, opponent)
             return
 
-        if player.sets[self.current_set] >= 2 and (player.sets[self.current_set] - opponent.sets[self.current_set] >= 2):
+        if player.sets[self.current_set] >= 6 and (player.sets[self.current_set] - opponent.sets[self.current_set] >= 2):
             print(f"set {self.current_set+1} selesai")
             self.current_set += 1
             player.point = 0
             opponent.point = 0
-            player.set_won +=1
+            player.set_win +=1
             if player == self.p1:
                 self.set_winner.append("p1")
             else:
@@ -104,7 +104,7 @@ class Match:
             
             
     def win_game(self,player,opponent):
-        self.increment_break_point_won(player)
+        self.increment_break_point_win(player)
         player.sets[self.current_set] += 1
         self.change_server()
         player.point = 0
@@ -150,9 +150,9 @@ class Match:
             returner.break_point += 1
             print("break point")
             
-    def increment_break_point_won(self, player):
+    def increment_break_point_win(self, player):
         if player != self.current_server:
-            player.break_point_won +=1
+            player.break_point_win +=1
             
     def serve_win(self, player, serve_type):
         if serve_type == "first":
@@ -203,7 +203,7 @@ class Match:
         if player == self.current_server:
             self.serve_win(player, serve_type)
         else:
-            player.return_point_won +=1
+            player.return_point_win +=1
             
         if player.point == 0: 
             player.point = 15
@@ -254,58 +254,39 @@ class Match:
         return round((win / total) * 100) if total else 0        
     
     def get_score(self):
-        new_stats={}
-        for stat in total_stats:
-            new_stats["total_"+stat]=getattr(self.p1, stat) + getattr(self.p2, stat)
-            
+        new_stats = {f"total_{s}": getattr(self.p1, s) + getattr(self.p2, s) for s in total_stats}
         players = {"p1": self.p1, "p2": self.p2}
-        score = {
-        key: {
-            "point": p.point,
-            "sets": p.sets,
-            "tiebreak_point_won": p.tiebreak_point_won,
-            "set_won": p.set_won,
-            "total_point": p.total_point,
-            "ace": p.ace,
-            "double_fault": p.double_fault,
-            "winner": p.winner,
-            "unforced_error": p.unforced_error,
-            "forced_error" : p.forced_error,
-            "first_serve_total" : p.first_serve_total,
-            "second_serve_total":p.second_serve_total,
-            "total_service" : p.total_service,
-            "first_serve_win": p.first_serve_win,
-            "second_serve_win" : p.second_serve_win,
-            "break_point": p.break_point,
-            "break_point_won":p.break_point_won,
-            "return_point": p.return_point,
-            "return_point_won": p.return_point_won, 
-            "first_serve_pct" : self.calc_pct(p.first_serve_total, p.total_service),
-            "return_point_pct" : self.calc_pct(p.return_point_won, p.return_point),
-            "first_serve_win_pct": self.calc_pct(p.first_serve_win, p.first_serve_total),
-            "second_serve_win_pct":self.calc_pct(p.second_serve_win, p.second_serve_total),
-            "break_point_won_pct": self.calc_pct(p.break_point_won, p.break_point),
-            "total_ace": self.calc_pct(p.ace,new_stats['total_ace']),
-            "total_double_fault" : self.calc_pct(p.double_fault,new_stats['total_double_fault']),
-            "total_forced_error" : self.calc_pct(p.forced_error, new_stats['total_forced_error']),
-            "total_unforced_error" : self.calc_pct(p.unforced_error, new_stats['total_unforced_error']),
-            "total_winner" : self.calc_pct(p.winner, new_stats['total_winner']),
-            "total_total_point" : self.calc_pct(p.total_point, new_stats['total_total_point'])
-        }
-        
-        for key, p in players.items()}
+        score = {}
+
+        for key, p in players.items():
+        # Ambil semua atribut dasar
+            player_data = {attr: getattr(p, attr) for attr in player_attrs}
+            
+            player_data['sets'] = p.sets
+
+            # Hitung persentase dan total stats
+            player_data.update({
+                "first_serve_pct": self.calc_pct(p.first_serve_total, p.total_service),
+                "return_point_pct": self.calc_pct(p.return_point_win, p.return_point),
+                "first_serve_win_pct": self.calc_pct(p.first_serve_win, p.first_serve_total),
+                "second_serve_win_pct": self.calc_pct(p.second_serve_win, p.second_serve_total),
+                "break_point_win_pct": self.calc_pct(p.break_point_win, p.break_point),
+            })
+            for stat in total_stats:
+                player_data[f"total_{stat}"] = self.calc_pct(getattr(p, stat), new_stats[f"total_{stat}"])
+
+            score[key] = player_data
+
+    # Tambahkan atribut match
+        for attrs in match_attrs.values():
+            for attr in attrs:
+                score[attr] = getattr(self, attr)
+                
         score.update({
-        "finish": self.finish,
-        "match_winner": self.match_winner, 
-        "match_loser": self.match_loser,
-        "score": self.score,
-        "current_server": "p1" if self.current_server == self.p1 else "p2",
-        "status": self.status, 
-        "set_winner": self.set_winner,
-        "last_points" : self.last_points,
-        "current_set":self.current_set,
-        "is_tiebreak": self.is_tiebreak,
-        "current_tiebreak": self.current_tiebreak
+            "match_winner": self.match_winner.name if self.match_winner else None,
+            "match_loser": self.match_loser.name if self.match_loser else None,
+            "current_server": "p1" if self.current_server == self.p1 else "p2",
         })
+
         return score
     

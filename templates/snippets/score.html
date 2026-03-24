@@ -10,8 +10,8 @@
       <!-- End of Scoring -->
        {% if not finish %}
       <div class="setside">
-        <p class="game">{{set_won1}}</p>
-        <p class="game">{{set_won2}}</p>
+        <p class="game">{{set_win1}}</p>
+        <p class="game">{{set_win2}}</p>
       </div>
       {% endif %} 
       <div class="gameside">
@@ -29,15 +29,15 @@
         <p class="game {% if set_winner.2 == "p2" %}winner{% endif %}">{{set3_p2}}</p>
       </div>
       {% endif %} 
-      {% if not tiebreak and not finish %}
+      {% if not is_tiebreak and not finish %}
       <div class="pointside">
         <p class="points">{{point1}}</p>
         <p class="points">{{point2}}</p>
       </div>
-      {% endif %} {% if tiebreak and not finish %}
+      {% endif %} {% if is_tiebreak and not finish %}
       <div class="pointside">
-        <p class="points">{{tb1}}</p>
-        <p class="points">{{tb2}}</p>
+        <p class="points">{{tiebreak_point_win1}}</p>
+        <p class="points">{{tiebreak_point_win2}}</p>
       </div>
       {% endif %}
     </div>
