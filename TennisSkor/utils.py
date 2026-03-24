@@ -40,7 +40,8 @@ def restore(request,p1,p2,firstserver):
         m.winner = match.get('winner')
         m.loser = match.get('loser')
         m.current_server = m.p1 if match['current_server'] == "p1" else m.p2
-        
+        m.p1.sets = match.get("sets1", [0,0,0])
+        m.p2.sets = match.get("sets2", [0,0,0])
     return m
 
 def post_winner(request, m):
@@ -67,12 +68,12 @@ def save_session(request, p1, p2, scores):
 
     session_data.update({
         "p1": p1,
-        "p2": p2,
+        "p2": p2, 
         "is_tiebreak": scores['is_tiebreak'],
         "match_winner": scores['match_winner'],
         "match_loser": scores['match_loser'],
         "score": scores['score'],
-        "current_server": scores['current_server']
+        "current_server": scores['current_server'], "sets1": scores['p1']['sets'],"sets2": scores['p2']['sets']
     })
 
     request.session["match"] = session_data
@@ -94,8 +95,8 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         context[f"total_{attr}2"]= scores['p2'][f"total_{attr}"]
         
     for attr in service_stats:
-        context[f"{attr}1"]= scores['p1'][f"{attr}_pct"]
-        context[f"{attr}2"]= scores['p2'][f"{attr}_pct"]
+        context[f"{attr}_pct1"]= scores['p1'][f"{attr}_pct"]
+        context[f"{attr}_pct2"]= scores['p2'][f"{attr}_pct"]
         
     
     context.update( {
@@ -103,18 +104,18 @@ def get_context(scores,p1,p2,p1_profile, p2_profile):
         "p2": p2,
         "p1_profile": p1_profile,
         "p2_profile": p2_profile,
-        "set1_p1": scores["p1"]["set"][0],
-        "set1_p2": scores["p2"]["set"][0],
-        "set2_p1": scores["p1"]["set"][1],
-        "set2_p2": scores["p2"]["set"][1],
-        "set3_p1": scores["p1"]["set"][2],
-        "set3_p2": scores["p2"]["set"][2],
+        "set1_p1": scores["p1"]["sets"][0],
+        "set1_p2": scores["p2"]["sets"][0],
+        "set2_p1": scores["p1"]["sets"][1],
+        "set2_p2": scores["p2"]["sets"][1],
+        "set3_p1": scores["p1"]["sets"][2],
+        "set3_p2": scores["p2"]["sets"][2],
         "match_winner": scores['match_winner'],
         "match_loser": scores['match_loser'],
         "players":players,
         "current_server" : scores["current_server"],
-        "return_pct1": scores["p1"]["return_pct"],
-        "return_pct2": scores["p2"]["return_pct"]
+        "return_point_pct1": scores["p1"]["return_point_pct"],
+        "return_point_pct2": scores["p2"]["return_point_pct"],"sets1": scores['p1']['sets'],"sets2": scores['p2']['sets']
         })
-    
+
     return context

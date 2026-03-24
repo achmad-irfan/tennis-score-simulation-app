@@ -4,7 +4,7 @@ player_attrs= [
             "unforced_error", "first_serve_total", "second_serve_total", 
             "total_service", "first_serve_win", "second_serve_win", 
             "break_point", "break_point_won", "return_point", 
-            "return_point_won", "total_point", "forced_error", "set_won"
+            "return_point_won", "total_point", "forced_error", "set_won", 
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
@@ -23,7 +23,7 @@ type_defaults = {
 total_stats = ["ace", "double_fault", "winner", 
               "unforced_error", "forced_error", "total_point"]
 
-service_stats = ["first_serve", "return","first_serve_win", 
+service_stats = ["first_serve", "return_point","first_serve_win", 
                  "second_serve_win","break_point_won"]
 
 class Player:
@@ -55,13 +55,12 @@ class Match:
     def check_match_finish(self,player,opponent):
         if player.set_won ==  2 or opponent.set_won == 2:
             self.finish=True
-            self.current_set -= 1
             if player.set_won > opponent.set_won:
-                self.match_winner= player
-                self.match_loser=opponent
+                self.match_winner = "p1" if player == self.p1 else "p2"
+                self.match_loser  = "p1" if opponent == self.p1 else "p2"
             else:
-                self.match_winner= opponent
-                self.match_loser= player
+                self.match_winner = "p1" if opponent == self.p1 else "p2"
+                self.match_loser  = "p1" if player == self.p1 else "p2"
             self.scoring()
             print("Finish")
         
@@ -71,8 +70,8 @@ class Match:
         player.tiebreak_point_won += 1
         player.total_point +=1
         if player.tiebreak_point_won >= 7 and (player.tiebreak_point_won - opponent.tiebreak_point_won) >= 2:
-            player.set[self.current_set] = 7
-            opponent.set[self.current_set] = 6
+            player.sets[self.current_set] = 7
+            opponent.sets[self.current_set] = 6
             print("Set selesai via tiebreak")
             self.current_set += 1
             self.is_tiebreak = False
@@ -92,7 +91,7 @@ class Match:
             self.check_tiebreak(player, opponent)
             return
 
-        if player.sets[self.current_set] >= 6 and (player.sets[self.current_set] - opponent.sets[self.current_set] >= 2):
+        if player.sets[self.current_set] >= 2 and (player.sets[self.current_set] - opponent.sets[self.current_set] >= 2):
             print(f"set {self.current_set+1} selesai")
             self.current_set += 1
             player.point = 0
@@ -114,8 +113,6 @@ class Match:
         self.check_match_finish(player,opponent)
         self.status = f"*Game {player}"
     
-   
-     
     def type_shot(self, pointWinner):
         player_id , shot = pointWinner.split("_")
         if player_id == "p1":
@@ -145,8 +142,6 @@ class Match:
             shot_player.unforced_error +=1
             self.status= f"*Unforced Error from {shot_player}"
             
-           
-    
     def break_point_check(self):
         server = self.current_server
         returner = self.p1 if server == self.p2 else self.p2
@@ -167,8 +162,6 @@ class Match:
             player.second_serve_win += 1
             # self.update_serve_pct(player)
         
-         
-    
     def serve_types(self, serve_type):
         if self.current_server==self.p1:
             self.p1.total_service += 1
@@ -181,7 +174,6 @@ class Match:
             self.current_server.first_serve_total += 1
         else:
             self.current_server.second_serve_total +=1
-    
     
     def win_point(self,player,opponent,pointWinner, serve_type):  
         self.serve_types(serve_type)  
@@ -270,7 +262,7 @@ class Match:
         score = {
         key: {
             "point": p.point,
-            "set": p.sets,
+            "sets": p.sets,
             "tiebreak_point_won": p.tiebreak_point_won,
             "set_won": p.set_won,
             "total_point": p.total_point,
@@ -289,7 +281,7 @@ class Match:
             "return_point": p.return_point,
             "return_point_won": p.return_point_won, 
             "first_serve_pct" : self.calc_pct(p.first_serve_total, p.total_service),
-            "return_pct" : self.calc_pct(p.return_point_won, p.return_point),
+            "return_point_pct" : self.calc_pct(p.return_point_won, p.return_point),
             "first_serve_win_pct": self.calc_pct(p.first_serve_win, p.first_serve_total),
             "second_serve_win_pct":self.calc_pct(p.second_serve_win, p.second_serve_total),
             "break_point_won_pct": self.calc_pct(p.break_point_won, p.break_point),
@@ -315,6 +307,5 @@ class Match:
         "is_tiebreak": self.is_tiebreak,
         "current_tiebreak": self.current_tiebreak
         })
-        
         return score
     
