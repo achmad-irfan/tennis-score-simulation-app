@@ -27,10 +27,10 @@ def Skor(request):
     p2_profile= utils.profile(list_wta_players.players, p2)
     
     # Restrore session jika ada session sebelumnya
-    m = utils.restore(request, p1,p2,first_server)            
+    restore_match = utils.restore_match(request, p1,p2,first_server)            
     
     # Cek Pemenang Poin dan panggil method winning_point
-    pointWinner,serve_type= utils.post_winner(request,m)
+    pointWinner,serve_type= utils.post_winner(request,restore_match)
     
     # Validasi input pemenang poin
     if request.POST.get("submit_shot"):
@@ -42,13 +42,26 @@ def Skor(request):
             "error": error
         })
     
-    # Memasukan nilai atribut baru 
-    scores = m.get_score() 
+    # Memasukan nilai baru pada atribut
+    new_value = score.MatchSerializer(restore_match).to_dict()
     
     # Menyimpan dalam session
-    utils.save_session(request,p1,p2,scores)
-    
+    utils.save_session(request,restore_match)
+
     # Context
-    context= utils.get_context(scores,p1,p2,p1_profile, p2_profile)
-    print(f"set winner : {context['set_winner']}")
-    return render(request, 'index.html', context)   
+    context= new_value.copy()
+    context.update({
+    "p1_name" : new_value["p1"]['name'],
+    "p2_name":  new_value["p2"]['name'],
+    "players": list_wta_players.players,
+    "p1_profile": p1_profile,
+    "p2_profile": p2_profile,    
+    "set1_p1": new_value["p1"]["sets"][0],
+    "set1_p2": new_value["p2"]["sets"][0],
+    "set2_p1": new_value["p1"]["sets"][1],
+    "set2_p2": new_value["p2"]["sets"][1],
+    "set3_p1": new_value["p1"]["sets"][2],
+    "set3_p2": new_value["p2"]["sets"][2],
+        })
+    return render(request, 'index.html', context)
+    
