@@ -43,6 +43,8 @@ def restore_match(request,p1,p2,firstserver):
         m.current_server = m.p1 if match.get("current_server") == "p1" else m.p2
         m.p1.sets = p1_data.get("sets", [0,0,0])
         m.p2.sets = p2_data.get("sets", [0,0,0])
+        m.p1.tiebreak_display_score = p1_data.get("tiebreak_display_score", [0,0,0])
+        m.p2.tiebreak_display_score = p2_data.get("tiebreak_display_score", [0,0,0])
         
         
     return m

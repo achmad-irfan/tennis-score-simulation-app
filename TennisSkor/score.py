@@ -1,4 +1,4 @@
-from copy import deepcopy
+
 
 # Atribut dalam objek player
 player_attrs= [
@@ -22,6 +22,8 @@ type_defaults = {
     "data_list": []
 }
 
+player_attr_list = ['sets','tiebreak_display_score' ]
+
 # Atribut total data statistik 2 pemain
 total_stats = ["ace", "double_fault", "winner", 
               "unforced_error", "forced_error", "total_point"]
@@ -34,6 +36,7 @@ class Player:
     def __init__(self,name):
         self.name=name
         self.sets=[0,0,0]
+        self.tiebreak_display_score = [0,0,0]
         for attr in player_attrs:
             setattr(self,attr, 0)
             
@@ -166,6 +169,7 @@ class ScoringSystem:
         self.change_server_tiebreak(match)
 
         player.tiebreak_point_win += 1
+        player.tiebreak_display_score[match.current_set] += 1
         player.total_point += 1
 
         if player.tiebreak_point_win >= 7 and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
@@ -183,11 +187,11 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
     
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
 
             player.point = 0
@@ -288,11 +292,23 @@ class ScoringSystem:
 
     def scoring(self, match):
         match.score = []
+
         for i in range(match.current_set):
-            if match.match_winner == match.p1:
-                match.score.append(f"{match.p1.sets[i]}-{match.p2.sets[i]}")
-            else:
-                match.score.append(f"{match.p2.sets[i]}-{match.p1.sets[i]}")
+            # Ambil nilai set p1 dan p2
+            p1_set = match.p1.sets[i]
+            p2_set = match.p2.sets[i]
+
+            # Tentukan apakah set ini tiebreak
+            tiebreak_score = ""
+            if max(p1_set, p2_set) == 7 and min(p1_set, p2_set) == 6:
+                # Tampilkan skor tiebreak kalah saja
+                if p1_set > p2_set:
+                    tiebreak_score = f"({match.p2.tiebreak_display_score[i]})"
+                else:
+                    tiebreak_score = f"({match.p1.tiebreak_display_score[i]})"
+
+            # Susun skor set
+            match.score.append(f"{p1_set}-{p2_set}{tiebreak_score}")
 
         match.score = " ".join(match.score)
     
@@ -314,6 +330,7 @@ class MatchSerializer:
         # Khusus atribut sets pada player
         player_data['sets'] = player.sets
         player_data['name']=  player.name
+        player_data['tiebreak_display_score']= player.tiebreak_display_score
 
         # Persentase service & points
         player_data.update({
