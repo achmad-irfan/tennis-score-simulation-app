@@ -187,11 +187,11 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
     
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
+        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
 
             player.point = 0
