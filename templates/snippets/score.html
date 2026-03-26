@@ -10,8 +10,8 @@
       <!-- End of Scoring -->
        {% if not finish %}
       <div class="setside">
-        <p class="game">{{set_win1}}</p>
-        <p class="game">{{set_win2}}</p>
+        <p class="game">{{p1.set_win}}</p>
+        <p class="game">{{p2.set_win}}</p>
       </div>
       {% endif %} 
       <div class="gameside">
@@ -31,13 +31,13 @@
       {% endif %} 
       {% if not is_tiebreak and not finish %}
       <div class="pointside">
-        <p class="points">{{point1}}</p>
-        <p class="points">{{point2}}</p>
+        <p class="points">{{p1.point}}</p>
+        <p class="points">{{p2.point}}</p>
       </div>
       {% endif %} {% if is_tiebreak and not finish %}
       <div class="pointside">
-        <p class="points">{{tiebreak_point_win1}}</p>
-        <p class="points">{{tiebreak_point_win2}}</p>
+        <p class="points">{{p1.tiebreak_point_win}}</p>
+        <p class="points">{{p2.tiebreak_point_win}}</p>
       </div>
       {% endif %}
     </div>
@@ -47,7 +47,7 @@
     <div class="last-points">
       <h6>Last 15 Points</h6>
       <div class="player-points">
-       <p>{{p1}}</p> 
+       <p>{{p1_name}}</p> 
         <div class="points">
        {% for p in last_points %}
        <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="player-points">
-          <p>{{p2}}</p>
+          <p>{{p2_name}}</p>
           <div class="points">
           {% for p in last_points %}
         <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>

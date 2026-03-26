@@ -27,7 +27,7 @@ def Skor(request):
     p2_profile= utils.profile(list_wta_players.players, p2)
     
     # Restrore session jika ada session sebelumnya
-    restore_match = utils.restore(request, p1,p2,first_server)            
+    restore_match = utils.restore_match(request, p1,p2,first_server)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)

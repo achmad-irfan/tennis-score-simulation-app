@@ -3,7 +3,7 @@
     <span class="flag">
       <img width="30" height="24" src="{{p1_profile.flag}}" alt="tennis-ball" />
     </span>
-    {{ p1|title}} ({{p1_profile.country}})
+    {{ p1_name|title}} ({{p1_profile.country}})
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p1" %}
       <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
@@ -14,7 +14,7 @@
     <span class="flag">
       <img width="30" height="24" src="{{p2_profile.flag}}" alt="tennis-ball" />
     </span>
-    {{ p2|title}} ({{p2_profile.country}})
+    {{ p2_name|title}} ({{p2_profile.country}})
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p2" %}
       <img width="20" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />

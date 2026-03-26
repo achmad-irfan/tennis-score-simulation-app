@@ -55,209 +55,237 @@ class Match:
                     setattr(self, attr, default.copy())
                 else:
                     setattr(self, attr, default)
+                    
+        self.scoring = ScoringSystem()
         
-    def check_match_finish(self,player,opponent):
-        if player.set_win ==  2 or opponent.set_win == 2:
-            self.finish=True
-            if player.set_win > opponent.set_win:
-                self.match_winner = player
-                self.match_loser  = opponent
+    def player_category(self, point_event):
+        player_id, shot = point_event.split("_")
+        if shot in ['df', 'ue']:
+            if player_id == "p2":
+                player = self.p1
+                opponent = self.p2
             else:
-                self.match_winner = opponent
-                self.match_loser  = player
-            self.scoring()
-            print("Finish")
-        
-    def tiebreak_scoring(self,player,opponent):
-        self.current_tiebreak +=1
-        self.change_server_tiebreak()
-        player.tiebreak_point_win += 1
-        player.total_point +=1
-        if player.tiebreak_point_win >= 7 and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
-            player.sets[self.current_set] = 7
-            opponent.sets[self.current_set] = 6
-            print("Set selesai via tiebreak")
-            self.current_set += 1
-            self.is_tiebreak = False
-            player.set_win +=1
-            player.tiebreak_point_win = 0
-            opponent.tiebreak_point_win = 0
-            self.check_match_finish(player,opponent)
- 
-    def check_tiebreak(self,player, opponent):
-        print("Tie Break! Mode")
-        self.is_tiebreak = True
-        player.point = 0
-        opponent.point = 0
-
-    def check_set_finished(self, player, opponent):
-        if player.sets[self.current_set] == 6 and opponent.sets[self.current_set] == 6:
-            self.check_tiebreak(player, opponent)
-            return
-
-        if player.sets[self.current_set] >= 6 and (player.sets[self.current_set] - opponent.sets[self.current_set] >= 2):
-            print(f"set {self.current_set+1} selesai")
-            self.current_set += 1
-            player.point = 0
-            opponent.point = 0
-            player.set_win +=1
-            if player == self.p1:
-                self.set_winner.append("p1")
+                player = self.p2
+                opponent = self.p1
+                
+        else:
+            if player_id == "p2":
+                player = self.p2
+                opponent = self.p1
             else:
-                self.set_winner.append("p2")
-            
-            
-    def win_game(self,player,opponent):
-        self.increment_break_point_win(player)
-        player.sets[self.current_set] += 1
-        self.change_server()
-        player.point = 0
-        opponent.point = 0
-        self.check_set_finished(player, opponent)
-        self.check_match_finish(player,opponent)
-        self.status = f"*Game {player}"
+                player = self.p1
+                opponent = self.p2
+                
+        return player, opponent
+        
+    def play_point(self, point_event, serve_type):
+        player, opponent = self.player_category(point_event)
+        self.scoring.process_point(self, player, opponent, point_event, serve_type)   
     
-    def type_shot(self, pointWinner):
-        player_id , shot = pointWinner.split("_")
-        if player_id == "p1":
-            shot_player = self.p1
-            opponent = self.p2
-        else:
-            shot_player = self.p2
-            opponent = self.p1
-            
-        if shot == "ace":
-            shot_player.ace += 1
-            self.status= f"*Ace from {shot_player}"
-            
-        elif shot == "winner":
-            shot_player.winner +=1
-            self.status= f"*Winner from {shot_player}"
-            
-        elif shot == "df":
-            shot_player.double_fault +=1
-            self.status= f"*Double Fault from {shot_player}"
-            
-        elif shot == "fe":
-            shot_player.forced_error += 1
-            self.status= f"*Forced Error from {shot_player}"
-            
-        elif shot == "ue":
-            shot_player.unforced_error +=1
-            self.status= f"*Unforced Error from {shot_player}"
-            
-    def break_point_check(self):
-        server = self.current_server
-        returner = self.p1 if server == self.p2 else self.p2
 
-        if (returner.point == 40 and server.point != 40) or returner.point == "AD":
-            returner.break_point += 1
-            print("break point")
-            
-    def increment_break_point_win(self, player):
-        if player != self.current_server:
-            player.break_point_win +=1
-            
-    def serve_win(self, player, serve_type):
-        if serve_type == "first":
-            player.first_serve_win += 1
-            # self.update_serve_pct(player)
+class ScoringSystem:
+    def process_point(self, match, player, opponent, point_event, serve_type):
+        # 1. Serve & shot
+        self.serve_types(match, serve_type)
+        self.type_shot(match, point_event)
+
+        # 2. simpan history
+        if player == match.p1:
+            match.last_points.append("p1")
         else:
-            player.second_serve_win += 1
-            # self.update_serve_pct(player)
-        
-    def serve_types(self, serve_type):
-        if self.current_server==self.p1:
-            self.p1.total_service += 1
-            self.p2.return_point +=1
-        else:
-            self.p2.total_service += 1
-            self.p1.return_point +=1
-            
-        if serve_type == "first":
-            self.current_server.first_serve_total += 1
-        else:
-            self.current_server.second_serve_total +=1
-    
-    def win_point(self,player,opponent,pointWinner, serve_type):  
-        self.serve_types(serve_type)  
-        self.type_shot(pointWinner)
-       
-        if player == "p1":
-            player = self.p1
-            opponent = self.p2
-            self.last_points.append("p1")
-        elif player == "p2":
-            player = self.p2
-            opponent = self.p1
-            self.last_points.append("p2")
-            
-        self.last_points= self.last_points[-15:]
-        
-        if self.finish:
-            print(f"Pertandingan Selesai")
+            match.last_points.append("p2")
+
+        match.last_points = match.last_points[-15:]
+
+        # 3. kalau match selesai
+        if match.finish:
             return
-            
-        if self.is_tiebreak:
-            print("MODE TIEBREAK START")
-            self.tiebreak_scoring(player, opponent)
+
+        # 4. tiebreak mode
+        if match.is_tiebreak:
+            self.tiebreak_scoring(match, player, opponent)
             return
-        
-        player.total_point +=1
-        if player == self.current_server:
+
+        # 5. normal scoring
+        player.total_point += 1
+
+        if player == match.current_server:
             self.serve_win(player, serve_type)
         else:
-            player.return_point_win +=1
-            
-        if player.point == 0: 
+            player.return_point_win += 1
+
+        self.update_point(match,player, opponent)
+
+        self.break_point_check(match)
+    
+    def update_point(self, match, player, opponent):
+        if player.point == 0:
             player.point = 15
-           
         elif player.point == 15:
             player.point = 30
-           
         elif player.point == 30:
             player.point = 40
-           
         elif player.point == 40 and opponent.point == 40:
             player.point = "AD"
             opponent.point = "-"
-            
         elif player.point == "-":
             player.point = 40
             opponent.point = 40
-           
         elif player.point == "AD":
-            self.win_game(player, opponent)
-            
+            self.win_game( match,player,opponent)
         elif player.point == 40 and opponent.point != 40:
-            self.win_game(player, opponent)
+            self.win_game( match, player,opponent)
             
-        self.break_point_check()
-            
-    def scoring(self):
-        self.score = [] 
-        for i in range(self.current_set):
-            if self.match_winner == self.p1:
-                self.score.append(f"{self.p1.sets[i]}-{self.p2.sets[i]}")
-            else:
-                self.score.append(f"{self.p2.sets[i]}-{self.p1.sets[i]}")
+    def win_game(self, match, player, opponent):
+        self.increment_break_point_win(match, player)
+        player.sets[match.current_set] += 1
+        self.change_server(match)
 
-        self.score = " ".join(self.score)
+        match.current_server = opponent
+
+        player.point = 0
+        opponent.point = 0
+
+        self.check_set_finished(match, player, opponent)
+        self.check_match_finish(match, player, opponent)
+
+        match.status = f"*Game {player}"
         
-    def change_server(self):
-        if self.current_server == self.p1:
-            self.current_server = self.p2
-        else:
-            self.current_server = self.p1
-    
-    def change_server_tiebreak(self):
-        if self.current_tiebreak % 2 == 1:
-            self.change_server()      
-    
+        
+    def tiebreak_scoring(self, match, player, opponent):
+        match.current_tiebreak += 1
+        self.change_server_tiebreak(match)
 
- 
+        player.tiebreak_point_win += 1
+        player.total_point += 1
+
+        if player.tiebreak_point_win >= 7 and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
+            player.sets[match.current_set] = 7
+            opponent.sets[match.current_set] = 6
+
+            match.current_set += 1
+            match.is_tiebreak = False
+
+            player.set_win += 1
+
+            player.tiebreak_point_win = 0
+            opponent.tiebreak_point_win = 0
+
+            self.check_match_finish(match, player, opponent)
     
-    
+    def check_set_finished(self, match, player, opponent):
+        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+            self.check_tiebreak(match, player, opponent)
+            return
+
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+            match.current_set += 1
+
+            player.point = 0
+            opponent.point = 0
+
+            player.set_win += 1
+
+            if player == match.p1:
+                match.set_winner.append("p1")
+            else:
+                match.set_winner.append("p2")
+                
+    def check_match_finish(self, match, player, opponent):
+        if player.set_win == 2 or opponent.set_win == 2:
+            match.finish = True
+
+            if player.set_win > opponent.set_win:
+                match.match_winner = player
+                match.match_loser = opponent
+            else:
+                match.match_winner = opponent
+                match.match_loser = player
+
+            self.scoring(match)
+            
+    def serve_types(self, match, serve_type):
+        if match.current_server == match.p1:
+            match.p1.total_service += 1
+            match.p2.return_point += 1
+        else:
+            match.p2.total_service += 1
+            match.p1.return_point += 1
+
+        if serve_type == "first":
+            match.current_server.first_serve_total += 1
+        else:
+            match.current_server.second_serve_total += 1
+
+
+    def serve_win(self, player, serve_type):
+        if serve_type == "first":
+            player.first_serve_win += 1
+        else:
+            player.second_serve_win += 1
+
+
+    def type_shot(self, match, point_event):
+        player_id, shot = point_event.split("_")
+
+        player = match.p1 if player_id == "p1" else match.p2
+
+        if shot == "ace":
+            player.ace += 1
+            match.status = f"*Ace from {player}"
+        elif shot == "winner":
+            player.winner += 1
+            match.status = f"*Winner from {player}"
+        elif shot == "df":
+            player.double_fault += 1
+            match.status = f"*Double Fault from {player}"
+        elif shot == "fe":
+            player.forced_error += 1
+            match.status = f"*Forced Error from {player}"
+        elif shot == "ue":
+            player.unforced_error += 1
+            match.status = f"*Unforced Error from {player}"
+
+
+    def break_point_check(self, match):
+        server = match.current_server
+        returner = match.p1 if server == match.p2 else match.p2
+
+        if (returner.point == 40 and server.point != 40) or returner.point == "AD":
+            returner.break_point += 1
+
+
+    def increment_break_point_win(self, match, player):
+        if player != match.current_server:
+            player.break_point_win += 1
+
+
+    def change_server(self,match):
+        if match.current_server == match.p1:
+            match.current_server = match.p2
+        else:
+            match.current_server = match.p1
+
+    def change_server_tiebreak(self, match):
+        if match.current_tiebreak % 2 == 1:
+            match.current_server = match.p2 if match.current_server == match.p1 else match.p1
+
+
+    def check_tiebreak(self, match, player, opponent):
+        match.is_tiebreak = True
+        player.point = 0
+        opponent.point = 0
+
+
+    def scoring(self, match):
+        match.score = []
+        for i in range(match.current_set):
+            if match.match_winner == match.p1:
+                match.score.append(f"{match.p1.sets[i]}-{match.p2.sets[i]}")
+            else:
+                match.score.append(f"{match.p2.sets[i]}-{match.p1.sets[i]}")
+
+        match.score = " ".join(match.score)
     
 class MatchSerializer:
     def __init__(self, match):

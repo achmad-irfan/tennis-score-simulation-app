@@ -20,7 +20,7 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore(request,p1,p2,firstserver):
+def restore_match(request,p1,p2,firstserver):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
@@ -30,8 +30,8 @@ def restore(request,p1,p2,firstserver):
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}
         p2_data = match.get("p2") or {}
+        
         for attr in player_attrs:
-
             setattr(m.p1, attr, p1_data.get(attr, 0))
             setattr(m.p2, attr, p2_data.get(attr, 0))
             
@@ -48,15 +48,12 @@ def restore(request,p1,p2,firstserver):
     return m
 
 def post_winner(request, m):
-    pointWinner = request.POST.get("point")
-    serve_type= request.POST.get("serve_type")
+    point_event = request.POST.get("point")
+    serve_type = request.POST.get("serve_type")
     
-    if pointWinner in("p1_ace" , "p1_winner" , "p2_df" , "p2_ue", "p1_fe"):
-        m.win_point("p1","p2", pointWinner, serve_type)
-    elif pointWinner in("p1_df" , "p2_ace" , "p1_ue" , "p2_winner","p2_fe"):
-        m.win_point("p2","p1", pointWinner, serve_type)
-    
-    return pointWinner,serve_type
+    if point_event:
+        m.play_point(point_event, serve_type)
+    return point_event,serve_type
 
 def save_session(request, match: Match):
     data = MatchSerializer(match).to_dict()
