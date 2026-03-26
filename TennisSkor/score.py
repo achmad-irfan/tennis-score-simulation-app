@@ -6,7 +6,7 @@ player_attrs= [
             "unforced_error", "first_serve_total", "second_serve_total", 
             "total_service", "first_serve_win", "second_serve_win", 
             "break_point", "break_point_win", "return_point", 
-            "return_point_win", "total_point", "forced_error", "set_win", 
+            "return_point_win", "total_point", "forced_error", "set_win", "game_point"
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
@@ -119,23 +119,32 @@ class ScoringSystem:
         self.break_point_check(match)
     
     def update_point(self, match, player, opponent):
-        if player.point == 0:
-            player.point = 15
-        elif player.point == 15:
-            player.point = 30
-        elif player.point == 30:
-            player.point = 40
-        elif player.point == 40 and opponent.point == 40:
-            player.point = "AD"
-            opponent.point = "-"
-        elif player.point == "-":
-            player.point = 40
-            opponent.point = 40
-        elif player.point == "AD":
-            self.win_game( match,player,opponent)
-        elif player.point == 40 and opponent.point != 40:
-            self.win_game( match, player,opponent)
+        player.game_point +=1
+        
+        if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:
+            self.win_game(match, player, opponent)
+            player.game_point = 0
+            opponent.game_point = 0
             
+        self.update_display_score(match.p1,match.p2)
+    
+    def update_display_score(self, p1, p2):
+        mapping = [0, 15, 30, 40]
+
+        if p1.game_point >= 3 and p2.game_point >= 3:
+            if p1.game_point == p2.game_point:
+                p1.point = 40
+                p2.point = 40
+            elif p1.game_point > p2.game_point:
+                p1.point = "AD"
+                p2.point = "-"
+            else:
+                p1.point = "-"
+                p2.point = "AD"
+        else:
+            p1.point = mapping[p1.game_point]
+            p2.point = mapping[p2.game_point]
+    
     def win_game(self, match, player, opponent):
         self.increment_break_point_win(match, player)
         player.sets[match.current_set] += 1
@@ -174,11 +183,11 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
     
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+        if player.sets[match.current_set] == 2 and opponent.sets[match.current_set] == 2:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
 
             player.point = 0

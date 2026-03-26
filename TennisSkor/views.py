@@ -63,9 +63,5 @@ def Skor(request):
     "set3_p1": new_value["p1"]["sets"][2],
     "set3_p2": new_value["p2"]["sets"][2],
         })
-    print(f"p1:{context['p1']}")
-    print("-------")
-    print(f"p2:{context['p2']}")
-    print("-------")
     return render(request, 'index.html', context)
     
