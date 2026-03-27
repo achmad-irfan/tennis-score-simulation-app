@@ -66,9 +66,12 @@
 </div>
 <div class="cancel_last_point">
   <h6>Cancel Point</h6>
-  <form method="post">
+  <form method="post" id="cancelForm">
      {% csrf_token %}
-    <button id="cancel_point" type="submit" name="cancel_point">Cancel Last Point</button>
+     <input type="hidden" name="cancel_point" value="1">
+    <button id="cancel_point" type="button"
+          onclick="confirm_cancel()"
+    >Cancel Last Point</button>
   </form>
 </div>
   </div>

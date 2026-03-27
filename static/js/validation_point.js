@@ -20,3 +20,18 @@ pointForm.addEventListener("submit", function (e) {
     return;
   }
 });
+
+function confirm_cancel() {
+  Swal.fire({
+    background: "#151c27",
+    text: "Cancel point terakhir?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya",
+    cancelButtonText: "Tidak",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById("cancelForm").submit();
+    }
+  });
+}
