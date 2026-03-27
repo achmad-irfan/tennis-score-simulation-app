@@ -153,7 +153,7 @@ class ScoringSystem:
         player.sets[match.current_set] += 1
         self.change_server(match)
 
-        match.current_server = opponent
+        
 
         player.point = 0
         opponent.point = 0
