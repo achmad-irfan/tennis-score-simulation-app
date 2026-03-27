@@ -21,7 +21,6 @@ def Skor(request):
             "error": error
         })
     
-    
     # Membuat profile pemain 
     p1_profile= utils.profile(list_wta_players.players, p1)
     p2_profile= utils.profile(list_wta_players.players, p2)
@@ -31,6 +30,8 @@ def Skor(request):
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
+    
+    # Cek apakah ada cancel point
     
     # Validasi input pemenang poin
     if request.POST.get("submit_shot"):
@@ -45,9 +46,14 @@ def Skor(request):
     # Memasukan nilai baru pada atribut
     new_value = score.MatchSerializer(restore_match).to_dict()
     
+    # Cek apakah ada cancel point
+    if "cancel_point" in request.POST:
+        restore_match = restore_match.cancel_point()  
+        new_value = score.MatchSerializer(restore_match).to_dict()
+    
     # Menyimpan dalam session
     utils.save_session(request,restore_match)
-
+    
     # Context
     context= new_value.copy()
     context.update({
@@ -56,31 +62,14 @@ def Skor(request):
     "players": list_wta_players.players,
     "p1_profile": p1_profile,
     "p2_profile": p2_profile,    
-    # "sets1_p1": new_value["p1"]["sets"][0],
-    # "sets1_p2": new_value["p2"]["sets"][0],
-    # "sets2_p1": new_value["p1"]["sets"][1],
-    # "sets2_p2": new_value["p2"]["sets"][1],
-    # "sets3_p1": new_value["p1"]["sets"][2],
-    # "sets3_p2": new_value["p2"]["sets"][2],
-    # "tiebreak_display_score1_p1" : new_value["p1"]["tiebreak_display_score"][0],
-    # "tiebreak_display_score1_p2" : new_value["p2"]["tiebreak_display_score"][0],
-    # "tiebreak_display_score2_p1" : new_value["p1"]["tiebreak_display_score"][1],
-    # "tiebreak_display_score2_p2" : new_value["p2"]["tiebreak_display_score"][1],
-    # "tiebreak_display_score3_p1" : new_value["p1"]["tiebreak_display_score"][2],
-    # "tiebreak_display_score3_p2" : new_value["p2"]["tiebreak_display_score"][2],
         })
     
     for attr in score.player_attr_list:
         for i in range(3):
-            y= i+1
+            y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
         
-    print(context['tiebreak_display_score1_p1'])
-    print(context['tiebreak_display_score1_p2'])
-    print(context['tiebreak_display_score2_p1'])
-    print(context['tiebreak_display_score2_p2'])
-    print(context['tiebreak_display_score3_p1'])
-    print(context['tiebreak_display_score3_p2'])
+    print(context['history'])
     return render(request, 'index.html', context)
     

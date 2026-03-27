@@ -300,6 +300,9 @@ label:hover {
    ============================== */
 .shot {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* ==============================
@@ -314,6 +317,7 @@ label:hover {
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 13px;
+  text-align: center;
 }
 
 /* hide radio default */
@@ -578,4 +582,8 @@ tr td {
 .dot.lose {
   background-color: #555;
   opacity: 0.4;
+}
+
+.cancel_last_point button {
+  background: linear-gradient(135deg, #862323, #640303);
 }

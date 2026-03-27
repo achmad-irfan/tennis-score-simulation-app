@@ -12,14 +12,16 @@ player_attrs= [
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish"],
                 "data_none": ['match_winner', "match_loser","status"],
-                "data_list" :["score", "set_winner", "last_points"]}
+                "data_list" :["score", "set_winner", "last_points", "history"],
+                "data_dict": []}
 
 # Tipe data default dari atribut objek match
 type_defaults = {
     "data_int": 0,
     "data_bool": False,
     "data_none": None,
-    "data_list": []
+    "data_list": [],
+    "data_dict" : {}
 }
 
 player_attr_list = ['sets','tiebreak_display_score' ]
@@ -83,9 +85,23 @@ class Match:
         
     def play_point(self, point_event, serve_type):
         player, opponent = self.player_category(point_event)
-        self.scoring.process_point(self, player, opponent, point_event, serve_type)   
+        self.history.append({"event": point_event, "serve": serve_type})
+        
+        self.scoring.process_point(self, player, opponent, point_event, serve_type)          
+            
     
-
+    def cancel_point(self):
+        if self.history:
+            self.history.pop()
+            
+        new_match= Match(self.p1.name,self.p2.name, self.first_server)
+        
+        for shot in self.history:
+            new_match.play_point(shot["event"], shot["serve"])
+            
+        return new_match
+        
+    
 class ScoringSystem:
     def process_point(self, match, player, opponent, point_event, serve_type):
         # 1. Serve & shot
@@ -311,7 +327,9 @@ class ScoringSystem:
             match.score.append(f"{p1_set}-{p2_set}{tiebreak_score}")
 
         match.score = " ".join(match.score)
-    
+        
+   
+  
 class MatchSerializer:
     def __init__(self, match):
         self.match = match
@@ -376,3 +394,6 @@ class MatchSerializer:
             "totals": self.totals_stats_data(), 
             **self.match_info()
         }
+        
+        
+    

@@ -64,6 +64,13 @@
         </div>
          </div>
 </div>
+<div class="cancel_last_point">
+  <h6>Cancel Point</h6>
+  <form method="post">
+     {% csrf_token %}
+    <button id="cancel_point" type="submit" name="cancel_point">Cancel Last Point</button>
+  </form>
+</div>
   </div>
   {% if finish %}
   <div class="result">
@@ -71,3 +78,4 @@
   </div>
   {% endif %}
 </div>
+
