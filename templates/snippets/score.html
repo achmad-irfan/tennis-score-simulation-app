@@ -82,3 +82,32 @@
   {% endif %}
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+const isFinished = {{ finish|yesno:"true,false" }};
+
+// reset saat match belum selesai
+if (!isFinished) {
+    sessionStorage.removeItem("result_shown");
+}
+
+// tampilkan saat selesai
+if (isFinished && !sessionStorage.getItem("result_shown")) {
+    sessionStorage.setItem("result_shown", "true");
+
+    Swal.fire({
+        title: 'Match Finished',
+        html: `
+           <div class="match-popup">
+            <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
+            <div class="winner">{{ score }}</div>
+        </div>
+        `,
+        icon: 'success',
+        customClass: {
+        popup: 'my-popup-bg' ,
+        title : 'my-popup-title' // ini container popup
+    }
+    });
+}
+</script>

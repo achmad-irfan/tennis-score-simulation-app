@@ -587,3 +587,47 @@ tr td {
 .cancel_last_point button {
   background: linear-gradient(135deg, #862323, #640303);
 }
+
+/* Match Pop up */
+
+.match-popup {
+  text-align: center;
+}
+
+.match-popup .winner {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.match-popup .vs {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.match-popup .score {
+  background: #0d1117;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.match-popup p {
+  text-align: center;
+}
+
+.my-popup {
+  border-radius: 15px;
+}
+
+.my-popup-bg {
+  background: #151c27;
+  color: #fff; /* teks tetap terbaca */
+  border-radius: 15px; /* opsional, biar bulat */
+}
+
+.my-popup-title {
+  padding: 20px;
+}
