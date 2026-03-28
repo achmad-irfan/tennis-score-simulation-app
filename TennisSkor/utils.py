@@ -1,6 +1,7 @@
 from .score import Match, Player, MatchSerializer
 from .list_wta_players import players
 from .score import player_attrs, total_stats, match_attrs, service_stats
+from datetime import datetime
 
 def get_players_from_request(request):
     p1= request.GET.get("p1")
@@ -45,7 +46,9 @@ def restore_match(request,p1,p2,firstserver):
         m.p2.sets = p2_data.get("sets", [0,0,0])
         m.p1.tiebreak_display_score = p1_data.get("tiebreak_display_score", [0,0,0])
         m.p2.tiebreak_display_score = p2_data.get("tiebreak_display_score", [0,0,0])
-        
+        m.start_time = datetime.fromisoformat(match.get("start_time"))
+        m.p1.duration = p1_data.get("duration", [0,0,0])
+        m.p2.duration = p2_data.get("duration", [0,0,0])
         
     return m
 

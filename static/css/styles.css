@@ -179,6 +179,11 @@ h2 {
   margin-left: 20px;
 }
 
+.gameside .duration_point {
+  background-color: #121111;
+  margin-top: -15px;
+}
+
 /* ==============================
    SET COLUMN (SET WON)
    ============================== */
@@ -187,7 +192,7 @@ h2 {
    STATUS TEXT
    ============================== */
 .livescoreAll p {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   font-size: 14px;
   color: #8b949e;
 }
@@ -220,7 +225,7 @@ h2 {
 }
 
 .result_name p:last-child,
-.result .gameside p:last-child {
+.result .gameside p:nth-child(2) {
   background-color: #6c6aaa;
 }
 
@@ -236,6 +241,7 @@ label:hover {
 .livescore > div {
   display: flex;
   flex-direction: column;
+  gap: 1px;
 }
 
 .livescore > div > p {
@@ -556,10 +562,10 @@ tr td {
 }
 .points {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   padding: 20px;
   background-color: #0d1117;
-  justify-content: end;
+  justify-content: start;
   border-radius: 5px;
 }
 

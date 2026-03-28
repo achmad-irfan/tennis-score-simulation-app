@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from . import score, list_wta_players, utils
+from datetime import datetime
 
 def Skor(request):
     # Reset Session
@@ -61,7 +62,11 @@ def Skor(request):
     "p2_name":  new_value["p2"]['name'],
     "players": list_wta_players.players,
     "p1_profile": p1_profile,
-    "p2_profile": p2_profile,    
+    "p2_profile": p2_profile,   
+    "start_time": new_value["start_time"] , 
+    "duration_set1": f"{new_value['duration'][0]}'",
+    "duration_set2": new_value['duration'][1],
+    "duration_set3": new_value['duration'][2],
         })
     
     for attr in score.player_attr_list:
@@ -69,6 +74,9 @@ def Skor(request):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
+    
+    # print(context['duration'])
+    print(context['duration_set1'])
         
     return render(request, 'index.html', context)
     

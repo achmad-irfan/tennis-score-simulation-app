@@ -1,4 +1,4 @@
-
+from datetime import datetime
 
 # Atribut dalam objek player
 player_attrs= [
@@ -12,7 +12,7 @@ player_attrs= [
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish"],
                 "data_none": ['match_winner', "match_loser","status"],
-                "data_list" :["score", "set_winner", "last_points", "history"],
+                "data_list" :["score", "set_winner", "last_points", "history"  ],
                 "data_dict": []}
 
 # Tipe data default dari atribut objek match
@@ -51,6 +51,8 @@ class Match:
         self.p2=Player(p2)
         self.first_server=first_server
         self.current_server = self.p1
+        self.start_time = datetime.now() 
+        self.duration = [0,0,0]
 
         # looping inisialisasi atribut
         for group, attrs in match_attrs.items():
@@ -139,6 +141,7 @@ class ScoringSystem:
     
     def update_point(self, match, player, opponent):
         player.game_point +=1
+        self.duration(match)
         
         if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:
             self.win_game(match, player, opponent)
@@ -191,8 +194,10 @@ class ScoringSystem:
         if player.tiebreak_point_win >= 7 and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
-
+           
+            self.duration(self)
             match.current_set += 1
+            match.start_time = datetime.now()
             match.is_tiebreak = False
 
             player.set_win += 1
@@ -208,7 +213,9 @@ class ScoringSystem:
             return
 
         if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+            self.duration(self)
             match.current_set += 1
+            match.start_time = datetime.now()
 
             player.point = 0
             opponent.point = 0
@@ -219,7 +226,8 @@ class ScoringSystem:
                 match.set_winner.append("p1")
             else:
                 match.set_winner.append("p2")
-                
+        
+        
     def check_match_finish(self, match, player, opponent):
         if player.set_win == 2 or opponent.set_win == 2:
             match.finish = True
@@ -332,7 +340,15 @@ class ScoringSystem:
             
         match.score = " ".join(match.score)
         
-   
+    def duration(self, match):
+        # Hitung durasi set sekarang
+            
+        duration = datetime.now() - match.start_time
+        minutes = int(duration.total_seconds() // 60)
+        
+        match.duration[match.current_set] = minutes
+
+        
   
 class MatchSerializer:
     def __init__(self, match):
@@ -386,6 +402,8 @@ class MatchSerializer:
         "current_server": "p1" if self.match.current_server == self.match.p1 else "p2",
         "match_winner": self.match.match_winner.name if self.match.match_winner else None,
         "match_loser": self.match.match_loser.name if self.match.match_loser else None,
+        "start_time": self.match.start_time.isoformat(),
+        "duration": self.match.duration
         })
         
         return match_stat
