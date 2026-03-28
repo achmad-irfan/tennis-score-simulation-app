@@ -201,18 +201,27 @@ h2 {
    RESULT BOX
    ============================== */
 .result {
-  margin-top: 25px;
-  padding: 20px;
-  background: linear-gradient(135deg, #1f6feb, #58a6ff);
-  border-radius: 12px;
-  text-align: center;
-  grid-area: result;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
 }
 
-.result p {
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
+.result_name p,
+.result .gameside p {
+  padding: 10px;
+  border-radius: 10px;
+  color: black;
+}
+
+.result_name p:first-child,
+.result .gameside p:first-child {
+  background-color: #3fb950;
+}
+
+.result_name p:last-child,
+.result .gameside p:last-child {
+  background-color: #6c6aaa;
 }
 
 /* ==============================

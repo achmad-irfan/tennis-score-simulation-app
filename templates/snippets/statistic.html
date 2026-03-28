@@ -1,128 +1,22 @@
 <div class="statistic general">
-  <h3>Match Statistic</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>
-          {{ p1_name }} ({{p1_profile.country}}) <br />
-          <img src="{{p1_profile.photo}}" alt="" />
-        </th>
-        <th></th>
-        <th>
-          {{ p2_name }} ({{p2_profile.country}}) <br />
-          <img src="{{p2_profile.photo}}" alt="" />
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_ace_pct1}}%;">{{p1.ace}}</div>
-        </td>
-        <td>Ace</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_ace_pct2}}%;">{{p2.ace}}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_double_fault_pct1}}%;">{{p1.double_fault}}</div>
-        </td>
-        <td>Double Fault</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_double_fault_pct2}}%;">{{p2.double_fault}}</div>
-        </td>
-      </tr>
-      <tr class="type">
-        <td colspan="3"></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{p1.first_serve_pct}}%;">{{p1.first_serve_pct}}%</div>
-        </td>
-        <td>% First Serve</td>
-        <td>
-          <div class="containerp2" style="width: {{p2.first_serve_pct}}%;">{{p2.first_serve_pct}}%</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{p1.first_serve_win_pct}}%;">{{p1.first_serve_win_pct}}%</div>
-        </td>
-        <td>% First Serve Win</td>
-        <td>
-          <div class="containerp2" style="width: {{p2.first_serve_win_pct}}%;">{{p2.first_serve_win_pct}}%</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{p1.second_serve_win_pct}}%;">{{p1.second_serve_win_pct}}%</div>
-        </td>
-        <td>% Second Serve Win</td>
-        <td>
-          <div class="containerp2" style="width: {{p2.second_serve_win_pct}}%;">{{p2.second_serve_win_pct}}%</div>
-        </td>
-      </tr>
-      <tr class="type">
-        <td colspan="3"></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{p1.return_point_pct}}%;">{{p1.return_point_win}}/{{p1.return_point}}</div>
-        </td>
-        <td>Return Point win</td>
-        <td>
-          <div class="containerp2" style="width: {{p2.return_point_pct}}%;">{{p2.return_point_win}}/{{p2.return_point}}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{p1.break_point_win_pct}}%;">{{p1.break_point_win}}/{{p1.break_point}}</div>
-        </td>
-        <td>Break Point win</td>
-        <td>
-          <div class="containerp2" style="width: {{p2.break_point_win_pct}}%;">{{p2.break_point_win}}/{{p2.break_point}}</div>
-        </td>
-      </tr>
-      <tr class="type">
-        <td colspan="3"></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_winner_pct1}}%;">{{p1.winner}}</div>
-        </td>
-        <td>Winner</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_winner_pct2}}%;">{{p2.winner}}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_forced_error_pct1}}%;">{{p1.forced_error}}</div>
-        </td>
-        <td>Forced Error</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_forced_error_pct2}}%;">{{p2.forced_error}}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_unforced_error_pct1}}%;">{{p1.unforced_error}}</div>
-        </td>
-        <td>Unforced Error</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_unforced_error_pct2}}%;">{{p2.unforced_error}}</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="containerp1" style="width: {{totals.total_total_point_pct1}}%;">{{p1.total_point}}</div>
-        </td>
-        <td>Total point</td>
-        <td>
-          <div class="containerp2" style="width: {{totals.total_total_point_pct2}}%;">{{p2.total_point}}</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Result -->
+  {% if finish %}
+  <h3>Result</h3>
+  <div class="result">
+    <div class="result_name">
+      <p>
+        <span class="flag"> <img width="30" height="24" src="{{p1_profile.flag}}" alt="tennis-ball" /> </span>{{p1.name}} {% if match_winner == p1.name %} ✔ {% endif %}
+      </p>
+      <p>
+        <span class="flag"> <img width="30" height="24" src="{{p2_profile.flag}}" alt="tennis-ball" /> </span>{{p2.name}} {% if match_winner == p2.name %} ✔ {% endif %}
+      </p>
+    </div>
+    {% include 'snippets/game.html' %}
+  </div>
+  {% endif %}
+  <!-- End of Result -->
+
+  <!-- Table -->
+  {% include 'snippets/table.html' %}
+  <!-- End of Table -->
 </div>

@@ -6,30 +6,12 @@
     <h4 class="generalh4">Live Score</h4>
     <div class="livescore">
       <!-- Scoring -->
-      {% include 'snippets/score_player.html' %}
-      <!-- End of Scoring -->
-       {% if not finish %}
+      {% include 'snippets/score_player.html' %} {% if not finish %}
       <div class="setside">
         <p class="game">{{p1.set_win}}</p>
         <p class="game">{{p2.set_win}}</p>
       </div>
-      {% endif %} 
-      <div class="gameside">
-        <p class="game {% if set_winner.0 == "p1" %}winner{% endif %}">{{sets1_p1}}</p>
-        <p class="game {% if set_winner.0 == "p2" %}winner{% endif %}">{{sets1_p2}}</p>
-      </div>
-      {% if current_set > 0 %}
-      <div class="gameside">
-        <p class="game {% if set_winner.1 == "p1" %}winner{% endif %}">{{sets2_p1}}</p>
-        <p class="game {% if set_winner.1 == "p2" %}winner{% endif %}">{{sets2_p2}}</p>
-      </div>
-      {% endif %} {% if current_set > 1 %}
-      <div class="gameside">
-        <p class="game {% if set_winner.2 == "p1" %}winner{% endif %}">{{sets3_p1}}</p>
-        <p class="game {% if set_winner.2 == "p2" %}winner{% endif %}">{{sets3_p2}}</p>
-      </div>
-      {% endif %} 
-      {% if not is_tiebreak and not finish %}
+      {% endif %} {% include 'snippets/game.html' %} {% if not is_tiebreak and not finish %}
       <div class="pointside">
         <p class="points">{{p1.point}}</p>
         <p class="points">{{p2.point}}</p>
@@ -47,67 +29,60 @@
     <div class="last-points">
       <h6>Last 15 Points</h6>
       <div class="player-points">
-       <p>{{p1_name}}</p> 
+        <p>{{p1_name}}</p>
         <div class="points">
-       {% for p in last_points %}
-       <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
-        {% endfor %}
-        </div>
-        </div>
-
-        <div class="player-points">
-          <p>{{p2_name}}</p>
-          <div class="points">
           {% for p in last_points %}
-        <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>
-        {% endfor %}
+          <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
+          {% endfor %}
         </div>
-         </div>
-</div>
-<div class="cancel_last_point">
-  <h6>Cancel Point</h6>
-  <form method="post" id="cancelForm">
-     {% csrf_token %}
-     <input type="hidden" name="cancel_point" value="1">
-    <button id="cancel_point" type="button"
-          onclick="confirm_cancel()"
-    >Cancel Last Point</button>
-  </form>
-</div>
+      </div>
+
+      <div class="player-points">
+        <p>{{p2_name}}</p>
+        <div class="points">
+          {% for p in last_points %}
+          <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="cancel_last_point">
+      <h6>Cancel Point</h6>
+      <form method="post" id="cancelForm">
+        {% csrf_token %}
+        <input type="hidden" name="cancel_point" value="1" />
+        <button id="cancel_point" type="button" onclick="confirm_cancel()">Cancel Last Point</button>
+      </form>
+    </div>
   </div>
-  {% if finish %}
-  <div class="result">
-    <p>{{match_winner|title}} def. {{match_loser|title}} {{score}}</p>
-  </div>
-  {% endif %}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-const isFinished = {{ finish|yesno:"true,false" }};
+  const isFinished = {{ finish|yesno:"true,false" }};
 
-// reset saat match belum selesai
-if (!isFinished) {
-    sessionStorage.removeItem("result_shown");
-}
+  // reset saat match belum selesai
+  if (!isFinished) {
+      sessionStorage.removeItem("result_shown");
+  }
 
-// tampilkan saat selesai
-if (isFinished && !sessionStorage.getItem("result_shown")) {
-    sessionStorage.setItem("result_shown", "true");
+  // tampilkan saat selesai
+  if (isFinished && !sessionStorage.getItem("result_shown")) {
+      sessionStorage.setItem("result_shown", "true");
 
-    Swal.fire({
-        title: 'Match Finished',
-        html: `
-           <div class="match-popup">
-            <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
-            <div class="winner">{{ score }}</div>
-        </div>
-        `,
-        icon: 'success',
-        customClass: {
-        popup: 'my-popup-bg' ,
-        title : 'my-popup-title' // ini container popup
-    }
-    });
-}
+      Swal.fire({
+          title: 'Match Finished',
+          html: `
+             <div class="match-popup">
+              <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
+              <div class="winner">{{ score }}</div>
+          </div>
+          `,
+          icon: 'success',
+          customClass: {
+          popup: 'my-popup-bg' ,
+          title : 'my-popup-title' // ini container popup
+      }
+      });
+  }
 </script>
