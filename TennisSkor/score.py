@@ -207,7 +207,7 @@ class ScoringSystem:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
 
             player.point = 0
