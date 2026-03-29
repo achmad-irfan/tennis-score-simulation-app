@@ -65,8 +65,9 @@ def Skor(request):
     "p2_profile": p2_profile,   
     "start_time": new_value["start_time"] , 
     "duration_set1": f"{new_value['duration'][0]}'",
-    "duration_set2": new_value['duration'][1],
-    "duration_set3": new_value['duration'][2],
+    "duration_set2": f"{new_value['duration'][1]}'",
+    "duration_set3": f"{new_value['duration'][2]}'",
+    "total_duration": f"{sum(new_value['duration'])}'"
         })
     
     for attr in score.player_attr_list:
@@ -76,7 +77,7 @@ def Skor(request):
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
     
     # print(context['duration'])
-    print(context['duration_set1'])
+    print(context['start_time'])
         
     return render(request, 'index.html', context)
     

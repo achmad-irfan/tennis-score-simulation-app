@@ -181,7 +181,7 @@ h2 {
 
 .gameside .duration_point {
   background-color: #121111;
-  margin-top: -15px;
+  margin-top: -10px;
 }
 
 /* ==============================
@@ -193,7 +193,7 @@ h2 {
    ============================== */
 .livescoreAll p {
   /* margin-top: 15px; */
-  font-size: 14px;
+  font-size: 13px;
   color: #8b949e;
 }
 

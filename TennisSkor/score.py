@@ -195,7 +195,6 @@ class ScoringSystem:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
            
-            self.duration(self)
             match.current_set += 1
             match.start_time = datetime.now()
             match.is_tiebreak = False
@@ -213,7 +212,6 @@ class ScoringSystem:
             return
 
         if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
-            self.duration(self)
             match.current_set += 1
             match.start_time = datetime.now()
 

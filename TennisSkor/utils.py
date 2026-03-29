@@ -47,8 +47,7 @@ def restore_match(request,p1,p2,firstserver):
         m.p1.tiebreak_display_score = p1_data.get("tiebreak_display_score", [0,0,0])
         m.p2.tiebreak_display_score = p2_data.get("tiebreak_display_score", [0,0,0])
         m.start_time = datetime.fromisoformat(match.get("start_time"))
-        m.p1.duration = p1_data.get("duration", [0,0,0])
-        m.p2.duration = p2_data.get("duration", [0,0,0])
+        m.duration = match.get("duration", 0)
         
     return m
 
