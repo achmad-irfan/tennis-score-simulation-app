@@ -78,6 +78,6 @@ def Skor(request):
     
     print(context['set_snapshot'])
     
-        
+    print(context['p1']['ace'])    
     return render(request, 'index.html', context)
     
