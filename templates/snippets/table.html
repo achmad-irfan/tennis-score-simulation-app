@@ -10,7 +10,24 @@
         <p>Total Duration:</p>
         <p>{{total_duration}}</p>
         <p>Set</p>
-        <p>1 2 3 All</p>
+        <p>
+          {% if current_set >= 1 %}
+          <label>
+            <input type="button" name="set_statistic" id="buton_set1" value="1" />
+          </label>
+          {% endif %} {% if current_set >= 2 %}
+          <label>
+            <input type="button" name="set_statistic" id="buton_set2" value="2" />
+          </label>
+          {% endif %} {% if finish %}
+          <label>
+            <input type="button" name="set_statistic" id="buton_set3" value="3" />
+          </label>
+          {% endif %}
+          <label>
+            <input type="button" name="set_statistic" id="all" value="All" />
+          </label>
+        </p>
       </th>
       <th>
         {{ p2_name }} ({{p2_profile.country}}) <br />
@@ -21,11 +38,17 @@
   <tbody>
     <tr>
       <td>
-        <div class="containerp1" style="width: {{totals.total_ace_pct1}}%;">{{p1.ace}}</div>
+        <div class="containerp1 all_set" style="width: {{totals.total_ace_pct1}}%;">{{p1.ace}}</div>
+        <div class="containerp1 stat_set1" style="width: {{set_snapshot.0.totals.total_ace_pct1}}%;">{{set_snapshot.0.p1.ace}}</div>
+        <div class="containerp1 stat_set2" style="width: {{set_snapshot.1.totals.total_ace_pct1}}%;">{{set_snapshot.1.p1.ace}}</div>
+        <div class="containerp1 stat_set3" style="width: {{set_snapshot.2.totals.total_ace_pct1}}%;">{{set_snapshot.2.p1.ace}}</div>
       </td>
       <td>Ace</td>
       <td>
-        <div class="containerp2" style="width: {{totals.total_ace_pct2}}%;">{{p2.ace}}</div>
+        <div class="containerp2 all_set" style="width: {{totals.total_ace_pct2}}%;">{{p2.ace}}</div>
+        <div class="containerp2 stat_set1" style="width: {{set_snapshot.0.totals.total_ace_pct2}}%;">{{set_snapshot.0.p2.ace}}</div>
+        <div class="containerp2 stat_set2" style="width: {{set_snapshot.1.totals.total_ace_pct2}}%;">{{set_snapshot.1.p2.ace}}</div>
+        <div class="containerp2 stat_set3" style="width: {{set_snapshot.2.totals.total_ace_pct2}}%;">{{set_snapshot.2.p2.ace}}</div>
       </td>
     </tr>
     <tr>

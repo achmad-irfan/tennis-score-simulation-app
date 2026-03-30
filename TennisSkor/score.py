@@ -12,7 +12,7 @@ player_attrs= [
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish"],
                 "data_none": ['match_winner', "match_loser","status"],
-                "data_list" :["score", "set_winner", "last_points", "history"  ],
+                "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot"],
                 "data_dict": []}
 
 # Tipe data default dari atribut objek match
@@ -95,15 +95,23 @@ class Match:
     def cancel_point(self):
         if self.history:
             self.history.pop()
-            
-        new_match= Match(self.p1.name,self.p2.name, self.first_server)
+    
+        # Simpan start_time sebelum bikin match baru
+        start_time_backup = self.start_time
+        duration_backup = self.duration.copy()
+        
+        # Buat objek baru
+        new_match = Match(self.p1.name, self.p2.name, self.first_server)
         
         for shot in self.history:
             new_match.play_point(shot["event"], shot["serve"])
-            
-        return new_match
         
-    
+        new_match.start_time = start_time_backup
+        new_match.duration = duration_backup
+        
+        return new_match
+            
+        
 class ScoringSystem:
     def process_point(self, match, player, opponent, point_event, serve_type):
         # 1. Serve & shot
@@ -198,6 +206,7 @@ class ScoringSystem:
             match.current_set += 1
             match.start_time = datetime.now()
             match.is_tiebreak = False
+            match.set_snaphot(match)
 
             player.set_win += 1
 
@@ -214,6 +223,7 @@ class ScoringSystem:
         if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
             match.current_set += 1
             match.start_time = datetime.now()
+            self.get_set_snapshot(match)
 
             player.point = 0
             opponent.point = 0
@@ -345,9 +355,45 @@ class ScoringSystem:
         minutes = int(duration.total_seconds() // 60)
         
         match.duration[match.current_set] = minutes
+        
+    def calc_pct(self, win, total):
+        return round((win / total) * 100) if total else 0
+
+    def get_set_snapshot(self, match):
+        totals = {}
+        for stat in total_stats:
+            total = getattr(match.p1, stat) + getattr(match.p2, stat)
+            totals[f"total_{stat}_pct1"] = self.calc_pct(getattr(match.p1, stat), total)
+            totals[f"total_{stat}_pct2"] = self.calc_pct(getattr(match.p2, stat), total)
+
+        snapshot = {
+        
+        "p1": {
+            attr: getattr(match.p1, attr) 
+            for attr in player_attrs + ["sets", "tiebreak_display_score"]
+        },
+        "p2": {
+            attr: getattr(match.p2, attr) 
+            for attr in player_attrs + ["sets", "tiebreak_display_score"]
+        },
 
         
-  
+        "match": {
+            "current_set": match.current_set,
+            "current_server": "p1" if match.current_server == match.p1 else "p2",
+            "is_tiebreak": match.is_tiebreak,
+            "current_tiebreak": match.current_tiebreak,
+            "status": match.status,
+            "set_winner": match.set_winner.copy(),
+            "duration": match.duration.copy(),
+            "start_time": match.start_time.isoformat()
+        },
+        "totals": totals
+        }
+
+        match.set_snapshot.append(snapshot)
+    
+    
 class MatchSerializer:
     def __init__(self, match):
         self.match = match
