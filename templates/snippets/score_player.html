@@ -1,23 +1,23 @@
 <div class="name">
   <p class="match {% if winner == p1 %}winner{% endif %}" id="p1">
     <span class="flag">
-      <img width="30" height="24" src="{{p1_profile.flag}}" alt="tennis-ball" />
+      <img width="30" height="24" src="{{p1_profile.flag}}" alt="" />
     </span>
     {{ p1_name|title}} ({{p1_profile.country}})
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p1" %}
-      <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
+      <img width="24" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="" />
       {% endif %} {% endif %}
     </span>
   </p>
   <p id="p2" class="match {% if winner == p2 %}winner{% endif %}">
     <span class="flag">
-      <img width="30" height="24" src="{{p2_profile.flag}}" alt="tennis-ball" />
+      <img width="30" height="24" src="{{p2_profile.flag}}" alt="" />
     </span>
     {{ p2_name|title}} ({{p2_profile.country}})
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p2" %}
-      <img width="20" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="tennis-ball" />
+      <img width="20" height="20" src="https://img.icons8.com/color/48/tennis-ball.png" alt="" />
       {% endif %} {% endif %}
     </span>
   </p>

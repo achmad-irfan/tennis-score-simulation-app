@@ -34,6 +34,32 @@ total_stats = ["ace", "double_fault", "winner",
 service_stats = ["first_serve", "return_point","first_serve_win", 
                  "second_serve_win","break_point_win"]
 
+
+# Stat for table statistic
+table_match_stats = [
+    {"key": "ace", "label": "Ace"},
+    {"key": "double_fault", "label": "Double Fault"},
+    {"type": "separator"},
+    {"key": "first_serve_total", "label": "First Serve"},
+    {"key": "first_serve_win", "label": "First Serve Win"},
+    {"key": "second_serve_win", "label": "Second Serve Win"},
+    {"type": "separator"},
+    {"key": "return_point", "label": "Return Point"},
+    {"key": "return_point_win", "label": "Return Point Win"},
+    {"type": "separator"},
+    {"key": "winner", "label": "Winner"},
+    {"key": "forced_error", "label": "Forced Error"},
+    {"key": "unforced_error", "label": "Unforced Error"},
+    {"key": "total_point", "label": "Total Point"},
+]
+
+# Stat untuk total pada tabel
+for stat in table_match_stats:
+    if "key" in stat and stat["key"]:  
+        stat["pct_key"] = f"total_{stat['key']}_pct1"
+    
+ 
+
 class Player:
     def __init__(self,name):
         self.name=name
@@ -220,7 +246,7 @@ class ScoringSystem:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
             match.start_time = datetime.now()
             self.get_set_snapshot(match)

@@ -1,3 +1,4 @@
+{% load stat_filter %}
 <h3>Match Statistic</h3>
 <table>
   <thead>
@@ -36,119 +37,28 @@
     </tr>
   </thead>
   <tbody>
+    {% for stat in table_match_stats %}
+    {% if not stat.key %}
+        <tr class="separator">
+            <td colspan="3"></td>
+        </tr>
+    {% else %}
     <tr>
       <td>
-        <div class="containerp1 all_set" style="width: {{totals.total_ace_pct1}}%;">{{p1.ace}}</div>
-        <div class="containerp1 stat_set1" style="width: {{set_snapshot.0.totals.total_ace_pct1}}%;">{{set_snapshot.0.p1.ace}}</div>
-        <div class="containerp1 stat_set2" style="width: {{set_snapshot.1.totals.total_ace_pct1}}%;">{{set_snapshot.1.p1.ace}}</div> 
-        <div class="containerp1 stat_set3" style="width: {{set_snapshot.2.totals.total_ace_pct1}}%;">{{set_snapshot.2.p1.ace}}</div>
+        <div class="containerp1 all_set" {{ p1|get_item:stat.key}}
+        {% for s in set_snapshot %}
+        <div class="containerp1 stat_set{{ forloop.counter }}">{{ s.p1|get_item:stat.key }}</div>
+        {% endfor %}
       </td>
-      <td>Ace</td>
+      <td>{{stat.label}}</td>
       <td>
-        <div class="containerp2 all_set" style="width: {{totals.total_ace_pct2}}%;">{{p2.ace}}</div>
-        <div class="containerp2 stat_set1" style="width: {{set_snapshot.0.totals.total_ace_pct2}}%;">{{set_snapshot.0.p2.ace}}</div>
-        <div class="containerp2 stat_set2" style="width: {{set_snapshot.1.totals.total_ace_pct2}}%;">{{set_snapshot.1.p2.ace}}</div>
-        <div class="containerp2 stat_set3" style="width: {{set_snapshot.2.totals.total_ace_pct2}}%;">{{set_snapshot.2.p2.ace}}</div>
+        <div class="containerp2 all_set">{{ p1|get_item:stat.key}}
+        {% for s in set_snapshot %}
+        <div class="containerp2 stat_set{{ forloop.counter }}">{{ s.p2|get_item:stat.key }}</div>
+        {% endfor %}
       </td>
     </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{totals.total_double_fault_pct1}}%;">{{p1.double_fault}}</div>
-      </td>
-      <td>Double Fault</td>
-      <td>
-        <div class="containerp2" style="width: {{totals.total_double_fault_pct2}}%;">{{p2.double_fault}}</div>
-      </td>
-    </tr>
-    <tr class="type">
-      <td colspan="3"></td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{p1.first_serve_pct}}%;">{{p1.first_serve_pct}}%</div>
-      </td>
-      <td>% First Serve</td>
-      <td>
-        <div class="containerp2" style="width: {{p2.first_serve_pct}}%;">{{p2.first_serve_pct}}%</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{p1.first_serve_win_pct}}%;">{{p1.first_serve_win_pct}}%</div>
-      </td>
-      <td>% First Serve Win</td>
-      <td>
-        <div class="containerp2" style="width: {{p2.first_serve_win_pct}}%;">{{p2.first_serve_win_pct}}%</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{p1.second_serve_win_pct}}%;">{{p1.second_serve_win_pct}}%</div>
-      </td>
-      <td>% Second Serve Win</td>
-      <td>
-        <div class="containerp2" style="width: {{p2.second_serve_win_pct}}%;">{{p2.second_serve_win_pct}}%</div>
-      </td>
-    </tr>
-    <tr class="type">
-      <td colspan="3"></td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{p1.return_point_pct}}%;">{{p1.return_point_win}}/{{p1.return_point}}</div>
-      </td>
-      <td>Return Point win</td>
-      <td>
-        <div class="containerp2" style="width: {{p2.return_point_pct}}%;">{{p2.return_point_win}}/{{p2.return_point}}</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{p1.break_point_win_pct}}%;">{{p1.break_point_win}}/{{p1.break_point}}</div>
-      </td>
-      <td>Break Point win</td>
-      <td>
-        <div class="containerp2" style="width: {{p2.break_point_win_pct}}%;">{{p2.break_point_win}}/{{p2.break_point}}</div>
-      </td>
-    </tr>
-    <tr class="type">
-      <td colspan="3"></td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{totals.total_winner_pct1}}%;">{{p1.winner}}</div>
-      </td>
-      <td>Winner</td>
-      <td>
-        <div class="containerp2" style="width: {{totals.total_winner_pct2}}%;">{{p2.winner}}</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{totals.total_forced_error_pct1}}%;">{{p1.forced_error}}</div>
-      </td>
-      <td>Forced Error</td>
-      <td>
-        <div class="containerp2" style="width: {{totals.total_forced_error_pct2}}%;">{{p2.forced_error}}</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{totals.total_unforced_error_pct1}}%;">{{p1.unforced_error}}</div>
-      </td>
-      <td>Unforced Error</td>
-      <td>
-        <div class="containerp2" style="width: {{totals.total_unforced_error_pct2}}%;">{{p2.unforced_error}}</div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="containerp1" style="width: {{totals.total_total_point_pct1}}%;">{{p1.total_point}}</div>
-      </td>
-      <td>Total point</td>
-      <td>
-        <div class="containerp2" style="width: {{totals.total_total_point_pct2}}%;">{{p2.total_point}}</div>
-      </td>
-    </tr>
+    {% endif %}
+    {% endfor %}
   </tbody>
 </table>
