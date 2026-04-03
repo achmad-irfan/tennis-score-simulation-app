@@ -11,7 +11,7 @@ player_attrs= [
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish"],
-                "data_none": ['match_winner', "match_loser","status"],
+                "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak"],
                 "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot"],
                 "data_dict": []}
 
@@ -227,10 +227,24 @@ class ScoringSystem:
 
         match.status = f"*Game {player}"
         
-        
+    def get_first_server_tiebreak(self, match):
+        if match.current_tiebreak == 1:
+            if match.current_server == match.p1:
+                match.first_server_tiebreak = "p1"
+            else:
+                match.first_server_tiebreak = "p2"
+                
+    def get_current_server_after_tiebreak(self, match):
+        if match.first_server_tiebreak == "p1":
+            match.current_server = match.p2
+        else:
+            match.current_server = match.p1
+            
     def tiebreak_scoring(self, match, player, opponent):
         match.current_tiebreak += 1
+        self.get_first_server_tiebreak(match)
         self.change_server_tiebreak(match)
+        
 
         player.tiebreak_point_win += 1
         player.tiebreak_display_score[match.current_set] += 1
@@ -244,7 +258,7 @@ class ScoringSystem:
             match.start_time = datetime.now()
             match.is_tiebreak = False
             self.get_set_snapshot(match)
-
+            self.get_current_server_after_tiebreak(match)
 
             player.set_win += 1
 
@@ -262,7 +276,6 @@ class ScoringSystem:
             match.current_set += 1
             match.start_time = datetime.now()
             self.get_set_snapshot(match)
-
             player.point = 0
             opponent.point = 0
 
@@ -352,8 +365,7 @@ class ScoringSystem:
     def change_server_tiebreak(self, match):
         if match.current_tiebreak % 2 == 1:
             match.current_server = match.p2 if match.current_server == match.p1 else match.p1
-
-
+  
     def check_tiebreak(self, match, player, opponent):
         match.is_tiebreak = True
         player.point = 0
