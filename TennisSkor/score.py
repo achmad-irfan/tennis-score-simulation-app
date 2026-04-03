@@ -362,29 +362,29 @@ class ScoringSystem:
 
     def scoring(self, match):
         match.score = []
-        winner = match.match_winner
-        loser = match.match_loser
+        match_winner = match.match_winner
+        match_loser = match.match_loser
 
         for i in range(match.current_set):
             # Ambil nilai set winner dan loser
-            winner_set = winner.sets[i]
-            loser_set = loser.sets[i]
+            winner_set = match_winner.sets[i]
+            loser_set = match_loser.sets[i]
 
             # Tentukan apakah set ini tiebreak
             tiebreak_score = ""
             if max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
                 # Tampilkan skor tiebreak kalah saja
                 if winner_set > loser_set:
-                    tiebreak_score = f"({match.p2.tiebreak_display_score[i]})"
-                    match.score.append(f"{winner_set}-{loser.sets}{tiebreak_score}")
+                    tiebreak_score = f"({match_loser.tiebreak_display_score[i]})"
+                    match.score.append(f"7-{loser_set}{tiebreak_score}")
                 else:
-                    tiebreak_score = f"({match.p1.tiebreak_display_score[i]})"
-                    match.score.append(f"{winner_set}{tiebreak_score}-{loser.sets}")
+                    tiebreak_score = f"({match_winner.tiebreak_display_score[i]})"
+                    match.score.append(f"{tiebreak_score}{winner_set}-7")
              
             else:
                 match.score.append(f"{winner_set}-{loser_set}")       
             
-        match.score = " ".join(match.score)
+        match.score = "  ".join(match.score)
         
     def duration(self, match):
         # Hitung durasi set sekarang
