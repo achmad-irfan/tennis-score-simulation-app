@@ -37,28 +37,42 @@
     </tr>
   </thead>
   <tbody>
-    {% for stat in table_match_stats %}
-    {% if not stat.key %}
-        <tr class="separator">
-            <td colspan="3"></td>
-        </tr>
-    {% else %}
+    {% for stat in table_match_stats %} {% if not stat.key %}
+    <tr class="separator">
+      <td colspan="3"></td>
+    </tr>
+    {% elif stat.category == "general" %}
     <tr>
       <td>
-        <div class="containerp1 all_set" {{ p1|get_item:stat.key}}
+        <div class="containerp1 all_set" style="width: {{ totals|get_item:stat.pct_key_p1 }}%;">{{ p1|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
-        <div class="containerp1 stat_set{{ forloop.counter }}">{{ s.p1|get_item:stat.key }}</div>
+        <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.totals|get_item:stat.pct_key_p1}}%;">{{ s.p1|get_item:stat.key }}</div>
         {% endfor %}
       </td>
       <td>{{stat.label}}</td>
       <td>
-        <div class="containerp2 all_set">{{ p1|get_item:stat.key}}
+        <div class="containerp2 all_set" style="width: {{ totals|get_item:stat.pct_key_p2}}%;">{{ p2|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
-        <div class="containerp2 stat_set{{ forloop.counter }}">{{ s.p2|get_item:stat.key }}</div>
+        <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.totals|get_item:stat.pct_key_p2}}%;">{{ s.p2|get_item:stat.key }}</div>
         {% endfor %}
       </td>
     </tr>
-    {% endif %}
-    {% endfor %}
+    {% elif stat.category == "service" %}
+    <tr>
+      <td>
+        <div class="containerp1 all_set" style="width : {{p1|get_item:stat.pct}}%;" ;>{{p1|get_item:stat.pct}}%({{ p1|get_item:stat.key}}/{{ p1|get_item:stat.pair}})</div>
+        {% for s in set_snapshot %}
+        <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.p1|get_item:stat.pct}}%;">{{s.p1|get_item:stat.pct}}%({{ s.p1|get_item:stat.key }}/{{ s.p1|get_item:stat.pair}})</div>
+        {% endfor %}
+      </td>
+      <td>{{stat.label}}</td>
+      <td>
+        <div class="containerp2 all_set" style="width : {{p2|get_item:stat.pct}}%;" ;>{{p2|get_item:stat.pct}}%({{ p2|get_item:stat.key}}/{{ p2|get_item:stat.pair}})</div>
+        {% for s in set_snapshot %}
+        <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.p2|get_item:stat.pct}}%;">{{s.p2|get_item:stat.pct}}%({{ s.p2|get_item:stat.key }}/{{ s.p2|get_item:stat.pair}})</div>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endif %} {% endfor %}
   </tbody>
 </table>

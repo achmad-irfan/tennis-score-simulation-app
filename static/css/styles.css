@@ -529,6 +529,10 @@ table input {
   border-radius: 5px;
 }
 
+table input:active {
+  background-color: #120049;
+}
+
 .containerp1 {
   background-color: #3fb950;
   position: absolute;

@@ -31,8 +31,8 @@ total_stats = ["ace", "double_fault", "winner",
               "unforced_error", "forced_error", "total_point"]
 
 # Atribut presentase service dan return pemain
-service_stats = ["first_serve", "return_point","first_serve_win", 
-                 "second_serve_win","break_point_win"]
+service_stats = ["first_serve_total", "return_point","first_serve_win",  
+                 "second_serve_win","break_point_win", "return_point_win"]
 
 
 # Stat for table statistic
@@ -40,12 +40,12 @@ table_match_stats = [
     {"key": "ace", "label": "Ace"},
     {"key": "double_fault", "label": "Double Fault"},
     {"type": "separator"},
-    {"key": "first_serve_total", "label": "First Serve"},
-    {"key": "first_serve_win", "label": "First Serve Win"},
-    {"key": "second_serve_win", "label": "Second Serve Win"},
+    {"key": "first_serve_total", "label": "First Serve",  "pair": "total_service" },
+    {"key": "first_serve_win", "label": "First Serve Win", "pair" :"first_serve_total"},
+    {"key": "second_serve_win", "label": "Second Serve Win", "pair": "second_serve_total"},
     {"type": "separator"},
-    {"key": "return_point", "label": "Return Point"},
-    {"key": "return_point_win", "label": "Return Point Win"},
+    {"key": "return_point_win", "label": "Return Point", "pair": "return_point"},
+    {"key": "break_point_win", "label": "Break Point", "pair": "break_point"},
     {"type": "separator"},
     {"key": "winner", "label": "Winner"},
     {"key": "forced_error", "label": "Forced Error"},
@@ -56,10 +56,21 @@ table_match_stats = [
 # Stat untuk total pada tabel
 for stat in table_match_stats:
     if "key" in stat and stat["key"]:  
-        stat["pct_key"] = f"total_{stat['key']}_pct1"
+        stat["pct_key_p1"] = f"total_{stat['key']}_pct1"
+        stat["pct_key_p2"] = f"total_{stat['key']}_pct2"
     
- 
+for stat in table_match_stats:
+    key = stat.get("key")
+    
+    if key in service_stats:
+        stat["category"] = "service"
+    else:
+        stat["category"] = "general"
 
+for stat in table_match_stats:
+    if stat["category"] == "service":
+        stat['pct']= f"{stat['key']}_pct"
+        
 class Player:
     def __init__(self,name):
         self.name=name
@@ -232,7 +243,8 @@ class ScoringSystem:
             match.current_set += 1
             match.start_time = datetime.now()
             match.is_tiebreak = False
-            match.set_snaphot(match)
+            self.get_set_snapshot(match)
+
 
             player.set_win += 1
 
@@ -242,11 +254,11 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
     
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
             match.current_set += 1
             match.start_time = datetime.now()
             self.get_set_snapshot(match)
@@ -385,38 +397,67 @@ class ScoringSystem:
     def calc_pct(self, win, total):
         return round((win / total) * 100) if total else 0
 
+    def build_service_pct(self, player):
+        service_pct_map = {
+        "first_serve_total_pct": ("first_serve_total", "total_service"),
+        "first_serve_win_pct": ("first_serve_win", "first_serve_total"),
+        "second_serve_win_pct": ("second_serve_win", "second_serve_total"),
+        "return_point_win_pct": ("return_point_win", "return_point"),
+        "break_point_win_pct": ("break_point_win", "break_point"),
+    }
+
+        result = {}
+
+        for key, (win_attr, total_attr) in service_pct_map.items():
+            win = getattr(player, win_attr)
+            total = getattr(player, total_attr)
+            result[key] = self.calc_pct(win, total)
+
+        return result
+
     def get_set_snapshot(self, match):
         totals = {}
+
         for stat in total_stats:
             total = getattr(match.p1, stat) + getattr(match.p2, stat)
             totals[f"total_{stat}_pct1"] = self.calc_pct(getattr(match.p1, stat), total)
             totals[f"total_{stat}_pct2"] = self.calc_pct(getattr(match.p2, stat), total)
 
-        snapshot = {
-        
-        "p1": {
-            attr: getattr(match.p1, attr) 
+        p1_data = {
+            attr: getattr(match.p1, attr)
             for attr in player_attrs + ["sets", "tiebreak_display_score"]
-        },
-        "p2": {
-            attr: getattr(match.p2, attr) 
-            for attr in player_attrs + ["sets", "tiebreak_display_score"]
-        },
-
-        
-        "match": {
-            "current_set": match.current_set,
-            "current_server": "p1" if match.current_server == match.p1 else "p2",
-            "is_tiebreak": match.is_tiebreak,
-            "current_tiebreak": match.current_tiebreak,
-            "status": match.status,
-            "set_winner": match.set_winner.copy(),
-            "duration": match.duration.copy(),
-            "start_time": match.start_time.isoformat()
-        },
-        "totals": totals
         }
 
+        p2_data = {
+            attr: getattr(match.p2, attr)
+            for attr in player_attrs + ["sets", "tiebreak_display_score"]
+        }
+
+        for attr in service_stats:
+            p1_data[attr] = getattr(match.p1, attr)
+            p2_data[attr] = getattr(match.p2, attr)
+
+        # === percentage stats ===
+        p1_data.update(self.build_service_pct(match.p1))
+        p2_data.update(self.build_service_pct(match.p2))
+
+        snapshot = {
+            "p1": p1_data,
+            "p2": p2_data,
+            "match": {
+                "current_set": match.current_set,
+                "current_server": "p1" if match.current_server == match.p1 else "p2",
+                "is_tiebreak": match.is_tiebreak,
+                "current_tiebreak": match.current_tiebreak,
+                "status": match.status,
+                "set_winner": match.set_winner.copy(),
+                "duration": match.duration.copy(),
+                "start_time": match.start_time.isoformat()
+            },
+            "totals": totals
+        }
+
+    
         match.set_snapshot.append(snapshot)
     
     
@@ -442,10 +483,10 @@ class MatchSerializer:
 
         # Persentase service & points
         player_data.update({
-            "first_serve_pct": self.calc_pct(player.first_serve_total, player.total_service),
+            "first_serve_total_pct": self.calc_pct(player.first_serve_total, player.total_service),
             "second_serve_win_pct": self.calc_pct(player.second_serve_win, player.second_serve_total),
             "first_serve_win_pct": self.calc_pct(player.first_serve_win, player.first_serve_total),
-            "return_point_pct": self.calc_pct(player.return_point_win, player.return_point),
+            "return_point_win_pct": self.calc_pct(player.return_point_win, player.return_point),
             "break_point_win_pct": self.calc_pct(player.break_point_win, player.break_point),
         })
         

@@ -49,10 +49,16 @@ const statistic_all_set = document.querySelectorAll(".all_set");
 
 // Fungsi untuk hide semua set
 function hideAllSets() {
-  [statistic_set1, statistic_set2, statistic_set3].forEach((set) => {
+  [statistic_set1, statistic_set2, statistic_set3, statistic_all_set].forEach((set) => {
     set.forEach((el) => (el.style.display = "none"));
   });
 }
+
+// Tampilkan set_all tiap load
+document.addEventListener("DOMContentLoaded", () => {
+  hideAllSets();
+  statistic_all_set.forEach((el) => (el.style.display = "block"));
+});
 
 // Event listener tombol
 buton_set1.addEventListener("click", () => {
@@ -72,12 +78,6 @@ buton_set3.addEventListener("click", () => {
 });
 
 buton_all_set.addEventListener("click", () => {
-  hideAllSets();
-  statistic_all_set.forEach((el) => (el.style.display = "block"));
-});
-
-// Tampilkan set_all tiap load
-document.addEventListener("DOMContentLoaded", () => {
   hideAllSets();
   statistic_all_set.forEach((el) => (el.style.display = "block"));
 });
