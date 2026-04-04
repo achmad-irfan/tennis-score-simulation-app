@@ -64,20 +64,23 @@ document.addEventListener("DOMContentLoaded", () => {
 buton_set1.addEventListener("click", () => {
   hideAllSets();
   statistic_set1.forEach((el) => (el.style.display = "block"));
-  console.log("button1 clicked");
+  console.log("button 1 clicked");
 });
 
 buton_set2.addEventListener("click", () => {
   hideAllSets();
   statistic_set2.forEach((el) => (el.style.display = "block"));
+  console.log("button 2 clicked");
 });
 
 buton_set3.addEventListener("click", () => {
   hideAllSets();
   statistic_set3.forEach((el) => (el.style.display = "block"));
+  console.log("button 3 clicked");
 });
 
 buton_all_set.addEventListener("click", () => {
   hideAllSets();
   statistic_all_set.forEach((el) => (el.style.display = "block"));
+  console.log("button all");
 });

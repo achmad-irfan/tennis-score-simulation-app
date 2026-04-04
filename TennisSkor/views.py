@@ -70,10 +70,8 @@ def Skor(request):
     "duration_set3": f"{new_value['duration'][2]}'",
     "total_duration": f"{sum(new_value['duration'])}'",
     "table_match_stats": score.table_match_stats,
-    "total_stat_p1" : score.total_stat_p1,
-    "total_stat_p2" : score.total_stat_p2,
-    # "total_statistic_p1": new_value['p1']['total_statistics_all_set'],
-    # "total_statistic_p2": new_value['p2']['total_statistics_all_set']
+    "total_statistics_p1": new_value['p1']['total_statistics_all_set'],
+    "total_statistics_p2": new_value['p2']['total_statistics_all_set']
         })
     
     for attr in score.player_attr_list:
@@ -81,7 +79,9 @@ def Skor(request):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
-            
+     
+    print(context['total_statistics_p1']) 
+    print(context['total_statistics_p2'])      
 
     return render(request, 'index.html', context)
     

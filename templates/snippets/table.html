@@ -20,7 +20,7 @@
           <label>
             <input type="button" name="set_statistic" id="buton_set2" value="2" />
           </label>
-          {% endif %} {% if finish %}
+          {% endif %} {% if current_set >= 3 %}
           <label>
             <input type="button" name="set_statistic" id="buton_set3" value="3" />
           </label>
@@ -44,14 +44,14 @@
     {% elif stat.category == "general" %}
     <tr>
       <td>
-        <div class="containerp1 all_set" style="width: {{ totals|get_item:stat.pct_key_p1 }}%;">{{ total_stat_p1|get_item:stat.key}}</div>
+        <div class="all_set">{{ total_statistics_p1|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
         <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.totals|get_item:stat.pct_key_p1}}%;">{{ s.p1|get_item:stat.key }}</div>
         {% endfor %}
       </td>
       <td>{{stat.label}}</td>
       <td>
-        <div class="containerp2 all_set" style="width: {{ totals|get_item:stat.pct_key_p2}}%;">{{ total_stat_p2|get_item:stat.key}}</div>
+        <div class="all_set">{{ total_statistics_p2|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
         <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.totals|get_item:stat.pct_key_p2}}%;">{{ s.p2|get_item:stat.key }}</div>
         {% endfor %}
