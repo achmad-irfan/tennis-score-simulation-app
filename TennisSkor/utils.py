@@ -48,6 +48,8 @@ def restore_match(request,p1,p2,firstserver):
         m.p2.tiebreak_display_score = p2_data.get("tiebreak_display_score", [0,0,0])
         m.start_time = datetime.fromisoformat(match.get("start_time"))
         m.duration = match.get("duration", 0)
+        m.p1.total_statictics_all_set = p1_data.get("total_statictics_all_set", [])
+        m.p2.total_statictics_all_set = p2_data.get("total_statictics_all_set", [])
         
     return m
 

@@ -71,11 +71,13 @@ for stat in table_match_stats:
     if stat["category"] == "service":
         stat['pct']= f"{stat['key']}_pct"
         
+        
 class Player:
     def __init__(self,name):
         self.name=name
         self.sets=[0,0,0]
         self.tiebreak_display_score = [0,0,0]
+        self.total_statistics_all_set= []
         for attr in player_attrs:
             setattr(self,attr, 0)
             
@@ -148,7 +150,9 @@ class Match:
         
         return new_match
             
+   
         
+
 class ScoringSystem:
     def process_point(self, match, player, opponent, point_event, serve_type):
         # 1. Serve & shot
@@ -259,6 +263,8 @@ class ScoringSystem:
             match.is_tiebreak = False
             self.get_set_snapshot(match)
             self.get_current_server_after_tiebreak(match)
+            self.reset_atribut_after_set(match.p1)
+            self.reset_atribut_after_set(match.p2)
 
             player.set_win += 1
 
@@ -278,6 +284,8 @@ class ScoringSystem:
             self.get_set_snapshot(match)
             player.point = 0
             opponent.point = 0
+            self.reset_atribut_after_set(match.p1)
+            self.reset_atribut_after_set(match.p2)
 
             player.set_win += 1
 
@@ -299,6 +307,9 @@ class ScoringSystem:
                 match.match_loser = player
 
             self.scoring(match)
+            match.p1.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p1")
+            match.p2.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p2")
+            
             
     def serve_types(self, match, serve_type):
         if match.current_server == match.p1:
@@ -426,7 +437,20 @@ class ScoringSystem:
             result[key] = self.calc_pct(win, total)
 
         return result
-
+    
+    def reset_atribut_after_set(self,player):
+        resettable_attrs = [
+            "ace", "double_fault", "winner", "unforced_error",
+            "forced_error", "total_point", "total_service",
+            "first_serve_total", "first_serve_win",
+            "second_serve_total", "second_serve_win",
+            "return_point", "return_point_win",
+            "break_point", "break_point_win",
+            "game_point", "tiebreak_point_win" ]  
+                     
+        for attr in resettable_attrs:
+            setattr(player, attr, 0)
+        
     def get_set_snapshot(self, match):
         totals = {}
 
@@ -468,9 +492,25 @@ class ScoringSystem:
             },
             "totals": totals
         }
-
-    
         match.set_snapshot.append(snapshot)
+    
+    def agregat_all_stat(self, data, player):
+        result = {}
+        
+        for stat in table_match_stats:
+            if "key" not in stat:
+                continue
+            
+            key = stat["key"]
+            result[key] = sum(item[player].get(key, 0) for item in data)
+        
+            if "pair" in stat:
+                pair = stat["pair"]
+                if pair not in result:
+                    result[pair] = sum(item[player].get(pair, 0) for item in data)
+
+        return result
+    
     
     
 class MatchSerializer:
@@ -492,6 +532,7 @@ class MatchSerializer:
         player_data['sets'] = player.sets
         player_data['name']=  player.name
         player_data['tiebreak_display_score']= player.tiebreak_display_score
+        player_data['total_statistics_all_set'] = player.total_statistics_all_set
 
         # Persentase service & points
         player_data.update({
