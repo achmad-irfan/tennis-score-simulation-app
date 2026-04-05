@@ -73,11 +73,13 @@ buton_set2.addEventListener("click", () => {
   console.log("button 2 clicked");
 });
 
-buton_set3.addEventListener("click", () => {
-  hideAllSets();
-  statistic_set3.forEach((el) => (el.style.display = "block"));
-  console.log("button 3 clicked");
-});
+if (buton_set3) {
+  buton_set3.addEventListener("click", () => {
+    hideAllSets();
+    statistic_set3.forEach((el) => (el.style.display = "block"));
+    console.log("button 3 clicked");
+  });
+}
 
 buton_all_set.addEventListener("click", () => {
   hideAllSets();
