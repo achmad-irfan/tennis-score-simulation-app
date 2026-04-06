@@ -309,7 +309,7 @@ class ScoringSystem:
             self.scoring(match)
             match.p1.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p1")
             match.p2.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p2")
-            
+            # self.get_total_table_statistics(match)
             
     def serve_types(self, match, serve_type):
         if match.current_server == match.p1:
@@ -511,7 +511,15 @@ class ScoringSystem:
 
         return result
     
-    
+    # def get_total_table_statistics(self, match):
+    #     p1_total = self.agregat_all_stat(match.set_snapshot, "p1")
+    #     p2_total = self.agregat_all_stat(match.set_snapshot, "p2")
+        
+    #     total_agregat_two_players = {x : p1_total.get(x,0) + p2_total.get(x,0) for x in set(p1_total) & set(p2_total) }
+    #     print(total_agregat_two_players)
+
+        
+
     
 class MatchSerializer:
     def __init__(self, match):
