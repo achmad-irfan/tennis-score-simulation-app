@@ -1,4 +1,5 @@
 from datetime import datetime
+from .calculator import calc_pct, build_service_pct, build_player_stats, build_total_pct
 
 # Atribut dalam objek player
 player_attrs= [
@@ -307,8 +308,8 @@ class ScoringSystem:
                 match.match_loser = player
 
             self.scoring(match)
-            match.p1.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p1")
-            match.p2.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p2")
+            # match.p1.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p1")
+            # match.p2.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p2")
             # self.get_total_table_statistics(match)
             
     def serve_types(self, match, serve_type):
@@ -417,26 +418,6 @@ class ScoringSystem:
         
         match.duration[match.current_set] = minutes
         
-    def calc_pct(self, win, total):
-        return round((win / total) * 100) if total else 0
-
-    def build_service_pct(self, player):
-        service_pct_map = {
-        "first_serve_total_pct": ("first_serve_total", "total_service"),
-        "first_serve_win_pct": ("first_serve_win", "first_serve_total"),
-        "second_serve_win_pct": ("second_serve_win", "second_serve_total"),
-        "return_point_win_pct": ("return_point_win", "return_point"),
-        "break_point_win_pct": ("break_point_win", "break_point"),
-    }
-
-        result = {}
-
-        for key, (win_attr, total_attr) in service_pct_map.items():
-            win = getattr(player, win_attr)
-            total = getattr(player, total_attr)
-            result[key] = self.calc_pct(win, total)
-
-        return result
     
     def reset_atribut_after_set(self,player):
         resettable_attrs = [
@@ -452,34 +433,16 @@ class ScoringSystem:
             setattr(player, attr, 0)
         
     def get_set_snapshot(self, match):
-        totals = {}
+         # Ambil stats player
+        p1_data_snapshot = build_player_stats(match.p1)
+        p2_data_snapshot = build_player_stats(match.p2)
 
-        for stat in total_stats:
-            total = getattr(match.p1, stat) + getattr(match.p2, stat)
-            totals[f"total_{stat}_pct1"] = self.calc_pct(getattr(match.p1, stat), total)
-            totals[f"total_{stat}_pct2"] = self.calc_pct(getattr(match.p2, stat), total)
-
-        p1_data = {
-            attr: getattr(match.p1, attr)
-            for attr in player_attrs + ["sets", "tiebreak_display_score"]
-        }
-
-        p2_data = {
-            attr: getattr(match.p2, attr)
-            for attr in player_attrs + ["sets", "tiebreak_display_score"]
-        }
-
-        for attr in service_stats:
-            p1_data[attr] = getattr(match.p1, attr)
-            p2_data[attr] = getattr(match.p2, attr)
-
-        # === percentage stats ===
-        p1_data.update(self.build_service_pct(match.p1))
-        p2_data.update(self.build_service_pct(match.p2))
+    # Hitung totals
+        totals = build_total_pct(match.p1, match.p2)
 
         snapshot = {
-            "p1": p1_data,
-            "p2": p2_data,
+            "p1": p1_data_snapshot,
+            "p2": p1_data_snapshot,
             "match": {
                 "current_set": match.current_set,
                 "current_server": "p1" if match.current_server == match.p1 else "p2",
@@ -492,76 +455,20 @@ class ScoringSystem:
             },
             "totals": totals
         }
-        match.set_snapshot.append(snapshot)
-    
-    def agregat_all_stat(self, data, player):
-        result = {}
+        match.set_snapshot.append(snapshot)     
         
-        for stat in table_match_stats:
-            if "key" not in stat:
-                continue
-            
-            key = stat["key"]
-            result[key] = sum(item[player].get(key, 0) for item in data)
-        
-            if "pair" in stat:
-                pair = stat["pair"]
-                if pair not in result:
-                    result[pair] = sum(item[player].get(pair, 0) for item in data)
-
-        return result
-    
-    # def get_total_table_statistics(self, match):
-    #     p1_total = self.agregat_all_stat(match.set_snapshot, "p1")
-    #     p2_total = self.agregat_all_stat(match.set_snapshot, "p2")
-        
-    #     total_agregat_two_players = {x : p1_total.get(x,0) + p2_total.get(x,0) for x in set(p1_total) & set(p2_total) }
-    #     print(total_agregat_two_players)
-
         
 
-    
 class MatchSerializer:
     def __init__(self, match):
         self.match = match
-        
-    def calc_pct(self, win, total): 
-        return round((win / total) * 100) if total else 0
-
+    
     def get_player_data(self, player):
         # Ambil semua atribut player + persentase stats + sets
-        player_data = {}
-        for attr in player_attrs:
-            value = getattr(player, attr)
-            player_data[attr] = value
-            
-            
-        # Khusus atribut sets pada player
-        player_data['sets'] = player.sets
-        player_data['name']=  player.name
-        player_data['tiebreak_display_score']= player.tiebreak_display_score
-        player_data['total_statistics_all_set'] = player.total_statistics_all_set
-
-        # Persentase service & points
-        player_data.update({
-            "first_serve_total_pct": self.calc_pct(player.first_serve_total, player.total_service),
-            "second_serve_win_pct": self.calc_pct(player.second_serve_win, player.second_serve_total),
-            "first_serve_win_pct": self.calc_pct(player.first_serve_win, player.first_serve_total),
-            "return_point_win_pct": self.calc_pct(player.return_point_win, player.return_point),
-            "break_point_win_pct": self.calc_pct(player.break_point_win, player.break_point),
-        })
-        
-        return player_data
+        return build_player_stats(player)
 
     def totals_stats_data(self):
-        # Hitung persentase total stats antar pemain
-        totals = {}
-        for stat in total_stats:
-            total = getattr(self.match.p1, stat) + getattr(self.match.p2, stat)
-            totals[f"total_{stat}_pct1"] = self.calc_pct(getattr(self.match.p1, stat), total)
-            totals[f"total_{stat}_pct2"] = self.calc_pct(getattr(self.match.p2, stat), total)
-        
-        return totals
+        return build_total_pct(self.match.p1, self.match.p2)
 
     def match_info(self):
         match_stat = {}
