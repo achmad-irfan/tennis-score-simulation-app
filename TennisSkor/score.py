@@ -144,9 +144,6 @@ class Match:
         new_match.duration = duration_backup
         
         return new_match
-            
-   
-        
 
 class ScoringSystem:
     def process_point(self, match, player, opponent, point_event, serve_type):
@@ -269,11 +266,11 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
     
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
+        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
             match.start_time = datetime.now()
             self.get_set_snapshot(match)
