@@ -7,7 +7,8 @@ def get_players_from_request(request):
     p1= request.GET.get("p1")
     p2= request.GET.get("p2")
     first_server = request.GET.get("first_server", "p1")
-    return p1,p2,first_server
+    final_set= request.GET.get("final_set_scoring")
+    return p1,p2,first_server, final_set
     
 def profile(player_list, name):
     for player in player_list:
@@ -21,12 +22,12 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore_match(request,p1,p2,firstserver):
+def restore_match(request,p1,p2,firstserver, final_set):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
     # Buat objek pertandingan
-    m = Match(p1, p2, firstserver or "p1")
+    m = Match(p1, p2, firstserver or "p1", final_set)
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}

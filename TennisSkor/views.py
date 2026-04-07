@@ -9,7 +9,7 @@ def Skor(request):
         request.session.pop("match", None)
     
     # Ambil data user
-    p1,p2,first_server = utils.get_players_from_request(request)
+    p1,p2,first_server, final_set = utils.get_players_from_request(request)
     
     # Validasi input
     if request.GET.get("submit"):
@@ -27,7 +27,7 @@ def Skor(request):
     p2_profile= utils.profile(list_wta_players.players, p2)
     
     # Restrore session jika ada session sebelumnya
-    restore_match = utils.restore_match(request, p1,p2,first_server)            
+    restore_match = utils.restore_match(request, p1,p2,first_server, final_set)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
@@ -78,6 +78,8 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
      
-    print(context['all_set_snapshot'])  
+    print(context['is_last_set'])  
+    print(context['is_tiebreak'])  
+    print(context['current_set'])
     return render(request, 'index.html', context)
     

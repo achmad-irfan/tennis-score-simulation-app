@@ -17,6 +17,15 @@
         <option value="{{player.name}}">{{player.name}}</option>
         {% endfor %}
       </select>
+
+      <label for="final_set">Final Set Scoring:</label>
+      <select name="final_set_scoring" id="final_set_scoring">
+        <option value="" selected final set>-- Select Final Set Scoring --</option>
+        <option value="normal">Normat Set</option>
+        <option value="super_tiebreak">Super Tiebreak (at 6–6)</option>
+        <option value="super_tiebreak_only">Super Tiebreak Last Set</option>
+      </select>
+
       <button id="submit" name="submit" type="submit" value="1">Submit</button>
       <button type="submit" formaction="{% url 'home' %}">Reset</button>
     </form>
