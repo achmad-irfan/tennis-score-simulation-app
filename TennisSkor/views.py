@@ -78,6 +78,6 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
      
-    print(context['set_snapshot'])      
+    print(context['all_set_snapshot'])  
     return render(request, 'index.html', context)
     

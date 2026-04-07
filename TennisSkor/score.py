@@ -1,5 +1,5 @@
 from datetime import datetime
-from .calculator import calc_pct, build_service_pct, build_player_stats, build_total_pct
+from .calculator import calc_pct, build_player_stats
 
 # Atribut dalam objek player
 player_attrs= [
@@ -13,7 +13,7 @@ player_attrs= [
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish"],
                 "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak"],
-                "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot"],
+                "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
                 "data_dict": []}
 
 # Tipe data default dari atribut objek match
@@ -53,13 +53,7 @@ table_match_stats = [
     {"key": "unforced_error", "label": "Unforced Error"},
     {"key": "total_point", "label": "Total Point"},
 ]
-
-# Stat untuk total pada tabel
-for stat in table_match_stats:
-    if "key" in stat and stat["key"]:  
-        stat["pct_key_p1"] = f"total_{stat['key']}_pct1"
-        stat["pct_key_p2"] = f"total_{stat['key']}_pct2"
-    
+  
 for stat in table_match_stats:
     key = stat.get("key")
     
@@ -69,8 +63,8 @@ for stat in table_match_stats:
         stat["category"] = "general"
 
 for stat in table_match_stats:
-    if stat["category"] == "service":
-        stat['pct']= f"{stat['key']}_pct"
+    key = stat.get("key")
+    stat["pct"]= f"{key}_pct"
         
         
 class Player:
@@ -308,9 +302,8 @@ class ScoringSystem:
                 match.match_loser = player
 
             self.scoring(match)
-            # match.p1.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p1")
-            # match.p2.total_statistics_all_set = self.agregat_all_stat(match.set_snapshot, "p2")
-            # self.get_total_table_statistics(match)
+        
+            self.get_aggregate_snapshot(match)
             
     def serve_types(self, match, serve_type):
         if match.current_server == match.p1:
@@ -434,15 +427,12 @@ class ScoringSystem:
         
     def get_set_snapshot(self, match):
          # Ambil stats player
-        p1_data_snapshot = build_player_stats(match.p1)
-        p2_data_snapshot = build_player_stats(match.p2)
-
-    # Hitung totals
-        totals = build_total_pct(match.p1, match.p2)
+        p1_data_snapshot = build_player_stats(match.p1, match.p2)
+        p2_data_snapshot = build_player_stats(match.p2, match.p1)
 
         snapshot = {
             "p1": p1_data_snapshot,
-            "p2": p1_data_snapshot,
+            "p2": p2_data_snapshot,
             "match": {
                 "current_set": match.current_set,
                 "current_server": "p1" if match.current_server == match.p1 else "p2",
@@ -453,22 +443,37 @@ class ScoringSystem:
                 "duration": match.duration.copy(),
                 "start_time": match.start_time.isoformat()
             },
-            "totals": totals
         }
         match.set_snapshot.append(snapshot)     
         
-        
+    def get_aggregate_snapshot(self,match):
+        from .score import player_attrs
 
+        result_all_set = {
+            "p1": {},
+            "p2": {},
+            "match": {}
+        }
+
+        # ambil semua key numerik dari player_attrs
+        for player in ["p1", "p2"]:
+            for attr in player_attrs:
+                result_all_set[player][attr] = sum(
+                    snap[player].get(attr, 0) for snap in match.set_snapshot
+                )
+        p1_data_all_snapshot = build_player_stats(result_all_set['p1'], result_all_set['p2'])
+        p2_data_all_snapshot = build_player_stats(result_all_set['p2'], result_all_set['p1'])
+        all_snapshot={
+            "p1" : p1_data_all_snapshot,
+            "p2" : p2_data_all_snapshot        }
+        
+        
+        match.all_set_snapshot = all_snapshot
+       
 class MatchSerializer:
     def __init__(self, match):
         self.match = match
     
-    def get_player_data(self, player):
-        # Ambil semua atribut player + persentase stats + sets
-        return build_player_stats(player)
-
-    def totals_stats_data(self):
-        return build_total_pct(self.match.p1, self.match.p2)
 
     def match_info(self):
         match_stat = {}
@@ -490,11 +495,7 @@ class MatchSerializer:
     def to_dict(self):
         # Kembalikan dictionary final skor + info match + totals
         return {
-            "p1": self.get_player_data(self.match.p1),
-            "p2": self.get_player_data(self.match.p2),
-            "totals": self.totals_stats_data(), 
+            "p1": build_player_stats(self.match.p1, self.match.p2),
+            "p2": build_player_stats(self.match.p2, self.match.p1),
             **self.match_info()
         }
-        
-        
-    

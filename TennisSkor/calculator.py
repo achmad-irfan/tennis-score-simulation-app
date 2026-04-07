@@ -1,41 +1,60 @@
+def get_value(source, key):
+    if isinstance(source, dict):
+        return source.get(key, 0)
+    return getattr(source, key, 0)
+
+
 def calc_pct(win, total):
     return round((win / total) * 100) if total else 0
 
-def build_service_pct(player):
-    return {
-        "first_serve_total_pct": calc_pct(player.first_serve_total, player.total_service),
-        "second_serve_win_pct": calc_pct(player.second_serve_win, player.second_serve_total),
-        "first_serve_win_pct": calc_pct(player.first_serve_win, player.first_serve_total),
-        "return_point_win_pct": calc_pct(player.return_point_win, player.return_point),
-        "break_point_win_pct": calc_pct(player.break_point_win, player.break_point),
-    }
-    
-    
-def build_player_stats(player):
-    from .score import player_attrs 
+
+
+
+def build_player_stats(player, opponent):
+    from .score import player_attrs, total_stats
+
     data = {}
 
-    # ambil raw stats
+    # ambil raw stats (bisa dari object / dict)
     for attr in player_attrs:
-        data[attr] = getattr(player, attr)
+        data[attr] = get_value(player, attr)
 
-    data["sets"] = player.sets
-    data["tiebreak_display_score"] = player.tiebreak_display_score
-    data['name']=  player.name
+    # optional fields (kalau ada)
+    data["sets"] = get_value(player, "sets")
+    data["tiebreak_display_score"] = get_value(player, "tiebreak_display_score")
+    data["name"] = get_value(player, "name")
 
     # service pct
-    data.update(build_service_pct(player))
+    data.update({
+        "first_serve_total_pct": calc_pct(
+            get_value(player, "first_serve_total"),
+            get_value(player, "total_service")
+        ),
+        "second_serve_win_pct": calc_pct(
+            get_value(player, "second_serve_win"),
+            get_value(player, "second_serve_total")
+        ),
+        "first_serve_win_pct": calc_pct(
+            get_value(player, "first_serve_win"),
+            get_value(player, "first_serve_total")
+        ),
+        "return_point_win_pct": calc_pct(
+            get_value(player, "return_point_win"),
+            get_value(player, "return_point")
+        ),
+        "break_point_win_pct": calc_pct(
+            get_value(player, "break_point_win"),
+            get_value(player, "break_point")
+        ),
+    })
 
-    return data
-
-def build_total_pct( p1, p2):
-    from .score import total_stats
-    totals = {}
-
+    # 🔥 total pct antar pemain
     for stat in total_stats:
-        total = getattr(p1, stat) + getattr(p2, stat)
+        total = get_value(player, stat) + get_value(opponent, stat)
 
-        totals[f"total_{stat}_pct1"] = calc_pct(getattr(p1, stat), total)
-        totals[f"total_{stat}_pct2"] = calc_pct(getattr(p2, stat), total)
-
-    return totals
+        data[f"{stat}_pct"] = calc_pct(
+            get_value(player, stat),
+            total
+        )
+        
+    return data
