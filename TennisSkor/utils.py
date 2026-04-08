@@ -51,6 +51,7 @@ def restore_match(request,p1,p2,firstserver, final_set):
         m.duration = match.get("duration", 0)
         m.p1.total_statictics_all_set = p1_data.get("total_statictics_all_set", [])
         m.p2.total_statictics_all_set = p2_data.get("total_statictics_all_set", [])
+        m.final_set = match.get("final_set")
         
     return m
 

@@ -78,8 +78,8 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
      
-    print(context['is_last_set'])  
-    print(context['is_tiebreak'])  
-    print(context['current_set'])
+      
+    print(context['p1']['tiebreak_display_score'])
+    print(context['p2']['tiebreak_display_score'])
     return render(request, 'index.html', context)
     

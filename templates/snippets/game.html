@@ -13,10 +13,13 @@
 </div>
 {% endif %} 
 <!-- Set 3 -->
-{% if current_set > 1 %}
+{% if current_set > 1 and final_set != 'super_tiebreak_only' %}
 <div class="gameside">
     <p class="game {% if set_winner.2 == "p1" %}winner{% endif %}">{{sets3_p1}}</p>
     <p class="game {% if set_winner.2 == "p2" %}winner{% endif %}">{{sets3_p2}}</p>
     <p class="duration_point">{{duration_set3}}</p>
 </div>
 {% endif %} 
+
+
+

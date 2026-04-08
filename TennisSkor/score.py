@@ -291,7 +291,7 @@ class ScoringSystem:
             self.check_match_finish(match, player, opponent)
         
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 2 and opponent.sets[match.current_set] == 2:
+        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
             return
 
@@ -509,7 +509,8 @@ class MatchSerializer:
         "match_winner": self.match.match_winner.name if self.match.match_winner else None,
         "match_loser": self.match.match_loser.name if self.match.match_loser else None,
         "start_time": self.match.start_time.isoformat(),
-        "duration": self.match.duration
+        "duration": self.match.duration,
+        "final_set": self.match.final_set
         })
         
         return match_stat
