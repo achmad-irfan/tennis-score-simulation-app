@@ -13,8 +13,8 @@ def Skor(request):
     
     # Validasi input
     if request.GET.get("submit"):
-        if (not p1 or not p2) or (p1 == p2):
-            error = "Pick 2 different players!!"
+        if (not p1 or not p2) or (p1 == p2) or (not final_set):
+            error = "Pick 2 different players and method last set!!"
             return render(request, 'index.html', {
             "p1": p1,
             "p2": p2,
@@ -70,6 +70,8 @@ def Skor(request):
     "duration_set3": f"{new_value['duration'][2]}'",
     "total_duration": f"{sum(new_value['duration'])}'",
     "table_match_stats": score.table_match_stats,
+    "show_live_tb": utils.show_live_tb(new_value),
+    "show_final_tb": utils.show_final_tb(new_value)
         })
     
     for attr in score.player_attr_list:
@@ -79,7 +81,5 @@ def Skor(request):
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
      
       
-    print(context['p1']['tiebreak_display_score'])
-    print(context['p2']['tiebreak_display_score'])
     return render(request, 'index.html', context)
     

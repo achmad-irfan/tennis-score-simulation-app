@@ -73,5 +73,16 @@ def save_session(request, match: Match):
     
     request.session['match'] = data
     
+def show_live_tb(match):
+    return (
+        match["is_tiebreak"] and
+        not match["finish"] and
+        not (match["final_set"] == "super_tiebreak_only" and match["current_set"] >= 3)
+    )
 
+def show_final_tb(match):
+    return (
+        match["final_set"] == "super_tiebreak_only" and
+        match["finish"]
+    )
     

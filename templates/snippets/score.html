@@ -16,15 +16,16 @@
         <p class="points">{{p1.point}}</p>
         <p class="points">{{p2.point}}</p>
       </div>
-      {% endif %} {% if is_tiebreak and not finish and final_set != 'super_tiebreak_only' %}
+      {% endif %} {% if show_live_tb %}
       <div class="pointside">
         <p class="points">{{p1.tiebreak_point_win}}</p>
         <p class="points">{{p2.tiebreak_point_win}}</p>
       </div>
-      {% endif %} {% if current_set > 1 and final_set == 'super_tiebreak_only' %}
+      {% endif %} {% if show_final_tb %}
       <div class="pointside">
         <p class="points">{{p1.tiebreak_display_score.2}}</p>
         <p class="points">{{p2.tiebreak_display_score.2}}</p>
+        <p class="duration_point">{{duration_set3}}</p>
       </div>
       {% endif %}
     </div>
@@ -80,7 +81,7 @@
           html: `
              <div class="match-popup">
               <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
-              <div class="winner">{{ score }}</div>
+              <div class="winner">{{ score | safe }}</div>
           </div>
           `,
           icon: 'success',

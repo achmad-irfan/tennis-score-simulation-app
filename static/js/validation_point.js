@@ -5,6 +5,7 @@ pointForm.addEventListener("submit", function (e) {
   // Inisialisasi serve_type dan point
   const serveChecked = document.querySelector("input[name='serve_type']:checked");
   const pointChecked = document.querySelector("input[name='point']:checked");
+ 
 
   // Jika salah satunya belum dipilih, hentikan submit
   if (!serveChecked || !pointChecked) {

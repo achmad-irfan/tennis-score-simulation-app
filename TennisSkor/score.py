@@ -217,9 +217,8 @@ class ScoringSystem:
         player.point = 0
         opponent.point = 0
         
-        
-        self.check_set_finished(match, player, opponent)
         self.check_last_set(match)
+        self.check_set_finished(match, player, opponent)
         self.check_match_finish(match, player, opponent)
 
         match.status = f"*Game {player}"
@@ -231,65 +230,20 @@ class ScoringSystem:
 
         print("DEBUG is_last_set:", match.is_last_set)
 
-        if match.is_last_set:
+        if match.is_last_set :
             print("MASUK LAST SET")
-            self.check_scoring_final_set(match)
-            
-        
-        
-    def check_scoring_final_set(self,match):
-        if match.final_set == "super_tiebreak_only":
-            match.is_tiebreak = True
-    
-    def get_first_server_tiebreak(self, match):
-        if match.current_tiebreak == 1:
-            if match.current_server == match.p1:
-                match.first_server_tiebreak = "p1"
-            else:
-                match.first_server_tiebreak = "p2"
-                
-    def get_current_server_after_tiebreak(self, match):
-        if match.first_server_tiebreak == "p1":
-            match.current_server = match.p2
+            self.check_super_tiebreak_only(match)
         else:
-            match.current_server = match.p1
-            
-    def tiebreak_scoring(self, match, player, opponent):
-        match.current_tiebreak += 1
-        self.get_first_server_tiebreak(match)
-        self.change_server_tiebreak(match)
-        
-
-        player.tiebreak_point_win += 1
-        player.tiebreak_display_score[match.current_set] += 1
-        player.total_point += 1
-        
-        tie_break_point_min_won = 7 
-        if match.is_last_set:
-            if match.final_set in ["super_tiebreak", "super_tiebreak_only"]:
-                tie_break_point_min_won = 10
-            elif match.final_set == "normal":
-                tie_break_point_min_won = 7
-        
-        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
-            player.sets[match.current_set] = 7
-            opponent.sets[match.current_set] = 6
-           
-            match.current_set += 1
-            match.start_time = datetime.now()
             match.is_tiebreak = False
-            self.get_set_snapshot(match)
-            self.get_current_server_after_tiebreak(match)
-            self.reset_atribut_after_set(match.p1)
-            self.reset_atribut_after_set(match.p2)
-
-            player.set_win += 1
-
-            player.tiebreak_point_win = 0
-            opponent.tiebreak_point_win = 0
-
-            self.check_match_finish(match, player, opponent)
-        
+            
+            
+    def check_super_tiebreak_only(self,match):
+        if match.final_set == "super_tiebreak_only" :
+            print("Masuk SUPER TIE BREAK")
+            match.is_tiebreak = True
+        else:
+            match.is_tiebreak = False
+            
     def check_set_finished(self, match, player, opponent):
         if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
@@ -310,6 +264,58 @@ class ScoringSystem:
                 match.set_winner.append("p1")
             else:
                 match.set_winner.append("p2")
+    
+    def tiebreak_scoring(self, match, player, opponent):
+        match.current_tiebreak += 1
+        self.get_first_server_tiebreak(match)
+        self.change_server_tiebreak(match)
+        
+        player.tiebreak_point_win += 1
+        player.tiebreak_display_score[match.current_set] += 1
+        player.total_point += 1
+        
+        tie_break_point_min_won = 7 
+        if match.is_last_set:
+            if match.final_set in ["super_tiebreak", "super_tiebreak_only"]:
+                tie_break_point_min_won = 10
+            elif match.final_set == "normal":
+                tie_break_point_min_won = 7
+        
+        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
+            player.sets[match.current_set] = 7
+            opponent.sets[match.current_set] = 6
+           
+            match.current_set += 1
+            self.check_last_set(match)
+            match.start_time = datetime.now()
+            self.get_set_snapshot(match)
+            self.get_current_server_after_tiebreak(match)
+            self.reset_atribut_after_set(match.p1)
+            self.reset_atribut_after_set(match.p2)
+
+            player.set_win += 1
+
+            player.tiebreak_point_win = 0
+            opponent.tiebreak_point_win = 0
+
+            self.check_match_finish(match, player, opponent)
+
+    def get_first_server_tiebreak(self, match):
+        if match.current_tiebreak == 1:
+            if match.current_server == match.p1:
+                match.first_server_tiebreak = "p1"
+            else:
+                match.first_server_tiebreak = "p2"
+                
+    def get_current_server_after_tiebreak(self, match):
+        if match.first_server_tiebreak == "p1":
+            match.current_server = match.p2
+        else:
+            match.current_server = match.p1
+            
+    
+        
+    
         
         
     def check_match_finish(self, match, player, opponent):
@@ -323,7 +329,7 @@ class ScoringSystem:
                 match.match_winner = opponent
                 match.match_loser = player
 
-            self.scoring(match)
+            self.get_scoring_display(match)
         
             self.get_aggregate_snapshot(match)
             
@@ -399,7 +405,7 @@ class ScoringSystem:
         opponent.point = 0
 
 
-    def scoring(self, match):
+    def get_scoring_display(self, match):
         match.score = []
         match_winner = match.match_winner
         match_loser = match.match_loser
@@ -409,17 +415,10 @@ class ScoringSystem:
             winner_set = match_winner.sets[i]
             loser_set = match_loser.sets[i]
 
-            # Tentukan apakah set ini tiebreak
-            tiebreak_score = ""
-            if max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
-                # Tampilkan skor tiebreak kalah saja
-                if winner_set > loser_set:
-                    tiebreak_score = f"({match_loser.tiebreak_display_score[i]})"
-                    match.score.append(f"7-{loser_set}{tiebreak_score}")
-                else:
-                    tiebreak_score = f"({match_winner.tiebreak_display_score[i]})"
-                    match.score.append(f"{tiebreak_score}{winner_set}-7")
-             
+            if i == match.current_set -1  and match.final_set == "super_tiebreak_only":
+                match.score.append(f"[{match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]}]")
+            elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
+                match.score.append(f"{winner_set}-{loser_set}<sup>({match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]})</sup>")
             else:
                 match.score.append(f"{winner_set}-{loser_set}")       
             
