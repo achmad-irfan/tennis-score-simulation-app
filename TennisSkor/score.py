@@ -136,7 +136,7 @@ class Match:
         duration_backup = self.duration.copy()
         
         # Buat objek baru
-        new_match = Match(self.p1.name, self.p2.name, self.first_server)
+        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set)
         
         for shot in self.history:
             new_match.play_point(shot["event"], shot["serve"])
@@ -245,12 +245,13 @@ class ScoringSystem:
             match.is_tiebreak = False
             
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
+        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.current_set += 1
+            self.check_last_set(match)
             match.start_time = datetime.now()
             self.get_set_snapshot(match)
             player.point = 0

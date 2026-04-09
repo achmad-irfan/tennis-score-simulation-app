@@ -20,6 +20,13 @@
     <p class="duration_point">{{duration_set3}}</p>
 </div>
 {% endif %} 
+{% if show_final_tb %}
+      <div class="gameside">
+        <p class="game {% if set_winner.3 == "p1" %}winner{% endif %}">{{p1.tiebreak_display_score.2}}</p>
+        <p class="game {% if set_winner.3 == "p2" %}winner{% endif %}">{{p2.tiebreak_display_score.2}}</p>
+        <p class="duration_point">{{duration_set3}}</p>
+      </div>
+ {% endif %}
 
 
 
