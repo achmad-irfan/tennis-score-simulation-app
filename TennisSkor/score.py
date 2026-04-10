@@ -314,11 +314,6 @@ class ScoringSystem:
         else:
             match.current_server = match.p1
             
-    
-        
-    
-        
-        
     def check_match_finish(self, match, player, opponent):
         if player.set_win == 2 or opponent.set_win == 2:
             match.finish = True

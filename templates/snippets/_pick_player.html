@@ -4,7 +4,7 @@
       <h4 class="generalh4">Pick Players</h4>
       <label for="player">Choose Player 1:</label>
       <select name="p1" id="p1">
-        <option value="" selected disabled>-- Select Player --</option>
+        <option value="" selected disabled>-- Select Player 1 --</option>
         {% for player in players %}
         <option value="{{player.name}}">{{player.name}}</option>
         {% endfor %}
@@ -12,7 +12,7 @@
 
       <label for="player">Choose Player 2:</label>
       <select name="p2" id="p2">
-        <option value="" selected disabled>-- Select Player --</option>
+        <option value="" selected disabled>-- Select Player 2 --</option>
         {% for player in players %}
         <option value="{{player.name}}">{{player.name}}</option>
         {% endfor %}
@@ -20,14 +20,14 @@
 
       <label for="final_set">Final Set Scoring:</label>
       <select name="final_set_scoring" id="final_set_scoring">
-        <option value="" selected final set>-- Select Final Set Scoring --</option>
-        <option value="normal">Normat Set</option>
+        <option value="" selected disabled>-- Select Final Set Scoring --</option>
+        <option value="normal">Normal Set</option>
         <option value="super_tiebreak">Super Tiebreak (at 6–6)</option>
         <option value="super_tiebreak_only">Super Tiebreak Last Set</option>
       </select>
 
       <button id="submit" name="submit" type="submit" value="1">Submit</button>
-      <button type="submit" formaction="{% url 'home' %}">Reset</button>
+      <button id="reset" type="submit" formaction="{% url 'home' %}">Reset</button>
     </form>
 
     {% if error %}
@@ -40,7 +40,7 @@
       <thead>
         <tr>
           <th>{{ p1_profile.name }}</th>
-          <th></th>
+          <th>VS</th>
           <th>{{ p2_profile.name }}</th>
         </tr>
         <tr>

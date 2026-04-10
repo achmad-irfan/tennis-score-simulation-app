@@ -10,7 +10,7 @@
       </span>
       <h6>{{p1_name|title}}</h6>
       <div class="serve_type shot">
-        {% if current_server == "p1" %}
+        {% if current_server != "p2" %}
         <label>
           <input type="radio" name="serve_type" value="first" checked />
           1st Serve
@@ -19,12 +19,13 @@
           <input type="radio" name="serve_type" value="second" />
           2nd Serve
         </label>
+        {% endif %}
       </div>
       <div class="shot_type shot">
         <label><input type="radio" name="point" value="p1_ace" /><span>Ace</span></label>
         {% if serve_type != "first" %}
         <label><input type="radio" name="point" value="p1_df" />Double Fault</label>
-        {% endif %} {% endif %}
+        {% endif %}
         <label><input type="radio" name="point" value="p1_winner" />Winner</label>
         <label><input type="radio" name="point" value="p1_fe" />Forced Error</label>
         <label><input type="radio" name="point" value="p1_ue" />Unforced Error</label>
@@ -38,7 +39,7 @@
       </span>
       <h6>{{p2_name|title}}</h6>
       <div class="serve_type shot">
-        {% if current_server == "p2" %}
+        {% if current_server != "p1" %}
         <label>
           <input type="radio" name="serve_type" value="first" checked />
           1st Serve
@@ -48,9 +49,11 @@
           <input type="radio" name="serve_type" value="second" />
           2nd Serve
         </label>
+        {% endif %}
       </div>
       <div class="shot_type shot">
         <label><input type="radio" name="point" value="p2_ace" />Ace</label>
+        {% if serve_type != "first" %}
         <label><input type="radio" name="point" value="p2_df" />Double Fault</label>
         {% endif %}
         <label><input type="radio" name="point" value="p2_winner" />Winner</label>

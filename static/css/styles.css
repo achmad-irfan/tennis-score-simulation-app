@@ -6,23 +6,11 @@ body {
   background: #0d1117;
 }
 
-.mainbody {
+.app-container {
   width: 85%;
   margin: 20px auto;
 }
-/* Form default layout */
-h2 {
-  color: white;
-  background: #161b22;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-}
-.pickNprofile {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-}
+
 .general {
   padding: 30px;
   background: #161b22;
@@ -33,6 +21,33 @@ h2 {
   margin-top: 20px;
 }
 
+h2 {
+  color: white;
+  background: #161b22;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.generalh4 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #58a6ff;
+}
+
+.nav-tabs {
+  display: none;
+}
+
+/* =========================================================
+   PICK PLAYER
+   ========================================================= */
+.pickNprofile {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
 .pick-players {
   flex: 3;
 }
@@ -41,11 +56,6 @@ h2 {
   flex: 5;
 }
 /* Title */
-.generalh4 {
-  text-align: center;
-  margin-bottom: 10px;
-  color: #58a6ff;
-}
 
 /* Labels */
 .pick-players label {
@@ -105,6 +115,7 @@ h2 {
   color: white;
   border-radius: 10px;
   overflow: hidden;
+  table-layout: fixed;
 }
 
 .player-compare th {
@@ -124,6 +135,14 @@ h2 {
   background: rgba(255, 255, 255, 0.05);
 }
 
+table th:nth-child(1),
+table td:nth-child(3) {
+  width: 40%;
+}
+
+.player-compare th:nth-child(2) {
+  width: 20%;
+}
 .player-compare img {
   border-radius: 8px;
   width: 100px;
@@ -142,13 +161,6 @@ h2 {
     "result result";
 }
 
-/* ==============================
-   LIVE SCORE WRAPPER
-   ============================== */
-
-/* ==============================
-   SCORE GRID
-   ============================== */
 .livescoreAll {
   grid-area: score;
 }
@@ -158,9 +170,6 @@ h2 {
   gap: 5px;
 }
 
-/* ==============================
-   PLAYER NAME (dari snippet)
-   ============================== */
 .livescore h3 {
   width: 170px;
   text-align: right;
@@ -184,13 +193,6 @@ h2 {
   margin-top: -10px;
 }
 
-/* ==============================
-   SET COLUMN (SET WON)
-   ============================== */
-
-/* ==============================
-   STATUS TEXT
-   ============================== */
 .livescoreAll p {
   /* margin-top: 15px; */
   font-size: 13px;
@@ -202,9 +204,6 @@ h2 {
   width: 300px;
 }
 
-/* ==============================
-   RESULT BOX
-   ============================== */
 .result {
   display: flex;
   flex-direction: row;
@@ -438,9 +437,6 @@ button:hover {
   text-align: center;
 }
 
-/* ==============================
-   BODY
-   ============================== */
 .statistic tbody td {
   padding: 12px;
   text-align: center;
@@ -457,26 +453,25 @@ button:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* ==============================
-   KOLOM KHUSUS
-   ============================== */
-
 /* player kiri */
 .statistic tbody td:first-child {
   font-weight: 600;
   color: #3fb950; /* hijau */
+  width: 40%;
 }
 
 /* player kanan */
 .statistic tbody td:last-child {
   font-weight: 600;
   color: #6c6aaa; /* merah */
+  width: 40%;
 }
 
 /* kolom tengah (label) */
 .statistic tbody td:nth-child(2) {
   color: #c9d1d9;
   font-weight: 500;
+  width: 20%;
 }
 
 /* ==============================
@@ -495,10 +490,6 @@ button:hover {
   background: linear-gradient(to right, transparent, #30363d, transparent);
   margin: 5px 0;
 }
-
-/* ==============================
-   SPECIAL VALUE STYLE
-   ============================== */
 
 /* highlight value besar */
 .statistic td strong {
@@ -656,4 +647,178 @@ table input:active {
 
 .my-popup-title {
   padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    height: 100vh;
+  }
+
+  .tab-content {
+    max-width: 760px;
+  }
+
+  h2 {
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  .pickNprofile {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .general {
+    padding: 20px;
+    margin-top: 0px;
+  }
+
+  .generalh4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .tab-pane {
+    display: none;
+  }
+
+  .tab-pane.active {
+    display: block;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+  }
+
+  .nav-tabs {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  /* Judul full */
+  form h4 {
+    grid-column: 1 / -1;
+  }
+
+  /* Label & select default full */
+  form label,
+  form select,
+  form button {
+    grid-column: 1 / -1;
+  }
+
+  /* Khusus Player 1 & Player 2 (2 kolom) */
+  form label:nth-of-type(1),
+  form select:nth-of-type(1),
+  form label:nth-of-type(2),
+  form select:nth-of-type(2),
+  #reset,
+  #submit {
+    grid-column: auto;
+  }
+
+  .pick-players label {
+    display: none;
+  }
+
+  /* Select boxes */
+  .pick-players select {
+    width: 100%;
+    padding: 10px 20px;
+    margin-bottom: 10x;
+  }
+
+  option {
+    text-align: center;
+  }
+
+  .pick-players button {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .profiles h4 {
+    display: none;
+  }
+
+  .player-compare {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .player-compare th {
+    padding: 0px;
+  }
+
+  .player-compare td {
+    font-size: 13px;
+  }
+
+  .player-compare img {
+    width: 75px;
+    height: 75px;
+    margin-bottom: 10px;
+  }
+
+  .score {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-point {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 200%;
+  }
+
+  .form-point .point {
+    width: 200%;
+
+    padding: 10px;
+  }
+
+  .shot {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .shot label {
+    margin: 5px 5px;
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .statistic {
+    max-width: 100%;
+  }
+
+  .statistic thead th {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .statistic table td {
+    font-size: 12px;
+  }
+
+  table img {
+    width: 75px;
+    height: 75px;
+    margin-top: 10px;
+  }
+
+  .statistic table th:nth-child(1),
+  .statistic table td:nth-child(3) {
+    width: 35%;
+  }
+
+  .statistic table th:nth-child(2) {
+    width: 30%;
+  }
 }
