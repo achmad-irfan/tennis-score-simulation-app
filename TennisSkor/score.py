@@ -12,7 +12,7 @@ player_attrs= [
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish", "is_last_set"],
-                "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak"],
+                "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak", "last_winner_point"],
                 "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
                 "data_dict": []}
 
@@ -183,6 +183,11 @@ class ScoringSystem:
     
     def update_point(self, match, player, opponent):
         player.game_point +=1
+        if player == match.p1:
+            match.last_winner_point= "p1"
+        else:
+            match.last_winner_point= "p2"
+            
         self.duration(match)
         
         if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:

@@ -75,7 +75,8 @@ def Skor(request):
     "table_match_stats": score.table_match_stats,
     "show_live_tb": utils.show_live_tb(new_value),
     "show_final_tb": utils.show_final_tb(new_value),
-    "active_tab" : active_tab
+    "active_tab" : active_tab,
+    
         })
     
     for attr in score.player_attr_list:
@@ -85,7 +86,7 @@ def Skor(request):
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
     
     
-    
+    print(context['last_winner_point'])
         
     return render(request, 'index.html', context)
     
