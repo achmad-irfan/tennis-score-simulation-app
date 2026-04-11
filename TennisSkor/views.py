@@ -54,7 +54,10 @@ def Skor(request):
     
     # Menyimpan dalam session
     utils.save_session(request,restore_match)
-        
+    
+    active_tab = "pick"
+    if request.POST.get("submit_shot") or "cancel_point" in request.POST:
+        active_tab = "score"   
         
     # Context
     context= new_value.copy()
@@ -71,7 +74,8 @@ def Skor(request):
     "total_duration": f"{sum(new_value['duration'])}'",
     "table_match_stats": score.table_match_stats,
     "show_live_tb": utils.show_live_tb(new_value),
-    "show_final_tb": utils.show_final_tb(new_value)
+    "show_final_tb": utils.show_final_tb(new_value),
+    "active_tab" : active_tab
         })
     
     for attr in score.player_attr_list:
@@ -79,7 +83,9 @@ def Skor(request):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
-     
-      
+    
+    
+    
+        
     return render(request, 'index.html', context)
     

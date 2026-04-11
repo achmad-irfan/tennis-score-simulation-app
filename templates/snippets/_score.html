@@ -1,4 +1,4 @@
-<div class="score">
+<div class="score" id="score-section">
   <!-- Pick point Winner -->
   {% include 'snippets/pick_point.html' %}
   <!-- End of Pick point Winner -->
@@ -21,7 +21,7 @@
         <p class="points">{{p1.tiebreak_point_win}}</p>
         <p class="points">{{p2.tiebreak_point_win}}</p>
       </div>
-      {% endif %} 
+      {% endif %}
     </div>
     {% if status %}
     <p>{{status}}</p>
@@ -30,7 +30,7 @@
       <h6>Last 15 Points</h6>
       <div class="player-points">
         <p>{{p1_name}}</p>
-        <div class="points">
+        <div class="points_dot">
           {% for p in last_points %}
           <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
           {% endfor %}
@@ -39,7 +39,7 @@
 
       <div class="player-points">
         <p>{{p2_name}}</p>
-        <div class="points">
+        <div class="points_dot">
           {% for p in last_points %}
           <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>
           {% endfor %}
@@ -59,30 +59,42 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  const isFinished = {{ finish|yesno:"true,false" }};
+    const isFinished = {{ finish|yesno:"true,false" }};
 
-  // reset saat match belum selesai
-  if (!isFinished) {
-      sessionStorage.removeItem("result_shown");
-  }
+    // reset saat match belum selesai
+    if (!isFinished) {
+        sessionStorage.removeItem("result_shown");
+    }
 
-  // tampilkan saat selesai
-  if (isFinished && !sessionStorage.getItem("result_shown")) {
-      sessionStorage.setItem("result_shown", "true");
+    // tampilkan saat selesai
+    if (isFinished && !sessionStorage.getItem("result_shown")) {
+        sessionStorage.setItem("result_shown", "true");
 
-      Swal.fire({
-          title: 'Match Finished',
-          html: `
-             <div class="match-popup">
-              <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
-              <div class="winner">{{ score | safe }}</div>
-          </div>
-          `,
-          icon: 'success',
-          customClass: {
-          popup: 'my-popup-bg' ,
-          title : 'my-popup-title' // ini container popup
+        Swal.fire({
+            title: 'Match Finished',
+            html: `
+               <div class="match-popup">
+                <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
+                <div class="winner">{{ score | safe }}</div>
+            </div>
+            `,
+            icon: 'success',
+            customClass: {
+            popup: 'my-popup-bg' ,
+            title : 'my-popup-title' // ini container popup
+        }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const activeTab = "{{ active_tab|default:'pick' }}";
+
+    // kalau di score → scroll ke score
+    if (activeTab === "score") {
+      const el = document.getElementById("score-section");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
       }
-      });
-  }
+    }
+  });
 </script>

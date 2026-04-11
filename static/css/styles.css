@@ -262,6 +262,12 @@ label:hover {
   background-color: transparent;
 }
 
+.serve-icon img,
+.flag img {
+  width: 20px;
+  height: 20px;
+}
+
 /* ==============================
    CONTAINER
    ============================== */
@@ -552,23 +558,23 @@ table input:active {
 .player-points {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 10px;
 }
 
 .player-points p {
-  padding: 15px;
   background-color: #0d1117;
   width: 100%;
   border-radius: 5px;
+  font-size: 15px;
+  padding: 15px;
 }
-.points {
+.points_dot {
   display: flex;
   gap: 5px;
-  padding: 20px;
   background-color: #0d1117;
   justify-content: start;
   border-radius: 5px;
+  padding: 10px;
 }
 
 .player-points span {
@@ -649,6 +655,13 @@ table input:active {
   padding: 20px;
 }
 
+@media (min-width: 769px) {
+  .tab-pane {
+    display: block !important;
+    opacity: 1 !important;
+  }
+}
+
 @media (max-width: 768px) {
   .app-container {
     height: 100vh;
@@ -693,10 +706,11 @@ table input:active {
   }
 
   .nav-tabs {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: -20px;
   }
 
   /* Judul full */
@@ -779,7 +793,6 @@ table input:active {
 
   .form-point .point {
     width: 200%;
-
     padding: 10px;
   }
 
@@ -791,7 +804,7 @@ table input:active {
   .shot label {
     margin: 5px 5px;
     padding: 5px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .statistic {
@@ -820,5 +833,144 @@ table input:active {
 
   .statistic table th:nth-child(2) {
     width: 30%;
+  }
+
+  .name .player_name {
+    font-size: 14px;
+  }
+
+  .flag img {
+    width: 15px;
+    height: 15px;
+  }
+
+  .livescore > div > p {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .shot {
+    margin-bottom: 5px;
+  }
+
+  .player-points p {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab-content {
+    max-width: 470px;
+  }
+
+  form {
+    display: block;
+  }
+
+  .pick-players button {
+    margin-top: 10px;
+  }
+
+  .player_name {
+    font-size: 14px;
+  }
+
+  .player-compare th {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  .statistic table th:nth-child(1),
+  .statistic table td:nth-child(3) {
+    width: 30%;
+  }
+
+  .statistic table th:nth-child(2) {
+    width: 40%;
+  }
+
+  .form-point {
+    flex-direction: column;
+    width: 50%;
+  }
+
+  .point {
+    border-radius: 22px;
+    width: 50%;
+  }
+
+  .statistic thead th {
+    font-size: 10px;
+  }
+
+  .statistic img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .name p {
+    font-size: 12px;
+    width: 175px;
+  }
+  .name p .player_name {
+    font-size: 12px;
+  }
+  .serve-icon img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .country {
+    display: none;
+  }
+
+  .livescore > div:nth-child(2) {
+    margin-right: 3px;
+  }
+
+  .livescore > div:last-child {
+    margin-left: 1px;
+  }
+
+  .gameside .duration_point {
+    margin-top: -15px;
+  }
+
+  .livescoreAll {
+    padding: 5px;
+  }
+
+  .shot_winner {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .points_dot {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px;
+    height: 40px;
+  }
+
+  #cancelForm {
+    margin-bottom: 10px;
+    margin-top: -20px;
+  }
+
+  .result_name p {
+    font-size: 13px;
+  }
+
+  .serve-icon img,
+  .flag img {
+    width: 20px;
+    height: 20px;
   }
 }

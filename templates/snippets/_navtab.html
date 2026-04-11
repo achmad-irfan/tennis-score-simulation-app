@@ -1,11 +1,22 @@
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pick">Pick</button>
+    <button class="nav-link {% if active_tab == 'pick' %}active{% endif %}" 
+            data-bs-toggle="tab" data-bs-target="#pick">
+      Pick
+    </button>
   </li>
+
   <li class="nav-item">
-    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#score">Score</button>
+    <button class="nav-link {% if active_tab == 'score' %}active{% endif %}" 
+            data-bs-toggle="tab" data-bs-target="#score">
+      Score
+    </button>
   </li>
+
   <li class="nav-item">
-    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#stat">Stat</button>
+    <button class="nav-link {% if active_tab == 'stat' %}active{% endif %}" 
+            data-bs-toggle="tab" data-bs-target="#stat">
+      Stat
+    </button>
   </li>
 </ul>
