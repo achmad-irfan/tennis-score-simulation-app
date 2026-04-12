@@ -416,7 +416,7 @@ class ScoringSystem:
             winner_set = match_winner.sets[i]
             loser_set = match_loser.sets[i]
 
-            if i == match.current_set -1  and match.final_set == "super_tiebreak_only":
+            if i == match.current_set  and match.final_set == "super_tiebreak_only":
                 match.score.append(f"[{match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]}]")
             elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
                 match.score.append(f"{winner_set}-{loser_set}<sup>({match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]})</sup>")
