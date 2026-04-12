@@ -1,15 +1,15 @@
 <!-- Set 1 -->
 <div class="gameside">
-    <p class="game {% if set_winner.0 == "p1" %}winner{% endif %}">{{sets1_p1}}</p>
-    <p class="game {% if set_winner.0 == "p2" %}winner{% endif %}">{{sets1_p2}}</p>
+    <p class="game {% if set_winner.0 == "p1" %}winner{% endif %} {% if last_winner_point == 'p1' and is_changing_game and current_set == 0 %}flash{% endif %}">{{sets1_p1}}</p>
+    <p class="game {% if set_winner.0 == "p2" %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 0 %}flash{% endif %}">{{sets1_p2}}</p>
     <p class="duration_point">{{duration_set1}}</p>
 </div>
 
 <!-- Set 2 -->
 {% if current_set > 0 %}
 <div class="gameside">
-    <p class="game {% if set_winner.1 == "p1" %}winner{% endif %}">{{sets2_p1}}</p>
-    <p class="game {% if set_winner.1 == "p2" %}winner{% endif %}">{{sets2_p2}}</p>
+    <p class="game {% if set_winner.1 == "p1" %}winner{% endif %} {% if last_winner_point == 'p1' and is_changing_game and current_set == 1 %}flash{% endif %}">{{sets2_p1}}</p>
+    <p class="game {% if set_winner.1 == "p2" %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 1 %}flash{% endif %}">{{sets2_p2}}</p>
     <p class="duration_point">{{duration_set2}}</p>
 </div>
 {% endif %} 
@@ -17,8 +17,8 @@
 <!-- Set 3 -->
 {% if current_set > 1 and final_set != 'super_tiebreak_only' %}
 <div class="gameside">
-    <p class="game {% if set_winner.2 == "p1" %}winner{% endif %}">{{sets3_p1}}</p>
-    <p class="game {% if set_winner.2 == "p2" %}winner{% endif %}">{{sets3_p2}}</p>
+    <p class="game {% if set_winner.2 == "p1" %}winner{% endif %} {% if last_winner_point == 'p1' and is_changing_game and current_set == 2 %}flash{% endif %}">{{sets3_p1}}</p>
+    <p class="game {% if set_winner.2 == "p2" %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 2 %}flash{% endif %}">{{sets3_p2}}</p>
     <p class="duration_point">{{duration_set3}}</p>
 </div>
 {% endif %} 

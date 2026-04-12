@@ -659,7 +659,7 @@ table input:active {
 }
 
 /* Animasi */
-.points.flash {
+.flash {
   animation: glowFlash 2s ease;
 }
 

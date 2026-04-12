@@ -83,6 +83,7 @@ def show_live_tb(match):
 def show_final_tb(match):
     return (
         match["final_set"] == "super_tiebreak_only" and
-        match["finish"]
+        match["finish"] and match["current_set"] == 1
     )
     
+

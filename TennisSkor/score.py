@@ -11,7 +11,7 @@ player_attrs= [
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {"data_int":['current_set', "current_tiebreak" ],
-                "data_bool": ["is_tiebreak", "finish", "is_last_set"],
+                "data_bool": ["is_tiebreak", "finish", "is_last_set", "is_changing_game"],
                 "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak", "last_winner_point"],
                 "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
                 "data_dict": []}
@@ -189,6 +189,7 @@ class ScoringSystem:
             match.last_winner_point= "p2"
             
         self.duration(match)
+        match.is_changing_game = False
         
         if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:
             self.win_game(match, player, opponent)
@@ -218,6 +219,7 @@ class ScoringSystem:
         self.increment_break_point_win(match, player)
         player.sets[match.current_set] += 1
         self.change_server(match)
+        match.is_changing_game = True
 
         player.point = 0
         opponent.point = 0
@@ -229,11 +231,7 @@ class ScoringSystem:
         match.status = f"*Game {player}"
         
     def check_last_set(self, match):
-        print("DEBUG current_set:", match.current_set)
-
         match.is_last_set = (match.current_set == 2)
-
-        print("DEBUG is_last_set:", match.is_last_set)
 
         if match.is_last_set :
             print("MASUK LAST SET")
@@ -254,7 +252,8 @@ class ScoringSystem:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+            match.is_changing_game = True
             match.current_set += 1
             self.check_last_set(match)
             match.start_time = datetime.now()
