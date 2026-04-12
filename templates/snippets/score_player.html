@@ -21,4 +21,11 @@
       {% endif %} {% endif %}
     </span>
   </p>
+  <div class="status">
+    {% if status_shot %}
+    <p class="status_shot">{{status_shot}}</p>
+    {% endif %} {% if status_point %}
+    <p class="status_shot">{{status_point}}</p>
+    {% endif %}
+  </div>
 </div>

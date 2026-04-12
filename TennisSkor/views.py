@@ -86,8 +86,5 @@ def Skor(request):
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
     
     
-    print(context['is_changing_game'])
-    print(context['current_set'])
-        
     return render(request, 'index.html', context)
     

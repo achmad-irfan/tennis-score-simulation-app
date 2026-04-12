@@ -206,6 +206,19 @@ table td:nth-child(3) {
   display: flex;
   width: 300px;
 }
+.name .status {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  width: 100%;
+}
+.status .status_shot {
+  font-size: 12px;
+  padding: 5px;
+  background-color: #30363d;
+  color: white;
+  border-radius: 5px;
+}
 
 .result {
   display: flex;

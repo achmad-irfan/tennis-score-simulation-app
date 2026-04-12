@@ -10,11 +10,13 @@ player_attrs= [
             "return_point_win", "total_point", "forced_error", "set_win", "game_point"
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
-match_attrs= {"data_int":['current_set', "current_tiebreak" ],
+match_attrs= {
+                "data_int":['current_set', "current_tiebreak" ],
                 "data_bool": ["is_tiebreak", "finish", "is_last_set", "is_changing_game"],
-                "data_none": ['match_winner', "match_loser","status", "first_server_tiebreak", "last_winner_point"],
+                "data_none": ['match_winner', "match_loser","status_shot", "first_server_tiebreak", "last_winner_point", "status_point"],
                 "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
-                "data_dict": []}
+                "data_dict": []
+            }
 
 # Tipe data default dari atribut objek match
 type_defaults = {
@@ -182,6 +184,7 @@ class ScoringSystem:
         self.break_point_check(match)
     
     def update_point(self, match, player, opponent):
+        match.status_point = None
         player.game_point +=1
         if player == match.p1:
             match.last_winner_point= "p1"
@@ -197,6 +200,7 @@ class ScoringSystem:
             opponent.game_point = 0
             
         self.update_display_score(match.p1,match.p2)
+        self.get_status_point(match)
     
     def update_display_score(self, p1, p2):
         mapping = [0, 15, 30, 40]
@@ -214,6 +218,7 @@ class ScoringSystem:
         else:
             p1.point = mapping[p1.game_point]
             p2.point = mapping[p2.game_point]
+
     
     def win_game(self, match, player, opponent):
         self.increment_break_point_win(match, player)
@@ -228,7 +233,7 @@ class ScoringSystem:
         self.check_set_finished(match, player, opponent)
         self.check_match_finish(match, player, opponent)
 
-        match.status = f"*Game {player}"
+        match.status_shot = f"Game {player}"
         
     def check_last_set(self, match):
         match.is_last_set = (match.current_set == 2)
@@ -361,19 +366,19 @@ class ScoringSystem:
 
         if shot == "ace":
             player.ace += 1
-            match.status = f"*Ace from {player}"
+            match.status_shot = f"Ace from {player}"
         elif shot == "winner":
             player.winner += 1
-            match.status = f"*Winner from {player}"
+            match.status_shot = f"Winner from {player}"
         elif shot == "df":
             player.double_fault += 1
-            match.status = f"*Double Fault from {player}"
+            match.status_shot = f"Double Fault from {player}"
         elif shot == "fe":
             player.forced_error += 1
-            match.status = f"*Forced Error from {player}"
+            match.status_shot = f"Forced Error from {player}"
         elif shot == "ue":
             player.unforced_error += 1
-            match.status = f"*Unforced Error from {player}"
+            match.status_shot = f"Unforced Error from {player}"
 
 
     def break_point_check(self, match):
@@ -459,14 +464,20 @@ class ScoringSystem:
                 "current_server": "p1" if match.current_server == match.p1 else "p2",
                 "is_tiebreak": match.is_tiebreak,
                 "current_tiebreak": match.current_tiebreak,
-                "status": match.status,
+                "status_shot": match.status_shot,
                 "set_winner": match.set_winner.copy(),
                 "duration": match.duration.copy(),
                 "start_time": match.start_time.isoformat()
             },
         }
         match.set_snapshot.append(snapshot)     
+    
+    def get_status_point(self, match):
+        server, receiver = (match.p1, match.p2) if match.current_server == match.p1 else (match.p2, match.p1)
         
+        if receiver.point in [40, "AD"] and server.point != 40:
+            match.status_point = f"Break Point for {receiver.name}"
+    
     def get_aggregate_snapshot(self,match):
         from .score import player_attrs
 
