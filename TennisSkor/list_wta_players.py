@@ -1,6 +1,26 @@
 from collections import OrderedDict
 players = [
     {
+        "name": "Jannik Sinner",
+        "country": "ITA",
+        "flag": "https://flagcdn.com/w40/it.png",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/6/64/Jannik_Sinner_2025_US_Open.jpg",
+        "titles": 26,
+        "finals": 98,
+        "best_ranking": 1,
+        "height": 175
+    },
+    {
+        "name": "Carlos Alcaraz",
+        "country": "ESP",
+        "flag": "https://flagcdn.com/w40/es.png",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Carlos_Alcaraz_2025_FO.jpg",
+        "titles": 26,
+        "finals": 98,
+        "best_ranking": 1,
+        "height": 175
+    },
+    {
         "name": "Serena Williams",
         "country": "USA",
         "flag": "https://flagcdn.com/w40/us.png",
