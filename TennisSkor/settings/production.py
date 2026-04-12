@@ -15,8 +15,8 @@ DATABASES = {
     }
 }
 STATIC_URL = '/static/'
-STATIC_ROOT = "/home/wwwachm1/TENNIS_APP/staticfiles"
-MEDIA_ROOT  = "/home/wwwachm1/TENNOS_APP/mediafiles"
+STATIC_ROOT = "/home/wwwachm1/TENNISAPP/staticfiles"
+MEDIA_ROOT  = "/home/wwwachm1/TENNISAPP/mediafiles"
 
 
 LOGGING = {
