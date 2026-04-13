@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG= False
 
-ALLOWED_HOSTS = ['tennis-app.achmad-irfan.my.id']
+ALLOWED_HOSTS = ['tennis-app.achmad-irfan.my.id', "www.tennis-app.achmad-irfan.my.id"]
 
 DATABASES = {
     'default': {
