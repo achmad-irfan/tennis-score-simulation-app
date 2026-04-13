@@ -62,6 +62,7 @@ def Skor(request):
     # Context
     context= new_value.copy()
     context.update({
+    "error":None,
     "p1_name" : new_value["p1"]['name'],
     "p2_name":  new_value["p2"]['name'],
     "players": list_wta_players.players,
