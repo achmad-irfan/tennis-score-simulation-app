@@ -701,7 +701,7 @@ table input:active {
   background: #fff;
   padding: 25px;
   border-radius: 12px;
-  width: 320px;
+  width: min(90vw, 320px);
   text-align: center;
   z-index: 1000;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -1090,5 +1090,21 @@ table input:active {
   .flag img {
     width: 20px;
     height: 20px;
+  }
+
+  #popup,
+  #popup-server,
+  #popup_alert {
+    padding: 12px;
+  }
+
+  .popup-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .popup-buttons button {
+    flex: 1;
   }
 }
