@@ -103,9 +103,9 @@
 
 <div id="popup-server">
   <h3>Select First Server</h3>
-  <button type="button" id="btn_p1_server" onclick="setFirstServer('p1')" class="btn-confirm"></button>
+  <button type="button" onclick="setFirstServer('p1')" id="btn_p1_server" class="btn-confirm">{{ p1_profile }}</button>
 
-  <button type="button" id="btn_p2_server" onclick="setFirstServer('p2')" class="btn-confirm"></button>
+  <button type="button" onclick="setFirstServer('p2')" id="btn_p2_server" class="btn-confirm">{{ p2_profile }}</button>
 
   <button onclick="closeServerPopup()" class="btn-cancel">Cancel</button>
 </div>
@@ -121,6 +121,7 @@
     if (!p1 || !p2 || p1 === p2 || !finalSet) {
       document.getElementById("overlay").style.display = "block";
       popup_alert.style.display = "block";
+      document.body.style.overflow = "hidden";
       return;
     }
 
@@ -209,11 +210,10 @@
   function setFirstServer(playerKey) {
     let p1 = document.getElementById("p1").value;
     let p2 = document.getElementById("p2").value;
+    document.getElementById("btn_p1_server").innerText = p1;
+    document.getElementById("btn_p2_server").innerText = p2;
 
-    let selectedPlayer = playerKey === "p1" ? p1 : p2;
-
-    document.getElementById("first_server").value = selectedPlayer;
-
+    document.getElementById("first_server").value = playerKey;
     document.getElementById("playerForm").requestSubmit();
   }
 </script>

@@ -21,7 +21,7 @@ def Skor(request):
             "players": list_wta_players.players,
             "error": error
         })
-    print("GET:", request.GET)
+    print(f"REQUEST : {request.GET.dict()}")
     
     # Membuat profile pemain 
     p1_profile= utils.profile(list_wta_players.players, p1)
@@ -78,6 +78,7 @@ def Skor(request):
     "show_live_tb": utils.show_live_tb(new_value),
     "show_final_tb": utils.show_final_tb(new_value),
     "active_tab" : active_tab,
+    "first_server" : new_value['first_server' ]
     
         })
     
@@ -87,6 +88,8 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
     
+    print(f"first server : {context['first_server']}")
+    print(f"current server : {context['current_server']}")
     
     return render(request, 'index.html', context)
     

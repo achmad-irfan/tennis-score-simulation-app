@@ -22,12 +22,12 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore_match(request,p1,p2,firstserver, final_set_scoring):
+def restore_match(request,p1,p2,first_serve, final_set_scoring):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
     # Buat objek pertandingan
-    m = Match(p1, p2, firstserver, final_set_scoring)
+    m = Match(p1, p2, first_serve, final_set_scoring)
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}
@@ -52,6 +52,7 @@ def restore_match(request,p1,p2,firstserver, final_set_scoring):
         m.p1.total_statictics_all_set = p1_data.get("total_statictics_all_set", [])
         m.p2.total_statictics_all_set = p2_data.get("total_statictics_all_set", [])
         m.final_set_scoring = match.get("final_set_scoring")
+        m.first_server = match.get("first_server")
         
     return m
 

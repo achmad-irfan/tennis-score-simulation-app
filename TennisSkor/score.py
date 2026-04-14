@@ -85,8 +85,8 @@ class Match:
     def __init__(self,p1,p2,first_server, final_set_scoring):
         self.p1=Player(p1)
         self.p2=Player(p2)
-        self.first_server=first_server
-        self.current_server = self.p1
+        self.first_server = first_server
+        self.current_server = self.p1 if first_server == "p1" else self.p2
         self.start_time = datetime.now() 
         self.duration = [0,0,0]
         self.final_set_scoring= final_set_scoring
@@ -184,6 +184,7 @@ class ScoringSystem:
         self.break_point_check(match)
     
     def update_point(self, match, player, opponent):
+            
         match.status_point = None
         player.game_point +=1
         if player == match.p1:
@@ -520,7 +521,8 @@ class MatchSerializer:
         "match_loser": self.match.match_loser.name if self.match.match_loser else None,
         "start_time": self.match.start_time.isoformat(),
         "duration": self.match.duration,
-        "final_set_scoring": self.match.final_set_scoring
+        "final_set_scoring": self.match.final_set_scoring,
+        "first_server": self.match.first_server
         })
         
         return match_stat
