@@ -6,9 +6,9 @@ from datetime import datetime
 def get_players_from_request(request):
     p1= request.GET.get("p1")
     p2= request.GET.get("p2")
-    first_server = request.GET.get("first_server", "p1")
-    final_set= request.GET.get("final_set_scoring")
-    return p1,p2,first_server, final_set
+    first_server = request.GET.get("first_server")
+    final_set_scoring= request.GET.get("final_set_scoring")
+    return p1,p2,first_server, final_set_scoring
     
 def profile(player_list, name):
     for player in player_list:
@@ -22,12 +22,12 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore_match(request,p1,p2,firstserver, final_set):
+def restore_match(request,p1,p2,firstserver, final_set_scoring):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
     # Buat objek pertandingan
-    m = Match(p1, p2, firstserver or "p1", final_set)
+    m = Match(p1, p2, firstserver, final_set_scoring)
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}
@@ -51,7 +51,7 @@ def restore_match(request,p1,p2,firstserver, final_set):
         m.duration = match.get("duration", 0)
         m.p1.total_statictics_all_set = p1_data.get("total_statictics_all_set", [])
         m.p2.total_statictics_all_set = p2_data.get("total_statictics_all_set", [])
-        m.final_set = match.get("final_set")
+        m.final_set_scoring = match.get("final_set_scoring")
         
     return m
 
@@ -77,12 +77,12 @@ def show_live_tb(match):
     return (
         match["is_tiebreak"] and
         not match["finish"] and
-        not (match["final_set"] == "super_tiebreak_only" and match["current_set"] >= 3)
+        not (match["final_set_scoring"] == "super_tiebreak_only" and match["current_set"] >= 3)
     )
 
 def show_final_tb(match):
     return (
-        match["final_set"] == "super_tiebreak_only" and
+        match["final_set_scoring"] == "super_tiebreak_only" and
         match["finish"] and match["current_set"] == 1
     )
     

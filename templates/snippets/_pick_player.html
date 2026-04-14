@@ -1,6 +1,7 @@
+{% load static %}
 <div class="pickNprofile">
   <div class="pick-players general">
-    <form method="get">
+    <form method="get" id="playerForm" action="{% url 'home' %}">
       <h4 class="generalh4">Pick Players</h4>
       <label for="player">Choose Player 1:</label>
       <select name="p1" id="p1">
@@ -18,7 +19,7 @@
         {% endfor %}
       </select>
 
-      <label for="final_set">Final Set Scoring:</label>
+      <label for="final_set_scoring">Final Set Scoring:</label>
       <select name="final_set_scoring" id="final_set_scoring">
         <option value="" selected disabled>-- Select Final Set Scoring --</option>
         <option value="normal">Normal Set</option>
@@ -26,8 +27,10 @@
         <option value="super_tiebreak_only">Super Tiebreak Last Set</option>
       </select>
 
-      <button id="submit" name="submit" type="submit" value="1">Submit</button>
-      <button id="reset" type="submit" formaction="{% url 'home' %}">Reset</button>
+      <button id="submit" type="button" onclick="validateAndShowPopup()">Submit</button>
+      <button type="button" onclick="resetForm()">Reset</button>
+      <input type="hidden" name="submit" value="1" />
+      <input type="hidden" name="first_server" id="first_server" />
     </form>
 
     {% if error %}
@@ -79,3 +82,138 @@
     </table>
   </div>
 </div>
+
+<div id="overlay"></div>
+<div id="popup">
+  <h3>Confirm Match</h3>
+
+  <p id="popup_p1"></p>
+  <p>VS</p>
+  <p id="popup_p2"></p>
+  <p id="popup_final"></p>
+  <div class="popup-buttons">
+    <button onclick="closePopup()" class="btn-cancel">Cancel</button>
+    <button onclick="confirmMatch()" class="btn-confirm">Confirm</button>
+  </div>
+</div>
+<div id="popup_alert">
+  <p>⚠️ Pick 2 different players and method last set!!"</p>
+  <button onclick="closePopupNotComplete()" class="btn-cancel">Back</button>
+</div>
+
+<div id="popup-server">
+  <h3>Select First Server</h3>
+  <button type="button" id="btn_p1_server" onclick="setFirstServer('p1')" class="btn-confirm"></button>
+
+  <button type="button" id="btn_p2_server" onclick="setFirstServer('p2')" class="btn-confirm"></button>
+
+  <button onclick="closeServerPopup()" class="btn-cancel">Cancel</button>
+</div>
+<script>
+  function resetForm() {
+    window.location.href = "/?reset=1";
+  }
+  function validateAndShowPopup() {
+    let p1 = document.getElementById("p1").value;
+    let p2 = document.getElementById("p2").value;
+    let finalSet = document.getElementById("final_set_scoring").value;
+
+    if (!p1 || !p2 || p1 === p2 || !finalSet) {
+      document.getElementById("overlay").style.display = "block";
+      popup_alert.style.display = "block";
+      return;
+    }
+
+    showPopup();
+  }
+  function showPopup() {
+    let p1 = document.getElementById("p1").value;
+    let p2 = document.getElementById("p2").value;
+    let finalSet = document.getElementById("final_set_scoring").value;
+
+    let finalSetText = {
+      normal: "Normal Set",
+      super_tiebreak: "Super Tiebreak (6–6)",
+      super_tiebreak_only: "Super Tiebreak Only",
+    };
+
+    document.getElementById("popup_p1").innerText = p1;
+    document.getElementById("popup_p2").innerText = p2;
+    document.getElementById("popup_final").innerText = "Final Set: " + finalSetText[finalSet];
+
+    document.getElementById("overlay").style.display = "block";
+    let popup = document.getElementById("popup");
+    popup.style.display = "block";
+
+    // animasi masuk
+    setTimeout(() => {
+      popup.classList.add("show");
+    }, 10);
+  }
+
+  function closePopupNotComplete() {
+    let popup = document.getElementById("popup_alert");
+
+    popup.classList.remove("show");
+
+    setTimeout(() => {
+      popup.style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }, 200);
+  }
+
+  function closePopup() {
+    let popup = document.getElementById("popup");
+
+    popup.classList.remove("show");
+
+    setTimeout(() => {
+      popup.style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }, 200);
+  }
+
+  function confirmMatch() {
+    closePopup(); // tutup popup pertama
+    showServerPopup(); // buka popup kedua
+  }
+
+  function showServerPopup() {
+    document.getElementById("overlay").style.display = "block";
+
+    let popup = document.getElementById("popup-server");
+    popup.style.display = "block";
+
+    let p1 = document.getElementById("p1").value;
+    let p2 = document.getElementById("p2").value;
+
+    document.getElementById("btn_p1_server").innerText = p1;
+    document.getElementById("btn_p2_server").innerText = p2;
+
+    setTimeout(() => {
+      popup.classList.add("show");
+    }, 10);
+  }
+
+  function closeServerPopup() {
+    let popup = document.getElementById("popup-server");
+
+    popup.classList.remove("show");
+
+    setTimeout(() => {
+      popup.style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }, 200);
+  }
+
+  function setFirstServer(playerKey) {
+    let p1 = document.getElementById("p1").value;
+    let p2 = document.getElementById("p2").value;
+
+    let selectedPlayer = playerKey === "p1" ? p1 : p2;
+
+    document.getElementById("first_server").value = selectedPlayer;
+
+    document.getElementById("playerForm").requestSubmit();
+  }
+</script>

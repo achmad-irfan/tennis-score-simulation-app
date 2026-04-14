@@ -82,14 +82,14 @@ class Player:
         return f'{self.name}'
         
 class Match:
-    def __init__(self,p1,p2,first_server, final_set):
+    def __init__(self,p1,p2,first_server, final_set_scoring):
         self.p1=Player(p1)
         self.p2=Player(p2)
         self.first_server=first_server
         self.current_server = self.p1
         self.start_time = datetime.now() 
         self.duration = [0,0,0]
-        self.final_set= final_set
+        self.final_set_scoring= final_set_scoring
 
         # looping inisialisasi atribut
         for group, attrs in match_attrs.items():
@@ -138,7 +138,7 @@ class Match:
         duration_backup = self.duration.copy()
         
         # Buat objek baru
-        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set)
+        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set_scoring)
         
         for shot in self.history:
             new_match.play_point(shot["event"], shot["serve"])
@@ -246,7 +246,7 @@ class ScoringSystem:
             
             
     def check_super_tiebreak_only(self,match):
-        if match.final_set == "super_tiebreak_only" :
+        if match.final_set_scoring == "super_tiebreak_only" :
             print("Masuk SUPER TIE BREAK")
             match.is_tiebreak = True
         else:
@@ -286,9 +286,9 @@ class ScoringSystem:
         
         tie_break_point_min_won = 7 
         if match.is_last_set:
-            if match.final_set in ["super_tiebreak", "super_tiebreak_only"]:
+            if match.final_set_scoring in ["super_tiebreak", "super_tiebreak_only"]:
                 tie_break_point_min_won = 10
-            elif match.final_set == "normal":
+            elif match.final_set_scoring == "normal":
                 tie_break_point_min_won = 7
         
         if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
@@ -420,7 +420,7 @@ class ScoringSystem:
             winner_set = match_winner.sets[i]
             loser_set = match_loser.sets[i]
 
-            if i == match.current_set  and match.final_set == "super_tiebreak_only":
+            if i == match.current_set  and match.final_set_scoring == "super_tiebreak_only":
                 match.score.append(f"[{match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]}]")
             elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
                 match.score.append(f"{winner_set}-{loser_set}<sup>({match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]})</sup>")
@@ -520,7 +520,7 @@ class MatchSerializer:
         "match_loser": self.match.match_loser.name if self.match.match_loser else None,
         "start_time": self.match.start_time.isoformat(),
         "duration": self.match.duration,
-        "final_set": self.match.final_set
+        "final_set_scoring": self.match.final_set_scoring
         })
         
         return match_stat

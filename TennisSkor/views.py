@@ -9,11 +9,11 @@ def Skor(request):
         request.session.pop("match", None)
     
     # Ambil data user
-    p1,p2,first_server, final_set = utils.get_players_from_request(request)
+    p1,p2,first_server, final_set_scoring = utils.get_players_from_request(request)
     
     # Validasi input
     if request.GET.get("submit"):
-        if (not p1 or not p2) or (p1 == p2) or (not final_set):
+        if (not p1 or not p2) or (p1 == p2) or (not final_set_scoring):
             error = "Pick 2 different players and method last set!!"
             return render(request, 'index.html', {
             "p1": p1,
@@ -21,13 +21,14 @@ def Skor(request):
             "players": list_wta_players.players,
             "error": error
         })
+    print("GET:", request.GET)
     
     # Membuat profile pemain 
     p1_profile= utils.profile(list_wta_players.players, p1)
     p2_profile= utils.profile(list_wta_players.players, p2)
     
     # Restrore session jika ada session sebelumnya
-    restore_match = utils.restore_match(request, p1,p2,first_server, final_set)            
+    restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
