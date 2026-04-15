@@ -31,6 +31,7 @@
       <button type="button" onclick="resetForm()">Reset</button>
       <input type="hidden" name="submit" value="1" />
       <input type="hidden" name="first_server" id="first_server" />
+      <input type="hidden" name="active_tab" id="active_tab" value="{{ active_tab|default:'pick' }}" />
     </form>
 
     {% if error %}
@@ -214,6 +215,7 @@
     document.getElementById("btn_p2_server").innerText = p2;
 
     document.getElementById("first_server").value = playerKey;
+    document.getElementById("active_tab").value = "score";
     document.getElementById("playerForm").requestSubmit();
   }
 </script>
