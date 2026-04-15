@@ -88,3 +88,13 @@ def show_final_tb(match):
     )
     
 
+def format_name(name):
+    if name:
+        parts = name.split()
+        
+        if len(parts) == 0:
+            return ""
+        elif len(parts) == 1:
+            return parts[0]  # kalau cuma satu kata
+        else:
+            return parts[0][0] + ". " + parts[-1]

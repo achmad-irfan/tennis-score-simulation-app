@@ -66,6 +66,8 @@ def Skor(request):
     "error":None,
     "p1_name" : new_value["p1"]['name'],
     "p2_name":  new_value["p2"]['name'],
+    "p1_name_format" : utils.format_name(new_value["p1"]['name']),
+    "p2_name_format":  utils.format_name(new_value["p2"]['name']),
     "players": list_wta_players.players,
     "p1_profile": p1_profile,
     "p2_profile": p2_profile,   
@@ -79,17 +81,13 @@ def Skor(request):
     "show_final_tb": utils.show_final_tb(new_value),
     "active_tab" : active_tab,
     "first_server" : new_value['first_server' ]
-    
-        })
+    })
     
     for attr in score.player_attr_list:
         for i in range(3):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
-    
-    print(f"first server : {context['first_server']}")
-    print(f"current server : {context['current_server']}")
     
     return render(request, 'index.html', context)
     

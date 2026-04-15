@@ -206,6 +206,10 @@ table td:nth-child(3) {
   display: flex;
   width: 300px;
 }
+
+.player_name_format {
+  display: none;
+}
 .name .status {
   display: flex;
   flex-direction: row;
@@ -1025,26 +1029,62 @@ table input:active {
     width: 50px;
     height: 50px;
   }
+  .livescore {
+    width: 100%;
+  }
 
   .dot {
     width: 5px;
     height: 5px;
   }
 
-  .name p {
-    font-size: 12px;
-    width: 175px;
-  }
-  .name p .player_name {
-    font-size: 12px;
-  }
-  .serve-icon img {
-    width: 12px;
-    height: 12px;
+  .name {
+    display: flex;
+    width: 150px;
+    margin-right: 0;
   }
 
+  .name p {
+    width: 100%;
+    font-size: 30px;
+  }
+  .name p .player_name {
+    font-size: 11px;
+  }
+
+  .match .flag img {
+    display: none;
+  }
+  .serve-icon img {
+    width: 5px;
+    height: 5px;
+  }
+
+  .player_name {
+    display: none;
+  }
+  .player_name_format {
+    display: inline;
+  }
+
+  .set_win {
+    display: none;
+  }
   .country {
     display: none;
+  }
+
+  .name .status {
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+  }
+
+  .status_shot {
+    display: none;
+  }
+  .livescore {
+    gap: 2px;
   }
 
   .livescore > div:nth-child(2) {
@@ -1066,6 +1106,10 @@ table input:active {
   .shot_winner {
     display: flex;
     flex-direction: row;
+  }
+
+  .points {
+    background-color: #120049;
   }
 
   .points_dot {
@@ -1090,6 +1134,10 @@ table input:active {
   .flag img {
     width: 20px;
     height: 20px;
+  }
+
+  .player-points p {
+    font-size: 13px;
   }
 
   #popup,

@@ -8,8 +8,8 @@
       <!-- Scoring -->
       {% include 'snippets/score_player.html' %} {% if not finish %}
       <div class="setside">
-        <p class="game">{{p1.set_win}}</p>
-        <p class="game">{{p2.set_win}}</p>
+        <p class="game set_win">{{p1.set_win}}</p>
+        <p class="game set_win">{{p2.set_win}}</p>
       </div>
       {% endif %} {% include 'snippets/game.html' %} {% if not is_tiebreak and not finish %}
       <div class="pointside">
