@@ -57,6 +57,18 @@ h2 {
 }
 /* Title */
 
+.match-type {
+  display: flex;
+  gap: 24px;
+}
+
+.double-player {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 /* Labels */
 .pick-players label {
   display: block;
@@ -68,7 +80,7 @@ h2 {
 /* Select boxes */
 .pick-players select {
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 5px;
   margin-bottom: 20px;
   border-radius: 8px;
   font-size: 14px;

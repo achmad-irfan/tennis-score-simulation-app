@@ -2,23 +2,68 @@
 <div class="pickNprofile">
   <div class="pick-players general">
     <form method="get" id="playerForm" action="{% url 'home' %}">
-      <h4 class="generalh4">Pick Players</h4>
-      <label for="player">Choose Player 1:</label>
-      <select name="p1" id="p1">
-        <option value="" selected disabled>-- Select Player 1 --</option>
-        {% for player in players %}
-        <option value="{{player.name}}">{{player.name}}</option>
-        {% endfor %}
-      </select>
+      <h4 class="generalh4">Data Match</h4>
+      <div class="match-type">
+        <label class="system">
+          <input type="radio" name="match" value="single" checked />
+          <span>Single</span>
+        </label>
+        <label class="system">
+          <input type="radio" name="match" value="double" />
+          <span>Double</span>
+        </label>
+      </div>
+      <div class="single-player">
+        <label for="player">Choose Player 1:</label>
+        <select name="p1" id="p1">
+          <option value="" selected disabled>-- Select Player 1 --</option>
+          {% for player in players %}
+          <option value="{{player.name}}">{{player.name}}</option>
+          {% endfor %}
+        </select>
 
-      <label for="player">Choose Player 2:</label>
-      <select name="p2" id="p2">
-        <option value="" selected disabled>-- Select Player 2 --</option>
-        {% for player in players %}
-        <option value="{{player.name}}">{{player.name}}</option>
-        {% endfor %}
-      </select>
+        <label for="player">Choose Player 2:</label>
+        <select name="p2" id="p2">
+          <option value="" selected disabled>-- Select Player 2 --</option>
+          {% for player in players %}
+          <option value="{{player.name}}">{{player.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="double-player">
+        <div class="team">
+          <label>Team 1</label>
+          <select name="p1_team1" id="p1_team1">
+            <option value="" selected disabled>-- Player 1 Team 1 --</option>
+            {% for player in players %}
+            <option value="{{player.name}}">{{player.name}}</option>
+            {% endfor %}
+          </select>
 
+          <select name="p2_team1" id="p2_team1">
+            <option value="" selected disabled>-- Player 2 Team 1 --</option>
+            {% for player in players %}
+            <option value="{{player.name}}">{{player.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="team">
+          <label>Team 2</label>
+          <select name="p1_team2" id="p1_team2">
+            <option value="" selected disabled>-- Player 1 Team 2 --</option>
+            {% for player in players %}
+            <option value="{{player.name}}">{{player.name}}</option>
+            {% endfor %}
+          </select>
+
+          <select name="p2_team2" id="p2_team2">
+            <option value="" selected disabled>-- Player 2 Team 2 --</option>
+            {% for player in players %}
+            <option value="{{player.name}}">{{player.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
       <label for="final_set_scoring">Final Set Scoring:</label>
       <select name="final_set_scoring" id="final_set_scoring">
         <option value="" selected disabled>-- Select Final Set Scoring --</option>
@@ -114,23 +159,68 @@
   function resetForm() {
     window.location.href = "/?reset=1";
   }
+
   function validateAndShowPopup() {
-    let p1 = document.getElementById("p1").value;
-    let p2 = document.getElementById("p2").value;
+    let matchType = getMatchType();
     let finalSet = document.getElementById("final_set_scoring").value;
 
-    if (!p1 || !p2 || p1 === p2 || !finalSet) {
-      document.getElementById("overlay").style.display = "block";
-      popup_alert.style.display = "block";
-      document.body.style.overflow = "hidden";
+    if (!finalSet) {
+      showError();
       return;
+    }
+
+    if (matchType === "single") {
+      let p1 = document.getElementById("p1").value;
+      let p2 = document.getElementById("p2").value;
+
+      if (!p1 || !p2 || p1 === p2) {
+        console.log(document.getElementById("popup_alert"));
+        showError();
+        return;
+      }
+    }
+
+    if (matchType === "double") {
+      let players = [document.getElementById("p1_team1").value, document.getElementById("p2_team1").value, document.getElementById("p1_team2").value, document.getElementById("p2_team2").value];
+      // CLEAN DATA (ini penting banget)
+      players = players.map((p) => p?.trim()).filter((p) => p !== "");
+
+      let unique = new Set(players);
+
+      if (players.length !== 4 || unique.size !== 4) {
+        showError();
+        return;
+      }
     }
 
     showPopup();
   }
+
+  function getMatchType() {
+    return document.querySelector('input[name="match"]:checked').value;
+  }
+
+  function showError() {
+    console.log("ERROR TRIGGERED");
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup_alert").style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+
   function showPopup() {
-    let p1 = document.getElementById("p1").value;
-    let p2 = document.getElementById("p2").value;
+    let matchType = document.querySelector('input[name="match"]:checked').value;
+
+    let p1, p2;
+
+    if (matchType === "single") {
+      p1 = document.getElementById("p1").value;
+      p2 = document.getElementById("p2").value;
+    } else {
+      p1 = document.getElementById("p1_team1").value + " & " + document.getElementById("p2_team1").value;
+
+      p2 = document.getElementById("p1_team2").value + " & " + document.getElementById("p2_team2").value;
+    }
+
     let finalSet = document.getElementById("final_set_scoring").value;
 
     let finalSetText = {
@@ -147,7 +237,6 @@
     let popup = document.getElementById("popup");
     popup.style.display = "block";
 
-    // animasi masuk
     setTimeout(() => {
       popup.classList.add("show");
     }, 10);
