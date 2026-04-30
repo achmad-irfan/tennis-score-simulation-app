@@ -482,7 +482,7 @@ class ScoringSystem:
         receiver_name = self.format_name_status(receiver.name)
         
         if receiver.point in [40, "AD"] and server.point != 40:
-            match.status_point = f"Break Point for {receiver_name}"
+            match.status_point = f"Break Point"
     
     def get_aggregate_snapshot(self,match):
         from .score import player_attrs
