@@ -599,24 +599,23 @@ table input:active {
   align-items: center;
 }
 
-.last-points {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.last-points table {
+  background-color: #0d1117;
+  border-collapse: separate;
+  border-spacing: 10px 15px;
+  margin-bottom: 10px;
 }
 
-.player-points {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+td {
+  background: #161b22;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .player-points p {
-  background-color: #0d1117;
-  width: 100%;
-  border-radius: 5px;
   font-size: 15px;
-  padding: 15px;
+  padding: 0;
+  margin: 0;
 }
 .points_dot {
   display: flex;
@@ -624,7 +623,7 @@ table input:active {
   background-color: #0d1117;
   justify-content: start;
   border-radius: 5px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .player-points span {
@@ -1151,7 +1150,6 @@ table input:active {
     justify-content: center;
     border-radius: 5px;
     padding: 10px;
-    height: 40px;
   }
 
   #cancelForm {
