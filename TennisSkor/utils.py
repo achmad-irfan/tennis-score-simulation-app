@@ -4,17 +4,35 @@ from .score import player_attrs, total_stats, match_attrs, service_stats
 from datetime import datetime
 
 def get_players_from_request(request):
-    p1= request.GET.get("p1")
-    p2= request.GET.get("p2")
+
+    match_type = request.GET.get("match")
+    if match_type == "single":
+        p1= [request.GET.get('p1', '')]
+        p2= [request.GET.get('p2', '')]
+    elif match_type == "double":
+        p1_team1 = request.GET.get('p1_team1','')
+        p2_team1 = request.GET.get('p2_team1','')
+        p1_team2 = request.GET.get('p1_team2','')
+        p2_team2 = request.GET.get('p2_team2','')
+        p1 = [p1_team1, p2_team1]
+        p2 = [p1_team2, p2_team2]
+    else:
+        p1,p2= [], []
+    
     first_server = request.GET.get("first_server")
     final_set_scoring= request.GET.get("final_set_scoring")
-    return p1,p2,first_server, final_set_scoring
+    
+    return p1,p2,first_server, final_set_scoring, match_type
+
+
     
 def profile(player_list, name):
     for player in player_list:
         if player['name'] == name:
             return player
     return None
+
+
         
 def player_validation(request, p1,p2):
     if request.GET.get("submit"):
@@ -22,12 +40,12 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore_match(request,p1,p2,first_serve, final_set_scoring):
+def restore_match(request,p1,p2,first_serve, final_set_scoring, match_type):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
     # Buat objek pertandingan
-    m = Match(p1, p2, first_serve, final_set_scoring)
+    m = Match(p1, p2, first_serve, final_set_scoring, match_type)
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}
@@ -53,6 +71,7 @@ def restore_match(request,p1,p2,first_serve, final_set_scoring):
         m.p2.total_statictics_all_set = p2_data.get("total_statictics_all_set", [])
         m.final_set_scoring = match.get("final_set_scoring")
         m.first_server = match.get("first_server")
+        m.match_type = match.get("match_type")
         
     return m
 
@@ -89,12 +108,17 @@ def show_final_tb(match):
     
 
 def format_name(name):
-    if name:
-        parts = name.split()
-        
-        if len(parts) == 0:
-            return ""
-        elif len(parts) == 1:
-            return parts[0]  # kalau cuma satu kata
-        else:
-            return parts[0][0] + ". " + parts[-1]
+    if not name:
+        return ""
+    
+    # Kalau list → format tiap nama lalu join
+    if isinstance(name, list):
+        return " / ".join(format_name(n) for n in name)
+    
+    # Kalau string → lanjut logic lama
+    parts = name.split()
+    
+    if len(parts) == 1:
+        return parts[0]
+    else:
+        return parts[0][0] + ". " + parts[-1]

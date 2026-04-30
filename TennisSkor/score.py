@@ -82,7 +82,7 @@ class Player:
         return f'{self.name}'
         
 class Match:
-    def __init__(self,p1,p2,first_server, final_set_scoring):
+    def __init__(self,p1,p2,first_server, final_set_scoring, match_type):
         self.p1=Player(p1)
         self.p2=Player(p2)
         self.first_server = first_server
@@ -90,7 +90,8 @@ class Match:
         self.start_time = datetime.now() 
         self.duration = [0,0,0]
         self.final_set_scoring= final_set_scoring
-
+        self.match_type = match_type
+        
         # looping inisialisasi atribut
         for group, attrs in match_attrs.items():
             for attr in attrs:
@@ -99,7 +100,7 @@ class Match:
                     setattr(self, attr, default.copy())
                 else:
                     setattr(self, attr, default)
-                    
+        self.is_single = (match_type == "single")
         self.scoring = ScoringSystem()
         
     def player_category(self, point_event):
@@ -138,7 +139,7 @@ class Match:
         duration_backup = self.duration.copy()
         
         # Buat objek baru
-        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set_scoring)
+        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set_scoring, self.match_type)
         
         for shot in self.history:
             new_match.play_point(shot["event"], shot["serve"])
@@ -258,7 +259,7 @@ class ScoringSystem:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.is_changing_game = True
             match.current_set += 1
             self.check_last_set(match)
@@ -364,22 +365,23 @@ class ScoringSystem:
         player_id, shot = point_event.split("_")
 
         player = match.p1 if player_id == "p1" else match.p2
+        player_format = self.format_name_status(player.name)
 
         if shot == "ace":
             player.ace += 1
-            match.status_shot = f"Ace from {player}"
+            match.status_shot = f"Ace from {player_format}"
         elif shot == "winner":
             player.winner += 1
-            match.status_shot = f"Winner from {player}"
+            match.status_shot = f"Winner from {player_format}"
         elif shot == "df":
             player.double_fault += 1
-            match.status_shot = f"Double Fault from {player}"
+            match.status_shot = f"Double Fault from {player_format}"
         elif shot == "fe":
             player.forced_error += 1
-            match.status_shot = f"Forced Error from {player}"
+            match.status_shot = f"Forced Error from {player_format}"
         elif shot == "ue":
             player.unforced_error += 1
-            match.status_shot = f"Unforced Error from {player}"
+            match.status_shot = f"Unforced Error from {player_format}"
 
 
     def break_point_check(self, match):
@@ -468,16 +470,19 @@ class ScoringSystem:
                 "status_shot": match.status_shot,
                 "set_winner": match.set_winner.copy(),
                 "duration": match.duration.copy(),
-                "start_time": match.start_time.isoformat()
+                "start_time": match.start_time.isoformat(),
+                "match_type" : match.match_type,
             },
         }
         match.set_snapshot.append(snapshot)     
     
     def get_status_point(self, match):
         server, receiver = (match.p1, match.p2) if match.current_server == match.p1 else (match.p2, match.p1)
+        server_name = self.format_name_status(server.name)
+        receiver_name = self.format_name_status(receiver.name)
         
         if receiver.point in [40, "AD"] and server.point != 40:
-            match.status_point = f"Break Point for {receiver.name}"
+            match.status_point = f"Break Point for {receiver_name}"
     
     def get_aggregate_snapshot(self,match):
         from .score import player_attrs
@@ -503,6 +508,11 @@ class ScoringSystem:
         
         match.all_set_snapshot = all_snapshot
        
+    def format_name_status(self, players):
+        if not isinstance(players, list):
+            players = [players]
+        return  " / ".join(s.split()[-1] for s in players)
+        
 class MatchSerializer:
     def __init__(self, match):
         self.match = match
@@ -522,7 +532,8 @@ class MatchSerializer:
         "start_time": self.match.start_time.isoformat(),
         "duration": self.match.duration,
         "final_set_scoring": self.match.final_set_scoring,
-        "first_server": self.match.first_server
+        "first_server": self.match.first_server,
+        "match_type" :self.match.match_type,
         })
         
         return match_stat

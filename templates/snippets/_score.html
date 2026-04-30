@@ -8,25 +8,32 @@
       <!-- Scoring -->
       {% include 'snippets/score_player.html' %} {% if not finish %}
       <div class="setside">
-        <p class="game set_win">{{p1.set_win}}</p>
-        <p class="game set_win">{{p2.set_win}}</p>
+        <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p1.set_win}}</p>
+        <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p2.set_win}}</p>
       </div>
       {% endif %} {% include 'snippets/game.html' %} {% if not is_tiebreak and not finish %}
       <div class="pointside">
-        <p class="points {% if last_winner_point == 'p1' %}flash{% endif %}">{{p1.point}}</p>
-        <p class="points {% if last_winner_point == 'p2' %}flash{% endif %}">{{p2.point}}</p>
+        <p class="points {% if last_winner_point == 'p1' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p1.point}}</p>
+        <p class="points {% if last_winner_point == 'p2' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p2.point}}</p>
       </div>
       {% endif %} {% if show_live_tb %}
       <div class="pointside">
-        <p class="points">{{p1.tiebreak_point_win}}</p>
-        <p class="points">{{p2.tiebreak_point_win}}</p>
+        <p class="points {% if match_type == 'double' %}points_double{% endif %}">{{p1.tiebreak_point_win}}</p>
+        <p class="points {% if match_type == 'double' %}points_double{% endif %}">{{p2.tiebreak_point_win}}</p>
       </div>
       {% endif %}
     </div>
     <div class="last-points">
       <h6>Last 15 Points</h6>
       <div class="player-points">
-        <p>{{p1_name}}</p>
+        {% if match_type == "single" %}
+        <p>{{p1_name.0}}</p>
+        {% endif %} {% if match_type == "double" %}
+        <p>
+          {{p1_name.0}} <br />
+          {{p1_name.1}}
+        </p>
+        {% endif %}
         <div class="points_dot">
           {% for p in last_points %}
           <span class="dot {% if p == 'p1' %}win{% else %}lose{% endif %}"></span>
@@ -35,7 +42,14 @@
       </div>
 
       <div class="player-points">
-        <p>{{p2_name}}</p>
+        {% if match_type == "single" %}
+        <p>{{p2_name.0}}</p>
+        {% endif %} {% if match_type == "double" %}
+        <p>
+          {{p2_name.0}} <br />
+          {{p2_name.1}}
+        </p>
+        {% endif %}
         <div class="points_dot">
           {% for p in last_points %}
           <span class="dot {% if p == 'p1' %}lose{% else %}win{% endif %}"></span>

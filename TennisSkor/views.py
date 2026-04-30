@@ -9,26 +9,14 @@ def Skor(request):
         request.session.pop("match", None)
     
     # Ambil data user
-    p1,p2,first_server, final_set_scoring = utils.get_players_from_request(request)
-    
-    # Validasi input
-    if request.GET.get("submit"):
-        if (not p1 or not p2) or (p1 == p2) or (not final_set_scoring):
-            error = "Pick 2 different players and method last set!!"
-            return render(request, 'index.html', {
-            "p1": p1,
-            "p2": p2,
-            "players": list_wta_players.players,
-            "error": error
-        })
-    print(f"REQUEST : {request.GET.dict()}")
+    p1,p2,first_server, final_set_scoring, match_type = utils.get_players_from_request(request)
     
     # Membuat profile pemain 
-    p1_profile= utils.profile(list_wta_players.players, p1)
-    p2_profile= utils.profile(list_wta_players.players, p2)
+    p1_profile = [utils.profile(list_wta_players.players, player) for player in p1]
+    p2_profile = [utils.profile(list_wta_players.players, player) for player in p2]
     
     # Restrore session jika ada session sebelumnya
-    restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring)            
+    restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring, match_type)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
@@ -63,7 +51,6 @@ def Skor(request):
     # Context
     context= new_value.copy()
     context.update({
-    "error":None,
     "p1_name" : new_value["p1"]['name'],
     "p2_name":  new_value["p2"]['name'],
     "p1_name_format" : utils.format_name(new_value["p1"]['name']),
@@ -80,7 +67,8 @@ def Skor(request):
     "show_live_tb": utils.show_live_tb(new_value),
     "show_final_tb": utils.show_final_tb(new_value),
     "active_tab" : active_tab,
-    "first_server" : new_value['first_server' ]
+    "first_server" : new_value['first_server' ],
+    "match_type" : new_value['match_type']
     })
     
     for attr in score.player_attr_list:
@@ -88,6 +76,7 @@ def Skor(request):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
-    
+            
+    print(type(context['p1']))
     return render(request, 'index.html', context)
     

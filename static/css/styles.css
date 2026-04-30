@@ -164,6 +164,18 @@ table td:nth-child(3) {
   height: 100px;
 }
 
+table th .double_player {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+table th .double_player img {
+  border-radius: 8px;
+  width: 100%;
+  height: 85px;
+}
+
 /* ==============================
    MAIN SCORE CONTAINER
    ============================== */
@@ -228,6 +240,7 @@ table td:nth-child(3) {
   gap: 5px;
   width: 100%;
 }
+
 .status .status_shot {
   font-size: 12px;
   padding: 5px;
@@ -325,6 +338,11 @@ label:hover {
   transition: 0.2s;
 }
 
+.points_double,
+.game_double {
+  line-height: 3;
+}
+
 .point:hover {
   border-color: #58a6ff;
 }
@@ -342,7 +360,7 @@ label:hover {
 
 .point h6 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #58a6ff;
   font-size: 16px;
 }
@@ -708,7 +726,8 @@ table input:active {
 /* Popup modal */
 #popup,
 #popup-server,
-#popup_alert {
+#popup_alert,
+#popup_alert_double {
   display: none;
   position: fixed;
   top: 50%;
@@ -725,6 +744,7 @@ table input:active {
   background-color: #000000;
   color: white;
   border-radius: 10px;
+  width: 30%;
 }
 
 /* Popup muncul */
@@ -1122,7 +1142,7 @@ table input:active {
   }
 
   .points {
-    background-color: #120049;
+    background-color: #272724;
   }
 
   .points_dot {
