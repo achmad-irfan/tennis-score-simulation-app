@@ -52,7 +52,7 @@ def Skor(request):
     context= new_value.copy()
     context.update({
     "p1_name" : new_value["p1"]['name'],
-    "p2_name":  new_value["p2"]['name'],
+    "p2_name":  new_value["p2"]['name'], 
     "p1_name_format" : utils.format_name(new_value["p1"]['name']),
     "p2_name_format":  utils.format_name(new_value["p2"]['name']),
     "players": list_wta_players.players,
@@ -77,6 +77,6 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
             
-    print(type(context['p1']))
+    print(context["p1_name_format"])
     return render(request, 'index.html', context)
     

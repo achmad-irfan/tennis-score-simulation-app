@@ -5,13 +5,13 @@
     <tr>
       {% if match_type == "single" %}
       <th>
-        {{ p1_name.0 }} ({{p1_profile.0.country}}) <br />
+        {{ p1_name_format.0 }} ({{p1_profile.0.country}}) <br />
         <img src="{{p1_profile.0.photo}}" alt="" />
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p1_name.0 }} ({{p1_profile.0.country}}) / <br />
-        {{ p1_name.1 }} ({{p1_profile.1.country}}) <br />
+        {{ p1_name_format.0 }}  / <br />
+        {{ p1_name_format.1 }}  <br />
         <img src="{{p1_profile.0.photo}}" alt="" /> <img src="{{p1_profile.1.photo}}" alt="" />
       </th>
       {% endif %}
@@ -40,13 +40,13 @@
       </th>
       {% if match_type == "single" %}
       <th>
-        {{ p1_name.0 }} ({{p2_profile.0.country}}) <br />
+        {{ p1_name_format.0 }} ({{p2_profile.0.country}}) <br />
         <img src="{{p2_profile.0.photo}}" alt="" />
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p2_name.0 }} ({{p2_profile.0.country}}) / <br />
-        {{ p2_name.1 }} ({{p2_profile.1.country}}) <br />
+        {{ p2_name_format.0 }}  / <br />
+        {{ p2_name_format.1 }}  <br />
         <img src="{{p2_profile.0.photo}}" alt="" /> <img src="{{p2_profile.1.photo}}" alt="" />
       </th>
       {% endif %}

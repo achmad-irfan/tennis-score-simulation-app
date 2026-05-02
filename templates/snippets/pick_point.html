@@ -11,8 +11,7 @@
       {% if match_type == "single" %}
       <h6>{{p1_name.0|title}}</h6>
       {% endif %} {% if match_type == "double" %}
-      <h6>{{p1_name.0|title}}/</h6>
-      <h6>{{p1_name.1|title}}</h6>
+      <h6>{{p1_name.0|title}} / {{p1_name.1|title}}</h6>
       {% endif %}
       <div class="serve_type shot">
         {% if current_server == "p1" %}
@@ -44,8 +43,7 @@
       {% if match_type == "single" %}
       <h6>{{p2_name.0|title}}</h6>
       {% endif %} {% if match_type == "double" %}
-      <h6>{{p2_name.0|title}}/</h6>
-      <h6>{{p2_name.1|title}}</h6>
+      <h6>{{p2_name.0|title}} / {{p2_name.1|title}}</h6>
       {% endif %}
       <div class="serve_type shot">
         {% if current_server == "p2" %}

@@ -107,18 +107,15 @@ def show_final_tb(match):
     )
     
 
-def format_name(name):
-    if not name:
+def format_name(names):
+    if not names:
         return ""
     
-    # Kalau list → format tiap nama lalu join
-    if isinstance(name, list):
-        return " / ".join(format_name(n) for n in name)
-    
-    # Kalau string → lanjut logic lama
-    parts = name.split()
-    
-    if len(parts) == 1:
-        return parts[0]
-    else:
-        return parts[0][0] + ". " + parts[-1]
+    players =[]
+    for name in names:
+        part = name.split()
+        inisial = part[0][0].upper()
+        last_name = " ".join(part[1:]).title()
+        players.append(f"{inisial}. {last_name}")
+        
+    return players

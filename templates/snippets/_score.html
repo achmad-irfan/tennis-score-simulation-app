@@ -1,3 +1,4 @@
+{% if match_type and final_set_scoring %} 
 <div class="score" id="score-section">
   <!-- Pick point Winner -->
   {% include 'snippets/pick_point.html' %}
@@ -30,10 +31,8 @@
         <tbody>
           <tr>
             <td>
-              {% if match_type == "single" %}   <span class="flag">
-      <img src="{{p1_profile.0.flag}}" alt="" />
-    </span>{{p1_name.0}} {% endif %}
-              {% if match_type == "double" %}  {{p1_name.0}} ({{p1_profile.0.country}}) <br>  {{p1_name.1}} ({{p2_profile.1.country}}) {% endif %}
+              {% if match_type == "single" %} <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="" /></span>{{p1_name_format.0}} {% endif %}
+              {% if match_type == "double" %}  {{p1_name_format.0}} <span class="country_table">({{p1_profile.0.country}})</span>  <br>  {{p1_name_format.1}} <span class="country_table">({{p2_profile.0.country}})</span>  {% endif %}
             </td>
             <td>
               <div class="points_dot">
@@ -45,8 +44,8 @@
           </tr>
           <tr>
             <td>
-              {% if match_type == "single" %}  {{p2_name.0}}  {% endif %} 
-              {% if match_type == "double" %}  {{p2_name.0}} ({{p2_profile.0.country}}) <br>  {{p2_name.1}} ({{p2_profile.1.country}}) {% endif %}
+              {% if match_type == "single" %}  {{p2_name_format.0}}  {% endif %} 
+              {% if match_type == "double" %}  {{p2_name_format.0}} <span class="country_table">({{p2_profile.0.country}})</span> <br>  {{p2_name_format.1}} <span class="country_table">({{p2_profile.1.country}})</span> {% endif %}
             </td>
             <td>
               <div class="points_dot">
@@ -69,7 +68,7 @@
       </div>
     </div>
   </div>
-
+{% endif %}
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
       const isFinished = {{ finish|yesno:"true,false" }};

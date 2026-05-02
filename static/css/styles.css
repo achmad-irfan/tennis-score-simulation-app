@@ -43,18 +43,18 @@ h2 {
    PICK PLAYER
    ========================================================= */
 .pickNprofile {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 3fr 5fr;
   gap: 30px;
 }
-
-.pick-players {
-  flex: 3;
+.pickNprofile_start {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 50%;
+  justify-content: center;
+  margin: 0 auto;
 }
 
-.profiles {
-  flex: 5;
-}
 /* Title */
 
 .match-type {
@@ -64,9 +64,22 @@ h2 {
 
 .double-player {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+}
+
+.double-player p {
+  font-size: 20px;
+}
+
+.select_double_player {
+  display: grid;
+  grid-template-columns: 10fr 1fr 10fr;
+  gap: 5px;
+}
+
+.select_double_playerr p {
+  text-align: center;
 }
 
 /* Labels */
@@ -109,7 +122,6 @@ h2 {
   transition:
     background-color 0.3s,
     transform 0.2s;
-  margin-bottom: 20px;
 }
 
 /* Button hover effect */
@@ -228,7 +240,7 @@ table th .double_player img {
 
 .name {
   display: flex;
-  width: 300px;
+  width: fit-content;
 }
 
 .player_name_format {
@@ -451,6 +463,10 @@ button:hover {
   background: linear-gradient(135deg, #2ea043, #3fb950);
 }
 
+.cancel_last_point button {
+  margin-top: 0;
+}
+
 /* ==============================
    STATISTIC CONTAINER
    ============================== */
@@ -616,6 +632,7 @@ td {
   font-size: 15px;
   padding: 0;
   margin: 0;
+  border: 1px solid red;
 }
 .points_dot {
   display: flex;
@@ -809,6 +826,19 @@ td {
   }
 }
 
+.footer {
+  background-color: #1f2937;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.footer p {
+  text-align: center;
+  color: white;
+  margin: 0;
+}
+
 @media (min-width: 769px) {
   .tab-pane {
     display: block !important;
@@ -823,6 +853,15 @@ td {
 
   .tab-content {
     max-width: 760px;
+  }
+
+  .pickNprofile {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .pickNprofile_start {
+    width: 100%;
   }
 
   h2 {
@@ -853,12 +892,6 @@ td {
     display: block;
   }
 
-  form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 20px;
-  }
-
   .nav-tabs {
     margin-bottom: 15px;
     display: flex;
@@ -867,37 +900,44 @@ td {
     margin-top: -20px;
   }
 
+  .select_player {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .pick-players select {
+    margin-bottom: 2px;
+  }
+
+  .select_player p {
+    display: none;
+  }
+
+  .form_player_set {
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    gap: 10px;
+    justify-content: start;
+    width: 100%;
+  }
+
+  .button {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
   /* Judul full */
   form h4 {
     grid-column: 1 / -1;
   }
 
-  /* Label & select default full */
-  form label,
-  form select,
-  form button {
-    grid-column: 1 / -1;
-  }
-
-  /* Khusus Player 1 & Player 2 (2 kolom) */
-  form label:nth-of-type(1),
-  form select:nth-of-type(1),
-  form label:nth-of-type(2),
-  form select:nth-of-type(2),
-  #reset,
-  #submit {
-    grid-column: auto;
-  }
-
-  .pick-players label {
-    display: none;
-  }
-
   /* Select boxes */
   .pick-players select {
     width: 100%;
-    padding: 10px 20px;
-    margin-bottom: 10x;
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   option {
@@ -911,17 +951,14 @@ td {
     margin-top: 0;
   }
 
-  .profiles h4 {
-    display: none;
-  }
-
   .player-compare {
     width: 100%;
     margin: 10px auto;
   }
 
   .player-compare th {
-    padding: 0px;
+    padding: 10px;
+    font-size: 13px;
   }
 
   .player-compare td {
@@ -942,7 +979,7 @@ td {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 200%;
+    width: 100%;
   }
 
   .form-point .point {
@@ -961,6 +998,13 @@ td {
     font-size: 12px;
   }
 
+  .last-points table td {
+    font-size: 13px;
+  }
+
+  .points_dot {
+    gap: 10px;
+  }
   .statistic {
     max-width: 100%;
   }
@@ -1013,25 +1057,51 @@ td {
 }
 
 @media (max-width: 480px) {
-  .tab-content {
-    max-width: 470px;
+  .general {
+    padding: 15px;
   }
 
-  form {
-    display: block;
+  .pick-players,
+  .footer p {
+    font-size: 12px !important;
+  }
+
+  .pick-players select {
+    font-size: 12px;
+  }
+
+  .form_player_set {
+    grid-template-columns: 1fr;
+  }
+
+  .select_double_player {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .select_double_player p {
+    display: none;
   }
 
   .pick-players button {
     margin-top: 10px;
+    font-size: 12px;
   }
 
   .player_name {
-    font-size: 14px;
+    display: none;
+  }
+
+  .player_name_format {
+    font-size: 12px;
   }
 
   .player-compare th {
     font-size: 12px;
     padding: 5px;
+  }
+
+  .point h6 {
+    font-size: 12px;
   }
 
   .statistic table th:nth-child(1),
@@ -1065,14 +1135,18 @@ td {
     width: 100%;
   }
 
+  .points_dot {
+    gap: 5px;
+    padding: 4px;
+  }
   .dot {
     width: 5px;
-    height: 5px;
+    height: 15px;
+    border-radius: 50%;
   }
 
   .name {
     display: flex;
-    width: 150px;
     margin-right: 0;
   }
 
@@ -1092,9 +1166,9 @@ td {
     height: 5px;
   }
 
-  .player_name {
+  /* .player_name {
     display: none;
-  }
+  } */
   .player_name_format {
     display: inline;
   }
@@ -1140,25 +1214,35 @@ td {
     flex-direction: row;
   }
 
+  .last-points table {
+    border-spacing: 5px 10px;
+    width: auto;
+    display: inline-table;
+  }
+
+  .country_table {
+    display: none;
+  }
+
+  .last-points table td {
+    font-size: 12px;
+    width: fit-content;
+  }
+
   .points {
     background-color: #272724;
   }
 
-  .points_dot {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    border-radius: 5px;
-    padding: 10px;
-  }
-
   #cancelForm {
     margin-bottom: 10px;
-    margin-top: -20px;
+  }
+
+  #cancel_point {
+    font-size: 12px;
   }
 
   .result_name p {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .serve-icon img,
