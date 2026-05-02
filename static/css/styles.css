@@ -1206,7 +1206,7 @@ td {
   }
 
   .livescoreAll {
-    padding: 5px;
+    padding: 10px;
   }
 
   .shot_winner {
@@ -1260,6 +1260,7 @@ td {
   #popup_alert {
     padding: 12px;
     top: 40%;
+    width: 75%;
   }
 
   .popup-buttons {
