@@ -632,13 +632,12 @@ td {
   font-size: 15px;
   padding: 0;
   margin: 0;
-  border: 1px solid red;
 }
 .points_dot {
   display: flex;
   gap: 5px;
   background-color: #0d1117;
-  justify-content: start;
+  justify-content: space-around;
   border-radius: 5px;
   padding: 15px;
 }
@@ -1158,9 +1157,6 @@ td {
     font-size: 11px;
   }
 
-  .match .flag img {
-    display: none;
-  }
   .serve-icon img {
     width: 5px;
     height: 5px;
@@ -1171,13 +1167,6 @@ td {
   } */
   .player_name_format {
     display: inline;
-  }
-
-  .set_win {
-    display: none;
-  }
-  .country {
-    display: none;
   }
 
   .name .status {
@@ -1216,7 +1205,7 @@ td {
 
   .last-points table {
     border-spacing: 5px 10px;
-    width: auto;
+    width: 100%;
     display: inline-table;
   }
 
