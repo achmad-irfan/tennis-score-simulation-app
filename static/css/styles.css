@@ -320,9 +320,11 @@ label:hover {
 }
 
 .serve-icon img,
-.flag img {
+.flag img,
+.last-points img {
   width: 20px;
   height: 20px;
+  margin-right: 5px;
 }
 
 /* ==============================
@@ -573,7 +575,7 @@ button:hover {
   letter-spacing: 0.5px;
 }
 
-table img {
+.statistic table img {
   width: 120px;
   height: 120px;
   border-radius: 20px;
@@ -620,6 +622,7 @@ table input:active {
   border-collapse: separate;
   border-spacing: 10px 15px;
   margin-bottom: 10px;
+  width: 100%;
 }
 
 td {
@@ -830,6 +833,7 @@ td {
   padding: 12px;
   border-radius: 10px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .footer p {
@@ -1234,14 +1238,23 @@ td {
     font-size: 12px;
   }
 
-  .serve-icon img,
-  .flag img {
+  .serve-icon img {
     width: 20px;
     height: 20px;
   }
 
+  .flag img {
+    display: none;
+  }
+
   .player-points p {
     font-size: 13px;
+  }
+
+  .statistic table img {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
   }
 
   #popup,

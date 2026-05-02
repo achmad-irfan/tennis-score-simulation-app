@@ -1,47 +1,51 @@
 <div class="name">
   {% if match_type == "single" %}
-  <p class="match {% if winner == p1 %}winner{% endif %}" >
+  <p class="match {% if winner == p1 %}winner{% endif %}">
     <span class="flag">
       <img src="{{p1_profile.0.flag}}" alt="" />
     </span>
-    <span class="player_name">{{ p1_name.0|title}}</span> <span class="player_name_format">{{ p1_name_format|title}} <span class="country">({{p1_profile.country}})</span>
+    <span class="player_name">{{ p1_name.0|title}}</span>
+    <span class="player_name_format">{{ p1_name_format.0|title}}</span>
+    <span class="country">{{p1_profile.country}}</span>
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p1" %}
       <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" />
       {% endif %} {% endif %}
     </span>
   </p>
-  <p  class="match {% if winner == p2 %}winner{% endif %}">
+  <p class="match {% if winner == p2 %}winner{% endif %}">
     <span class="flag">
       <img src="{{p2_profile.0.flag}}" alt="" />
     </span>
-    <span class="player_name">{{ p2_name.0|title}}</span> <span class="player_name_format">{{ p2_name_format|title}}<span class="country">({{p2_profile.country}})</span>
+    <span class="player_name">{{ p2_name.0|title}}</span>
+    <span class="player_name_format">{{ p2_name_format.0|title}}</span>
+    <span class="country">{{p2_profile.country}}</span>
     <span class="serve-icon">
       {% if not finish %} {% if current_server == "p2" %}
       <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" />
       {% endif %} {% endif %}
     </span>
   </p>
-  {% endif %}
-
-  {% if match_type == "double" %}
-  <p class="match {% if winner == p1 %}winner{% endif %}"> 
+  {% endif %} {% if match_type == "double" %}
+  <p class="match {% if winner == p1 %}winner{% endif %}">
     <span class="flag">
       <img src="{{p1_profile.0.flag}}" alt="" />
     </span>
-     <span class="player_name">{{ p1_name.0|title}}</span> <span class="player_name_format">{{ p1_name_format.0|title}}</span>  {% if not finish %} {% if current_server == "p1" %} <span class="serve-icon"> <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" /></span> {% endif %} {% endif %}
-    <br>
+    <span class="player_name">{{ p1_name.0|title}}</span> <span class="player_name_format">{{ p1_name_format.0|title}}</span> {% if not finish %} {% if current_server == "p1" %}
+    <span class="serve-icon"> <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" /></span> {% endif %} {% endif %}
+    <br />
     <span class="flag">
       <img src="{{p1_profile.1.flag}}" alt="" />
     </span>
-     <span class="player_name">{{ p1_name.1|title}}</span> <span class="player_name_format">{{ p1_name_format.1|title}}</span>
+    <span class="player_name">{{ p1_name.1|title}}</span> <span class="player_name_format">{{ p1_name_format.1|title}}</span>
   </p>
   <p class="match {% if winner == p2 %}winner{% endif %}">
     <span class="flag">
       <img src="{{p2_profile.0.flag}}" alt="" />
     </span>
-    <span class="player_name">{{ p2_name.0|title}}</span> <span class="player_name_format">{{ p2_name_format.0|title}}</span> {% if not finish %} {% if current_server == "p2" %} <span class="serve-icon"> <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" /></span> {% endif %} {% endif %}
-    <br>
+    <span class="player_name">{{ p2_name.0|title}}</span> <span class="player_name_format">{{ p2_name_format.0|title}}</span> {% if not finish %} {% if current_server == "p2" %}
+    <span class="serve-icon"> <img src="https://img.icons8.com/color/48/tennis-ball.png" alt="/" /></span> {% endif %} {% endif %}
+    <br />
     <span class="flag">
       <img src="{{p2_profile.1.flag}}" alt="" />
     </span>
@@ -49,7 +53,6 @@
   </p>
   {% endif %}
 
-  
   <div class="status">
     {% if status_shot %}
     <p class="status_shot">{{status_shot}}</p>

@@ -31,7 +31,7 @@
         <tbody>
           <tr>
             <td>
-              {% if match_type == "single" %} <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="" /></span>{{p1_name_format.0}} {% endif %}
+              {% if match_type == "single" %}  <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="" /></span><span class="player_name">{{ p1_name.0|title}}</span> <span class="player_name_format">{{ p1_name_format.0|title}}</span> {% endif %}
               {% if match_type == "double" %}  {{p1_name_format.0}} <span class="country_table">({{p1_profile.0.country}})</span>  <br>  {{p1_name_format.1}} <span class="country_table">({{p2_profile.0.country}})</span>  {% endif %}
             </td>
             <td>
@@ -44,7 +44,7 @@
           </tr>
           <tr>
             <td>
-              {% if match_type == "single" %}  {{p2_name_format.0}}  {% endif %} 
+              {% if match_type == "single" %}  <span class="flag"> <img src="{{p2_profile.0.flag}}" alt="" /></span><span class="player_name">{{ p2_name.0|title}}</span> <span class="player_name_format">{{ p2_name_format.0|title}}</span>  {% endif %} 
               {% if match_type == "double" %}  {{p2_name_format.0}} <span class="country_table">({{p2_profile.0.country}})</span> <br>  {{p2_name_format.1}} <span class="country_table">({{p2_profile.1.country}})</span> {% endif %}
             </td>
             <td>
