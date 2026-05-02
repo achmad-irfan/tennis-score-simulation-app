@@ -85,7 +85,7 @@
       </div>
       <div class="button">
         <button id="submit" type="button" onclick="validateAndShowPopup()">Submit</button>
-        <button type="button" onclick="resetForm()">Reset</button>
+        <button type="button" onclick="openResetForm()">Reset</button>
       </div>
 
       <input type="hidden" name="submit" value="1" />
@@ -208,13 +208,19 @@
   <p id="popup_p2"></p>
   <p id="popup_final"></p>
   <div class="popup-buttons">
-    <button onclick="closePopup()" class="btn-cancel">Cancel</button>
+    <button onclick="closeAllPopups()" class="btn-cancel">Cancel</button>
     <button onclick="confirmMatch()" class="btn-confirm">Confirm</button>
   </div>
 </div>
 <div id="popup_alert">
   <p>⚠️ Pick 2 different players or team and method last set!!"</p>
   <button onclick="closePopupNotComplete()" class="btn-cancel">Back</button>
+</div>
+
+<div id="popup_alert_reset">
+  <p>⚠️ Are you sure reset the match?"</p>
+  <button onclick="closeAllPopups()" class="btn-cancel">Cancel</button>
+  <button onclick="resetForm()" class="btn-confirm">Confirm</button>
 </div>
 
 <div id="popup-server">
@@ -226,6 +232,13 @@
   <button onclick="closeServerPopup()" class="btn-cancel">Cancel</button>
 </div>
 <script>
+  function openResetForm() {
+    document.getElementById("overlay").style.display = "block";
+    popup_alert_reset.style.display = "block";
+    document.body.style.overflow = "hidden";
+    return;
+  }
+
   function resetForm() {
     window.location.href = "/?reset=1";
   }
@@ -302,19 +315,23 @@
     }, 200);
   }
 
-  function closePopup() {
-    let popup = document.getElementById("popup");
+  function closeAllPopups() {
+    let popups = ["popup", "popup_alert", "popup_alert_reset", "popup-server"];
 
-    popup.classList.remove("show");
+    popups.forEach((id) => {
+      let el = document.getElementById(id);
+      if (el) {
+        el.style.display = "none";
+        el.classList.remove("show");
+      }
+    });
 
-    setTimeout(() => {
-      popup.style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-    }, 200);
+    document.getElementById("overlay").style.display = "none";
+    document.body.style.overflow = "auto";
   }
 
   function confirmMatch() {
-    closePopup(); // tutup popup pertama
+    closeAllPopups(); // tutup popup pertama
     showServerPopup(); // buka popup kedua
   }
 

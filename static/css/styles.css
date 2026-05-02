@@ -745,7 +745,8 @@ td {
 #popup,
 #popup-server,
 #popup_alert,
-#popup_alert_double {
+#popup_alert_double,
+#popup_alert_reset {
   display: none;
   position: fixed;
   top: 50%;
@@ -1243,7 +1244,7 @@ td {
     height: 20px;
   }
 
-  .flag img {
+  .last-points .flag img {
     display: none;
   }
 
@@ -1253,13 +1254,14 @@ td {
 
   .statistic table img {
     width: 100%;
-    height: 40px;
+    height: 50px;
     border-radius: 10px;
   }
 
   #popup,
   #popup-server,
-  #popup_alert {
+  #popup_alert,
+  #popup_alert_reset {
     padding: 12px;
     top: 40%;
     width: 75%;

@@ -44,9 +44,9 @@ def Skor(request):
     # Menyimpan dalam session
     utils.save_session(request,restore_match)
     
-    active_tab = "pick"
+    active_tab = request.GET.get("active_tab", "pick")
     if request.POST.get("submit_shot") or "cancel_point" in request.POST:
-        active_tab = "score"   
+        active_tab = "score"
         
     # Context
     context= new_value.copy()
@@ -77,6 +77,6 @@ def Skor(request):
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
             
-    print(context["p1_name_format"])
+    
     return render(request, 'index.html', context)
     
