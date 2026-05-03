@@ -1,18 +1,18 @@
 {% if match_type and final_set_scoring %} 
 <div class="score" id="score-section">
   <!-- Pick point Winner -->
-  {% include 'snippets/pick_point.html' %}
+  {% include 'snippets/_score_pick_point.html' %}
   <!-- End of Pick point Winner -->
   <div class="general livescoreAll">
     <h4 class="generalh4">Live Score</h4>
     <div class="livescore">
       <!-- Scoring -->
-      {% include 'snippets/score_player.html' %} {% if not finish %}
+      {% include 'snippets/_score_player.html' %} {% if not finish %}
       <div class="setside">
         <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p1.set_win}}</p>
         <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p2.set_win}}</p>
       </div>
-      {% endif %} {% include 'snippets/game.html' %} {% if not is_tiebreak and not finish %}
+      {% endif %} {% include 'snippets/_score_game.html' %} {% if not is_tiebreak and not finish %}
       <div class="pointside">
         <p class="points {% if last_winner_point == 'p1' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p1.point}}</p>
         <p class="points {% if last_winner_point == 'p2' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p2.point}}</p>
