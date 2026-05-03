@@ -1,31 +1,31 @@
 {% if match_type and final_set_scoring %}
 <div class="statistic general">
   <!-- Result -->
-  {% if finish %}
+  <!-- {% if finish %} -->
   <h4 class="generalh4">Result</h4>
   <div class="result">
     <div class="result_name">
       {% if match_type == "single" %}
       <p>
-        <span class="flag"> <img width="27" height="20" src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %}
+        <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %}
       </p>
       <p>
-        <span class="flag"> <img width="27" height="20" src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %}
+        <span class="flag"> <img src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %}
       </p>
       {% endif %} {% if match_type == "double" %}
       <p>
-        <span class="flag"> <img width="27" height="20" src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %} <br />
-        <span class="flag"> <img width="27" height="20" src="{{p1_profile.1.flag}}" alt="tennis-flag" /> </span>{{p1_profile.1.name}}
+        <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %} <br />
+        <span class="flag"> <img src="{{p1_profile.1.flag}}" alt="tennis-flag" /> </span>{{p1_profile.1.name}}
       </p>
       <p>
-        <span class="flag"> <img width="27" height="20" src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %} <br />
-        <span class="flag"> <img width="27" height="20" src="{{p2_profile.1.flag}}" alt="tennis-flag" /> </span>{{p2_profile.1.name}}
+        <span class="flag"> <img src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %} <br />
+        <span class="flag"> <img src="{{p2_profile.1.flag}}" alt="tennis-flag" /> </span>{{p2_profile.1.name}}
       </p>
       {% endif %}
     </div>
     {% include 'snippets/game.html' %}
   </div>
-  {% endif %}
+  <!-- {% endif %} -->
   <!-- End of Result -->
 
   <!-- Table -->

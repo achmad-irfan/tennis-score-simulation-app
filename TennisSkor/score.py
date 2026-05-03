@@ -259,7 +259,7 @@ class ScoringSystem:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 1 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
             match.is_changing_game = True
             match.current_set += 1
             self.check_last_set(match)

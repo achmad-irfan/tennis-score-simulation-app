@@ -218,7 +218,7 @@
 </div>
 
 <div id="popup_alert_reset">
-  <p>⚠️ Are you sure reset the match?"</p>
+  <p>⚠️ Are you sure reset the match?</p>
   <button onclick="closeAllPopups()" class="btn-cancel">Cancel</button>
   <button onclick="resetForm()" class="btn-confirm">Confirm</button>
 </div>
@@ -381,5 +381,19 @@
     document.getElementById("first_server").value = playerKey;
     document.getElementById("active_tab").value = "score";
     document.getElementById("playerForm").requestSubmit();
+  }
+
+  function matchFinish() {
+    let finish = "{{ finish }}";
+
+    if (finish === "True") {
+      document.getElementById("active_tab").value = "stat";
+
+      const triggerEl = document.querySelector('[data-bs-target="#stat"]');
+      if (triggerEl) {
+        const tab = new bootstrap.Tab(triggerEl);
+        tab.show();
+      }
+    }
   }
 </script>

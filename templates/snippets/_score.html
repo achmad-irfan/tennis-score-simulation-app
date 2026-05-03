@@ -86,7 +86,8 @@
               title: 'Match Finished',
               html: `
                  <div class="match-popup">
-                  <div class="winner">{{ match_winner|title }} def. {{ match_loser|title }} </div>
+                  {% if match_type == "single" %} <div class="winner">{{ match_winner.0|title }} def. {{ match_loser.0|title }} </div> {% endif %}
+                  {% if match_type == "double" %} <div class="winner">{{ match_winner.0|title }} / {{ match_winner.1|title }} def. {{ match_loser.0|title }} / {{ match_loser.1|title }} </div> {% endif %}
                   <div class="winner">{{ score | safe }}</div>
               </div>
               `,
