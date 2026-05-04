@@ -383,17 +383,5 @@
     document.getElementById("playerForm").requestSubmit();
   }
 
-  function matchFinish() {
-    let finish = "{{ finish }}";
-
-    if (finish === "True") {
-      document.getElementById("active_tab").value = "stat";
-
-      const triggerEl = document.querySelector('[data-bs-target="#stat"]');
-      if (triggerEl) {
-        const tab = new bootstrap.Tab(triggerEl);
-        tab.show();
-      }
-    }
-  }
+ 
 </script>

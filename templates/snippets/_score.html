@@ -67,21 +67,28 @@
           sessionStorage.setItem("result_shown", "true");
 
           Swal.fire({
-              title: 'Match Finished',
-              html: `
+                title: 'Match Finished',
+                html: `
                  <div class="match-popup">
                   {% if match_type == "single" %} <div class="winner">{{ match_winner.0|title }} def. {{ match_loser.0|title }} </div> {% endif %}
-                  {% if match_type == "double" %} <div class="winner">{{ match_winner.0|title }} / {{ match_winner.1|title }} def. {{ match_loser.0|title }} / {{ match_loser.1|title }} </div> {% endif %}
+                  {% if match_type == "double" %} <div class="winner">{{ match_winner.0|title }} / {{ match_winner.1|title }} def. </br> {{ match_loser.0|title }} / {{ match_loser.1|title }} </div> {% endif %}
                   <div class="winner">{{ score | safe }}</div>
               </div>
               `,
-              icon: 'success',
-              customClass: {
-              popup: 'my-popup-bg' ,
-              title : 'my-popup-title' // ini container popup
-          }
-          });
-      }
+                icon: 'success',
+                customClass: {
+                    popup: 'my-popup-bg',
+                    title: 'my-popup-title'
+                }
+            }).then(() => {
+                const statTabBtn = document.querySelector('[data-bs-target="#stat"]');
+
+                if (statTabBtn) {
+                    const tab = new bootstrap.Tab(statTabBtn);
+                    tab.show();
+                }
+            });;
+                  }
 
       document.addEventListener("DOMContentLoaded", function () {
       const activeTab = "{{ active_tab|default:'pick' }}";
