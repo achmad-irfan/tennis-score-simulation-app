@@ -4,26 +4,7 @@
   <!-- {% if finish %} -->
   <h4 class="generalh4">Result</h4>
   <div class="result">
-    <div class="result_name">
-      {% if match_type == "single" %}
-      <p>
-        <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %}
-      </p>
-      <p>
-        <span class="flag"> <img src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %}
-      </p>
-      {% endif %} {% if match_type == "double" %}
-      <p>
-        <span class="flag"> <img src="{{p1_profile.0.flag}}" alt="tennis-flag" /> </span>{{p1_profile.0.name}} {% if match_winner == p1.name %} ✔ {% endif %} <br />
-        <span class="flag"> <img src="{{p1_profile.1.flag}}" alt="tennis-flag" /> </span>{{p1_profile.1.name}}
-      </p>
-      <p>
-        <span class="flag"> <img src="{{p2_profile.0.flag}}" alt="tennis-flag" /> </span>{{p2_profile.0.name}} {% if match_winner == p2.name %} ✔ {% endif %} <br />
-        <span class="flag"> <img src="{{p2_profile.1.flag}}" alt="tennis-flag" /> </span>{{p2_profile.1.name}}
-      </p>
-      {% endif %}
-    </div>
-    {% include 'snippets/_score_game.html' %}
+    {% include 'snippets/_score_livescore.html' %}
   </div>
   <!-- {% endif %} -->
   <!-- End of Result -->

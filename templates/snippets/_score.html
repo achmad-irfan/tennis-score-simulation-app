@@ -5,26 +5,7 @@
   <!-- End of Pick point Winner -->
   <div class="general livescoreAll">
     <h4 class="generalh4">Live Score</h4>
-    <div class="livescore">
-      <!-- Scoring -->
-      {% include 'snippets/_score_player.html' %} {% if not finish %}
-      <div class="setside">
-        <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p1.set_win}}</p>
-        <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p2.set_win}}</p>
-      </div>
-      {% endif %} {% include 'snippets/_score_game.html' %} {% if not is_tiebreak and not finish %}
-      <div class="pointside">
-        <p class="points {% if last_winner_point == 'p1' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p1.point}}</p>
-        <p class="points {% if last_winner_point == 'p2' %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p2.point}}</p>
-      </div>
-      {% endif %} {% if show_live_tb %}
-      <div class="pointside">
-        <p class="points {% if match_type == 'double' %}points_double{% endif %}">{{p1.tiebreak_point_win}}</p>
-        <p class="points {% if match_type == 'double' %}points_double{% endif %}">{{p2.tiebreak_point_win}}</p>
-      </div>
-      {% endif %}
-    </div>
-
+    {% include 'snippets/_score_livescore.html' %}
     <div class="last-points">
        <h6>Last 15 Points</h6>
        <table>
@@ -66,9 +47,12 @@
           <button id="cancel_point" type="button" onclick="confirm_cancel()">Cancel Last Point</button>
         </form>
       </div>
+    
     </div>
   </div>
 {% endif %}
+
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
       const isFinished = {{ finish|yesno:"true,false" }};

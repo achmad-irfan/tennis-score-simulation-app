@@ -369,19 +369,19 @@ class ScoringSystem:
 
         if shot == "ace":
             player.ace += 1
-            match.status_shot = f"Ace from {player_format}"
+            match.status_shot = f"Ace : {player_format}"
         elif shot == "winner":
             player.winner += 1
-            match.status_shot = f"Winner from {player_format}"
+            match.status_shot = f"Winner : {player_format}"
         elif shot == "df":
             player.double_fault += 1
-            match.status_shot = f"Double Fault from {player_format}"
+            match.status_shot = f"Double Fault : {player_format}"
         elif shot == "fe":
             player.forced_error += 1
-            match.status_shot = f"Forced Error from {player_format}"
+            match.status_shot = f"Forced Error : {player_format}"
         elif shot == "ue":
             player.unforced_error += 1
-            match.status_shot = f"Unforced Error from {player_format}"
+            match.status_shot = f"Unforced Error : {player_format}"
 
 
     def break_point_check(self, match):

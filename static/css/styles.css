@@ -29,6 +29,10 @@ h2 {
   border-radius: 10px;
 }
 
+p {
+  margin: 0;
+}
+
 .generalh4 {
   text-align: center;
   margin-bottom: 10px;
@@ -215,21 +219,64 @@ table th .double_player img {
   font-weight: 600;
 }
 
-.livescore > div > p {
-  font-size: 13px;
+.livescore_new {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background-color: #161b22;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.livescore > div:nth-child(2) {
-  margin-right: 15px;
+.livescore_new > div > p,
+.livescore_score > div > p {
+  font-size: 16px;
 }
 
-.livescore > div:last-child {
-  margin-left: 15px;
+.livescore_player,
+.setside,
+.gameside,
+.pointside {
+  align-content: space-evenly;
+  background-color: #0d1117;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
 }
 
-.gameside .duration_point {
-  background-color: #121111;
-  margin-top: -10px;
+.livescore_player {
+  text-align: start;
+}
+
+.setside {
+  background-color: #0e1014;
+  width: 40px;
+}
+
+.duration .setside,
+.duration .pointside {
+  background-color: transparent;
+}
+
+.duration .gameside {
+  border-radius: 4px;
+  margin-top: -5px;
+  background-color: #120049;
+}
+
+.gameside {
+  width: 40px;
+}
+
+.pointside {
+  background-color: #0e1014;
+  width: 50px;
+  text-align: center;
+}
+
+.livescore_score {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .livescoreAll p {
@@ -246,19 +293,18 @@ table th .double_player img {
 .player_name_format {
   display: none;
 }
-.name .status {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  width: 100%;
-}
 
-.status .status_shot {
-  font-size: 12px;
+.livescore_new .status {
+  font-size: 13px;
   padding: 5px;
-  background-color: #30363d;
+  background-color: transparent;
   color: white;
   border-radius: 5px;
+  align-content: start;
+}
+
+.checklist_winner {
+  color: white;
 }
 
 .result {
@@ -266,24 +312,6 @@ table th .double_player img {
   flex-direction: row;
   justify-content: center;
   gap: 10px;
-  border: 1px solid red;
-}
-
-.result_name p,
-.result .gameside p {
-  padding: 10px;
-  border-radius: 10px;
-  color: black;
-}
-
-.result_name p:first-child,
-.result .gameside p:first-child {
-  background-color: #3fb950;
-}
-
-.result_name p:last-child,
-.result .gameside p:nth-child(2) {
-  background-color: #6c6aaa;
 }
 
 /* ==============================
@@ -306,7 +334,7 @@ label:hover {
   border-radius: 5px;
   padding: 15px;
   text-align: center;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .livescore > div:first-child p {
@@ -325,7 +353,7 @@ label:hover {
 .last-points img {
   width: 20px;
   height: 20px;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 /* ==============================
@@ -619,15 +647,15 @@ table input:active {
 }
 
 .last-points table {
-  background-color: #0d1117;
+  background-color: #161b22;
   border-collapse: separate;
-  border-spacing: 10px 15px;
+  border-spacing: 5px;
   margin-bottom: 10px;
   width: 100%;
 }
 
 td {
-  background: #161b22;
+  background: #0d1117;
   padding: 10px;
   border-radius: 8px;
 }
@@ -1136,9 +1164,6 @@ td {
     width: 50px;
     height: 50px;
   }
-  .livescore {
-    width: 100%;
-  }
 
   .points_dot {
     gap: 5px;
@@ -1175,33 +1200,45 @@ td {
     display: inline;
   }
 
-  .name .status {
-    flex-direction: column;
-    gap: 2px;
+  .livescore_new {
+    grid-template-columns: auto 1fr;
     width: 100%;
+    row-gap: 15px;
+    column-gap: 5px;
   }
 
-  .status_shot {
+  .livescore_new > div > p,
+  .livescore_new .livescore_score > div > p,
+  .livescore_new .livescore_score > div {
+    font-size: 12px;
+  }
+
+  .livescore_new .status_status,
+  .livescore_new .setside,
+  .country_table,
+  .livescore_new .flag img {
     display: none;
   }
-  .livescore {
-    gap: 2px;
+
+  .livescore_player,
+  .setside,
+  .gameside,
+  .pointside {
+    padding: 10px;
   }
 
-  .livescore > div:nth-child(2) {
-    margin-right: 3px;
+  .livescore_score {
+    gap: 5px;
+    justify-content: start;
+  }
+  .pointside {
+    margin-left: 0;
+    width: 40px;
   }
 
-  .livescore > div:last-child {
-    margin-left: 1px;
-  }
-
-  .gameside .duration_point {
-    margin-top: -15px;
-  }
-
-  .livescoreAll {
-    padding: 15px;
+  .gameside {
+    padding: 0;
+    width: 30px;
   }
 
   .shot_winner {
@@ -1215,17 +1252,9 @@ td {
     display: inline-table;
   }
 
-  .country_table {
-    display: none;
-  }
-
   .last-points table td {
     font-size: 12px;
     width: fit-content;
-  }
-
-  .points {
-    background-color: #272724;
   }
 
   #cancelForm {
@@ -1240,13 +1269,10 @@ td {
     font-size: 12px;
   }
 
-  .serve-icon img {
+  .livescore_new .serve-icon img {
     width: 20px;
     height: 20px;
-  }
-
-  .last-points .flag img {
-    display: none;
+    margin: 0;
   }
 
   .player-points p {
@@ -1255,19 +1281,6 @@ td {
 
   .result {
     gap: 5px;
-    border: 1px solid red;
-  }
-
-  .result_name p,
-  .result .gameside p {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid rgb(0, 34, 255);
-  }
-
-  .points_double,
-  .game_double {
-    line-height: 2.5;
   }
 
   .statistic table img {
@@ -1298,5 +1311,15 @@ td {
 
   .popup-buttons button {
     flex: 1;
+  }
+
+  #popup,
+  #popup-server h3 {
+    font-size: 18px;
+  }
+
+  #popup p,
+  #popup-server button {
+    font-size: 14px;
   }
 }
