@@ -154,6 +154,7 @@ p {
 }
 
 .player-compare td {
+  background: #161b22;
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -544,6 +545,7 @@ button:hover {
   padding: 12px;
   text-align: center;
   font-size: 14px;
+  background: #161b22;
 }
 
 /* garis antar row */
