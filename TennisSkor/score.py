@@ -255,11 +255,11 @@ class ScoringSystem:
             match.is_tiebreak = False
             
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+        if player.sets[match.current_set] == 2 and opponent.sets[match.current_set] == 2:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.is_changing_game = True
             match.current_set += 1
             self.check_last_set(match)
@@ -423,9 +423,11 @@ class ScoringSystem:
             winner_set = match_winner.sets[i]
             loser_set = match_loser.sets[i]
 
-            if i == match.current_set  and match.final_set_scoring == "super_tiebreak_only":
+            if i == match.current_set - 1  and match.final_set_scoring == "super_tiebreak_only":
                 match.score.append(f"[{match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]}]")
-            elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6:
+            elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6 and match.final_set_scoring == "super_tiebreak":
+                match.score.append(f"{winner_set}-{loser_set}<sup>[{match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]}]</sup>")
+            elif max(winner_set, loser_set) == 7 and min(winner_set, loser_set) == 6 and match.final_set_scoring == "normal":
                 match.score.append(f"{winner_set}-{loser_set}<sup>({match_winner.tiebreak_display_score[i]}-{match_loser.tiebreak_display_score[i]})</sup>")
             else:
                 match.score.append(f"{winner_set}-{loser_set}")       

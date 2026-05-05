@@ -342,18 +342,15 @@ label:hover {
   text-align: left;
 }
 
-.serve-icon {
-  display: inline-block;
-  width: 30px;
-  text-align: center;
-  background-color: transparent;
-}
-
 .serve-icon img,
 .flag img,
 .last-points img {
   width: 20px;
   height: 20px;
+}
+
+.flag img,
+.last-points img {
   margin-right: 10px;
 }
 
@@ -683,6 +680,10 @@ td {
 .game.winner,
 .match.winner {
   font-weight: 800;
+}
+
+.xx {
+  border: 1px solid red;
 }
 
 /* base dot */
@@ -1323,5 +1324,10 @@ td {
   #popup p,
   #popup-server button {
     font-size: 14px;
+  }
+
+  .match-popup .winner {
+    font-size: 13px;
+    font-weight: normal;
   }
 }
