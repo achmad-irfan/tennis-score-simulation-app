@@ -324,22 +324,8 @@ label:hover {
   transition: 0.2s;
 }
 
-.livescore > div {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.livescore > div > p {
-  background-color: #0d1117;
-  border-radius: 5px;
-  padding: 15px;
-  text-align: center;
-  font-size: 13px;
-}
-
-.livescore > div:first-child p {
-  text-align: left;
+.super_tiebreak {
+  width: 50px;
 }
 
 .serve-icon img,
@@ -639,6 +625,7 @@ table input:active {
 .containerp2 {
   background-color: #6c6aaa;
   position: absolute;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   color: #000;
@@ -678,12 +665,9 @@ td {
 }
 
 .game.winner,
-.match.winner {
+.match.winner,
+.points.winner {
   font-weight: 800;
-}
-
-.xx {
-  border: 1px solid red;
 }
 
 /* base dot */

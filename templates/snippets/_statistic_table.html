@@ -10,8 +10,8 @@
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p1_name_format.0 }}  / <br />
-        {{ p1_name_format.1 }}  <br />
+        {{ p1_name_format.0 }} / <br />
+        {{ p1_name_format.1 }} <br />
         <img src="{{p1_profile.0.photo}}" alt="" /> <img src="{{p1_profile.1.photo}}" alt="" />
       </th>
       {% endif %}
@@ -20,15 +20,15 @@
         <p>{{total_duration}}</p>
         <p>Set</p>
         <p>
-          {% if current_set >= 1 %}
+          {% if current_set >= 0 %}
           <label>
             <input type="button" name="set_statistic" id="buton_set1" value="1" />
           </label>
-          {% endif %} {% if current_set >= 2 %}
+          {% endif %} {% if current_set >= 1 %}
           <label>
             <input type="button" name="set_statistic" id="buton_set2" value="2" />
           </label>
-          {% endif %} {% if current_set >= 3 %}
+          {% endif %} {% if current_set >= 2 %}
           <label>
             <input type="button" name="set_statistic" id="buton_set3" value="3" />
           </label>
@@ -45,8 +45,8 @@
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p2_name_format.0 }}  / <br />
-        {{ p2_name_format.1 }}  <br />
+        {{ p2_name_format.0 }} / <br />
+        {{ p2_name_format.1 }} <br />
         <img src="{{p2_profile.0.photo}}" alt="" /> <img src="{{p2_profile.1.photo}}" alt="" />
       </th>
       {% endif %}
