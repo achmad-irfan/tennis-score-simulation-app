@@ -119,3 +119,25 @@ def format_name(names):
         players.append(f"{inisial}. {last_name}")
         
     return players
+                
+  
+def get_flash(match, player, set_index):
+    flash_set = None
+    if match['is_changing_game']:
+        if match['is_set_finished']:
+            flash_set = match['last_finished_set']
+        else:
+            flash_set = match['current_set']
+            
+    return (
+        match['last_winner_point'] == player and match['is_changing_game'] and
+        not match['is_tiebreak']and
+        flash_set == set_index
+            )
+  
+    
+
+    
+
+    
+   

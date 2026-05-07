@@ -819,6 +819,13 @@ td {
   background: #00ff08;
 }
 
+#buton_set1,
+#button_set2,
+#button_set3,
+#all {
+  padding: 10px;
+}
+
 @keyframes glowFlash {
   0% {
     transform: scale(1.2);
@@ -1313,5 +1320,12 @@ td {
   .match-popup .winner {
     font-size: 13px;
     font-weight: normal;
+  }
+
+  #buton_set1,
+  #button_set2,
+  #button_set3,
+  #all {
+    padding: 3px;
   }
 }

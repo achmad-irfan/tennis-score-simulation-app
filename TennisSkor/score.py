@@ -11,8 +11,8 @@ player_attrs= [
         ]
 # Atribut dalam objek match , dibedakan berdasarkan value default atribut
 match_attrs= {
-                "data_int":['current_set', "current_tiebreak" ],
-                "data_bool": ["is_tiebreak", "finish", "is_last_set", "is_changing_game"],
+                "data_int":['current_set', "current_tiebreak", "last_finished_set" ],
+                "data_bool": ["is_tiebreak", "finish", "is_last_set", "is_changing_game", "is_set_finished"],
                 "data_none": ['match_winner', "match_loser","status_shot", "first_server_tiebreak", "last_winner_point", "status_point"],
                 "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
                 "data_dict": []
@@ -195,6 +195,7 @@ class ScoringSystem:
             
         self.duration(match)
         match.is_changing_game = False
+        match.is_set_finished = False
         
         if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:
             self.win_game(match, player, opponent)
@@ -257,9 +258,11 @@ class ScoringSystem:
     def check_set_finished(self, match, player, opponent):
         if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
+            match.is_set_finished = True
             return
 
         if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+            match.is_set_finished = True
             player.set_win += 1
             if player == match.p1:
                 match.set_winner.append("p1")
@@ -270,6 +273,7 @@ class ScoringSystem:
             if match.finish:
                 return
             match.is_changing_game = True 
+            match.last_finished_set =  match.current_set 
             match.current_set += 1
             self.check_last_set(match)
             match.start_time = datetime.now()
@@ -289,6 +293,10 @@ class ScoringSystem:
         player.tiebreak_display_score[match.current_set] += 1
         player.total_point += 1
         self.duration(match)
+        if player == match.p1:
+            match.last_winner_point= "p1"
+        else:
+            match.last_winner_point= "p2"
         
         tie_break_point_min_won = 7 
         if match.is_last_set:
@@ -300,6 +308,7 @@ class ScoringSystem:
         if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
+            match.last_finished_set =  match.current_set
             
             player.set_win += 1
             if player == match.p1:

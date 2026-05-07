@@ -38,20 +38,20 @@
     {% endif %}
 
     <!-- Set 1 -->
-    <div class="gameside {% if last_winner_point == 'p1' and is_changing_game and current_set == 0 %}flash{% endif %}">
+    <div class="gameside {% if flash.p1.0 %}flash{% endif %}">
       <p class="game {% if set_winner.0 == 'p1' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets1_p1}}</p>
     </div>
 
     <!-- Set 2 -->
     {% if current_set > 0 %}
-    <div class="gameside {% if last_winner_point == 'p1' and is_changing_game and current_set == 1 %}flash{% endif %}">
+    <div class="gameside {% if flash.p1.1 %}flash{% endif %}">
       <p class="game {% if set_winner.1 == 'p1' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets2_p1}}</p>
     </div>
     {% endif %}
 
     <!-- Set 3 -->
     {% if current_set > 1 and final_set_scoring != 'super_tiebreak_only' %}
-    <div class="gameside {% if last_winner_point == 'p1' and is_changing_game and current_set == 2 %}flash{% endif %}">
+    <div class="gameside {% if flash.p1.2 %}flash{% endif %}">
       <p class="game {% if set_winner.2 == 'p1' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets3_p1}}</p>
     </div>
     {% endif %}
@@ -67,7 +67,11 @@
     </div>
     {% endif %} {% if show_live_tb %}
     <div class="pointside {% if last_winner_point == 'p1' %}flash{% endif %}">
+      {% if final_set_scoring == "super_tiebreak_only" and current_set == 2 %}
+      <p class="points {% if set_winner.2 == 'p1' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">[{{p1.tiebreak_point_win}}]</p>
+      {% else %}
       <p class="points {% if set_winner.2 == 'p1' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p1.tiebreak_point_win}}</p>
+      {% endif %}
     </div>
     {% endif %}
   </div>
@@ -110,21 +114,21 @@
     </div>
     {% endif %}
     <!-- Set 1 -->
-    <div class="gameside">
-      <p class="game {% if set_winner.0 == 'p2' %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 0 %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets1_p2}}</p>
+    <div class="gameside {% if flash.p2.0 %}flash{% endif %}">
+      <p class="game {% if set_winner.0 == 'p2' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets1_p2}}</p>
     </div>
 
     <!-- Set 2 -->
     {% if current_set > 0 %}
-    <div class="gameside">
-      <p class="game {% if set_winner.1 == 'p2' %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 1 %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets2_p2}}</p>
+    <div class="gameside {% if flash.p2.1 %}flash{% endif %}">
+      <p class="game {% if set_winner.1 == 'p2' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets2_p2}}</p>
     </div>
     {% endif %}
 
     <!-- Set 3 -->
     {% if current_set > 1 and final_set_scoring != 'super_tiebreak_only' %}
-    <div class="gameside">
-      <p class="game {% if set_winner.2 == 'p2' %}winner{% endif %} {% if last_winner_point == 'p2' and is_changing_game and current_set == 2 %}flash{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets3_p2}}</p>
+    <div class="gameside {% if flash.p2.2 %}flash{% endif %}">
+      <p class="game {% if set_winner.2 == 'p2' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{sets3_p2}}</p>
     </div>
     {% endif %}
 
@@ -138,8 +142,12 @@
       <p class="points {% if match_type == 'double' %}points_double{% endif %}">{{p2.point}}</p>
     </div>
     {% endif %} {% if show_live_tb %}
-    <div class="pointside">
+    <div class="pointside {% if last_winner_point == 'p2' %}flash{% endif %}">
+      {% if final_set_scoring == "super_tiebreak_only" and current_set == 2 %}
+      <p class="points {% if set_winner.2 == 'p2' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">[{{p2.tiebreak_point_win}}]</p>
+      {% else %}
       <p class="points {% if set_winner.2 == 'p2' %}winner{% endif %} {% if match_type == 'double' %}points_double{% endif %}">{{p2.tiebreak_point_win}}</p>
+      {% endif %}
     </div>
     {% endif %}
   </div>

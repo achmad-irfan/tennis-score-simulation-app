@@ -35,6 +35,7 @@ def Skor(request):
     
     # Memasukan nilai baru pada atribut
     new_value = score.MatchSerializer(restore_match).to_dict()
+    print(new_value)
     
     # Cek apakah ada cancel point
     if "cancel_point" in request.POST:
@@ -68,7 +69,8 @@ def Skor(request):
     "show_final_tb": utils.show_final_tb(new_value),
     "active_tab" : active_tab,
     "first_server" : new_value['first_server' ],
-    "match_type" : new_value['match_type']
+    "match_type" : new_value['match_type'],
+    "p1_flash_set1" : utils.get_flash(new_value,"p1",0)
     })
     
     for attr in score.player_attr_list:
@@ -76,6 +78,15 @@ def Skor(request):
             y= i+1 
             context[f"{attr}{y}_p1"] = new_value["p1"][attr][i]
             context[f"{attr}{y}_p2"] = new_value["p2"][attr][i]
+            
+    flash= {}   
+    for player in ["p1", "p2"]:
+        flash[player] = {}
+        for i in range(3):
+           flash[player][i] = utils.get_flash(new_value, player, i)
+    context.update( {
+        "flash" : flash
+    })
             
     
     return render(request, 'index.html', context)
