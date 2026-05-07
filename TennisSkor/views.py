@@ -35,7 +35,6 @@ def Skor(request):
     
     # Memasukan nilai baru pada atribut
     new_value = score.MatchSerializer(restore_match).to_dict()
-    print(new_value)
     
     # Cek apakah ada cancel point
     if "cancel_point" in request.POST:
@@ -70,7 +69,6 @@ def Skor(request):
     "active_tab" : active_tab,
     "first_server" : new_value['first_server' ],
     "match_type" : new_value['match_type'],
-    "p1_flash_set1" : utils.get_flash(new_value,"p1",0)
     })
     
     for attr in score.player_attr_list:
@@ -87,7 +85,15 @@ def Skor(request):
     context.update( {
         "flash" : flash
     })
-            
+    print(f"last winner point : {context['last_winner_point']}")
+    print(f"is_changing_game : {context['is_changing_game']}")
+    print(f"is set finished : {context['is_set_finished']}")
+    print(f" set p1_0 : {context['flash']['p1'][0]}") 
+    print(f" set p1_1 : {context['flash']['p1'][1]}")
+    print(f" set p1_2 : {context['flash']['p1'][2]}")
+    print(f" set p2_0 : {context['flash']['p2'][0]}") 
+    print(f" set p2_1 : {context['flash']['p2'][1]}")
+    print(f" set p2_2 : {context['flash']['p2'][2]}")      
     
     return render(request, 'index.html', context)
     

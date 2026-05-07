@@ -131,7 +131,6 @@ def get_flash(match, player, set_index):
             
     return (
         match['last_winner_point'] == player and match['is_changing_game'] and
-        not match['is_tiebreak']and
         flash_set == set_index
             )
   

@@ -258,7 +258,6 @@ class ScoringSystem:
     def check_set_finished(self, match, player, opponent):
         if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
             self.check_tiebreak(match, player, opponent)
-            match.is_set_finished = True
             return
 
         if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
@@ -292,6 +291,7 @@ class ScoringSystem:
         player.tiebreak_point_win += 1
         player.tiebreak_display_score[match.current_set] += 1
         player.total_point += 1
+        match.is_changing_game = False
         self.duration(match)
         if player == match.p1:
             match.last_winner_point= "p1"
@@ -309,6 +309,7 @@ class ScoringSystem:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
             match.last_finished_set =  match.current_set
+            match.is_set_finished = True
             
             player.set_win += 1
             if player == match.p1:
@@ -325,6 +326,7 @@ class ScoringSystem:
             self.get_current_server_after_tiebreak(match)
             self.reset_atribut_after_set(match.p1)
             self.reset_atribut_after_set(match.p2)
+            match.is_changing_game = True
 
             player.tiebreak_point_win = 0
             opponent.tiebreak_point_win = 0
