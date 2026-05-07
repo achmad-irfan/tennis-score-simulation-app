@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.generic import View
 from . import score, list_wta_players, utils
 from datetime import datetime
+from django.conf import settings
+
 
 def Skor(request):
     # Reset Session
@@ -11,12 +13,20 @@ def Skor(request):
     # Ambil data user
     p1,p2,first_server, final_set_scoring, match_type = utils.get_players_from_request(request)
     
+    if settings.DEBUG:
+        rules = utils.get_debug_data(request)
+    else:
+        rules = settings.MATCH_RULES
+    
+    print(f"rules : {rules}")
+    
     # Membuat profile pemain 
     p1_profile = [utils.profile(list_wta_players.players, player) for player in p1]
     p2_profile = [utils.profile(list_wta_players.players, player) for player in p2]
     
+    
     # Restrore session jika ada session sebelumnya
-    restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring, match_type)            
+    restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring, match_type, rules)            
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
@@ -51,6 +61,7 @@ def Skor(request):
     # Context
     context= new_value.copy()
     context.update({
+    "DEBUG" : settings.DEBUG,
     "p1_name" : new_value["p1"]['name'],
     "p2_name":  new_value["p2"]['name'], 
     "p1_name_format" : utils.format_name(new_value["p1"]['name']),
@@ -69,6 +80,7 @@ def Skor(request):
     "active_tab" : active_tab,
     "first_server" : new_value['first_server' ],
     "match_type" : new_value['match_type'],
+    "game_range": range(1, 7),
     })
     
     for attr in score.player_attr_list:
@@ -82,18 +94,8 @@ def Skor(request):
         flash[player] = {}
         for i in range(3):
            flash[player][i] = utils.get_flash(new_value, player, i)
-    context.update( {
+    context.update({
         "flash" : flash
-    })
-    print(f"last winner point : {context['last_winner_point']}")
-    print(f"is_changing_game : {context['is_changing_game']}")
-    print(f"is set finished : {context['is_set_finished']}")
-    print(f" set p1_0 : {context['flash']['p1'][0]}") 
-    print(f" set p1_1 : {context['flash']['p1'][1]}")
-    print(f" set p1_2 : {context['flash']['p1'][2]}")
-    print(f" set p2_0 : {context['flash']['p2'][0]}") 
-    print(f" set p2_1 : {context['flash']['p2'][1]}")
-    print(f" set p2_2 : {context['flash']['p2'][2]}")      
-    
+    })     
     return render(request, 'index.html', context)
     

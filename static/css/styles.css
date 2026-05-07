@@ -134,6 +134,12 @@ p {
   transform: translateY(-2px);
 }
 
+.debug_set {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 5px;
+}
+
 .player-compare {
   width: 70%;
   margin: 30px auto;

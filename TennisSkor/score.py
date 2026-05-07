@@ -1,5 +1,6 @@
 from datetime import datetime
 from .calculator import calc_pct, build_player_stats
+from django.conf import settings
 
 # Atribut dalam objek player
 player_attrs= [
@@ -14,7 +15,7 @@ match_attrs= {
                 "data_int":['current_set', "current_tiebreak", "last_finished_set" ],
                 "data_bool": ["is_tiebreak", "finish", "is_last_set", "is_changing_game", "is_set_finished"],
                 "data_none": ['match_winner', "match_loser","status_shot", "first_server_tiebreak", "last_winner_point", "status_point"],
-                "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot"],
+                "data_list" :["score", "set_winner", "last_points", "history", "set_snapshot", "all_set_snapshot",],
                 "data_dict": []
             }
 
@@ -68,7 +69,8 @@ for stat in table_match_stats:
     key = stat.get("key")
     stat["pct"]= f"{key}_pct"
         
-        
+
+
 class Player:
     def __init__(self,name):
         self.name=name
@@ -82,7 +84,7 @@ class Player:
         return f'{self.name}'
         
 class Match:
-    def __init__(self,p1,p2,first_server, final_set_scoring, match_type):
+    def __init__(self,p1,p2,first_server, final_set_scoring, match_type, rules=None):
         self.p1=Player(p1)
         self.p2=Player(p2)
         self.first_server = first_server
@@ -91,6 +93,7 @@ class Match:
         self.duration = [0,0,0]
         self.final_set_scoring= final_set_scoring
         self.match_type = match_type
+        self.rules= rules
         
         # looping inisialisasi atribut
         for group, attrs in match_attrs.items():
@@ -197,6 +200,7 @@ class ScoringSystem:
         match.is_changing_game = False
         match.is_set_finished = False
         
+        
         if player.game_point >= 4 and (player.game_point - opponent.game_point) >= 2:
             self.win_game(match, player, opponent)
             player.game_point = 0
@@ -256,11 +260,11 @@ class ScoringSystem:
             match.is_tiebreak = False
             
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
+        if player.sets[match.current_set] == match.rules['game_to_tiebreak'] and opponent.sets[match.current_set] == match.rules['point_diff_to_win_tiebreak']:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
+        if player.sets[match.current_set] >= match.rules['game_to_win_set'] and (player.sets[match.current_set] - opponent.sets[match.current_set] >= match.rules['game_diff_to_win_set']):
             match.is_set_finished = True
             player.set_win += 1
             if player == match.p1:
@@ -305,7 +309,7 @@ class ScoringSystem:
             elif match.final_set_scoring == "normal":
                 tie_break_point_min_won = 7
         
-        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= 2:
+        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= rules['point_diff_to_win_tiebreak']:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
             match.last_finished_set =  match.current_set

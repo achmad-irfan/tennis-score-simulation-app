@@ -2,6 +2,7 @@ from .score import Match, Player, MatchSerializer
 from .list_wta_players import players
 from .score import player_attrs, total_stats, match_attrs, service_stats
 from datetime import datetime
+from django.conf import settings
 
 def get_players_from_request(request):
 
@@ -25,7 +26,16 @@ def get_players_from_request(request):
     return p1,p2,first_server, final_set_scoring, match_type
 
 
+def get_debug_data(request):
     
+    rules = settings.MATCH_RULES.copy()
+    rules['game_to_win_set'] = int(request.GET.get('game_to_win_set', 6))
+    rules['game_diff_to_win_set'] = int(request.GET.get('game_diff_to_win_set',2) )
+    rules['game_to_tiebreak'] = int(request.GET.get('game_to_tiebreak',6 ))
+    rules['point_diff_to_win_tiebreak'] = int(request.GET.get('point_diff_to_win_tiebreak',2))
+    
+    return rules
+
 def profile(player_list, name):
     for player in player_list:
         if player['name'] == name:
@@ -40,12 +50,12 @@ def player_validation(request, p1,p2):
                 return "Pilih kedua pemain dulu!"
     return None
                 
-def restore_match(request,p1,p2,first_serve, final_set_scoring, match_type):
+def restore_match(request,p1,p2,first_serve, final_set_scoring, match_type, rules):
     # Cek sesi sebelumnya
     match = request.session.get('match')
     
     # Buat objek pertandingan
-    m = Match(p1, p2, first_serve, final_set_scoring, match_type)
+    m = Match(p1, p2, first_serve, final_set_scoring, match_type, rules)
     
     if match and p1 == match.get("p1_name") and p2 == match.get("p2_name"):
         p1_data = match.get("p1") or {}

@@ -124,3 +124,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MATCH_RULES = {
+    "game_to_win_set" : 6,
+    "game_diff_to_win_set" : 2,
+    "game_to_tiebreak" : 6,
+    "point_diff_to_win_tiebreak" : 2,
+}
