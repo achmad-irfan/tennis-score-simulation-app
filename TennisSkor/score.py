@@ -256,11 +256,11 @@ class ScoringSystem:
             match.is_tiebreak = False
             
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == 1 and opponent.sets[match.current_set] == 1:
+        if player.sets[match.current_set] == 6 and opponent.sets[match.current_set] == 6:
             self.check_tiebreak(match, player, opponent)
             return
 
-        if player.sets[match.current_set] >= 2 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 1):
+        if player.sets[match.current_set] >= 6 and (player.sets[match.current_set] - opponent.sets[match.current_set] >= 2):
             match.is_set_finished = True
             player.set_win += 1
             if player == match.p1:
