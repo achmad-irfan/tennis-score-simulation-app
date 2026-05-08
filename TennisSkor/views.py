@@ -3,7 +3,7 @@ from django.views.generic import View
 from . import score, list_wta_players, utils
 from datetime import datetime
 from django.conf import settings
-
+from django.http import JsonResponse
 
 def Skor(request):
     # Reset Session
@@ -96,6 +96,7 @@ def Skor(request):
            flash[player][i] = utils.get_flash(new_value, player, i)
     context.update({
         "flash" : flash
-    })     
+    })  
+ 
     return render(request, 'index.html', context)
     

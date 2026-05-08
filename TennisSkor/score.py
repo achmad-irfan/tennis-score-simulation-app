@@ -142,7 +142,7 @@ class Match:
         duration_backup = self.duration.copy()
         
         # Buat objek baru
-        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set_scoring, self.match_type)
+        new_match = Match(self.p1.name, self.p2.name, self.first_server, self.final_set_scoring, self.match_type, self.rules)
         
         for shot in self.history:
             new_match.play_point(shot["event"], shot["serve"])
