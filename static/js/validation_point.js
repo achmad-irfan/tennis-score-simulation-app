@@ -38,10 +38,10 @@ function confirm_cancel() {
 }
 
 // Funngsi statistik
-const buton_set1 = document.getElementById("buton_set1");
-const buton_set2 = document.getElementById("buton_set2");
-const buton_set3 = document.getElementById("buton_set3");
-const buton_all_set = document.getElementById("all");
+const button_set1 = document.getElementById("button_set1");
+const button_set2 = document.getElementById("button_set2");
+const button_set3 = document.getElementById("button_set3");
+const button_all_set = document.getElementById("all");
 
 const statistic_set1 = document.querySelectorAll(".stat_set1");
 const statistic_set2 = document.querySelectorAll(".stat_set2");
@@ -62,27 +62,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Event listener tombol
-buton_set1.addEventListener("click", () => {
+button_set1.addEventListener("click", () => {
   hideAllSets();
   statistic_set1.forEach((el) => (el.style.display = "block"));
   console.log("button 1 clicked");
 });
 
-buton_set2.addEventListener("click", () => {
+button_set2.addEventListener("click", () => {
   hideAllSets();
   statistic_set2.forEach((el) => (el.style.display = "block"));
   console.log("button 2 clicked");
 });
 
-if (buton_set3) {
-  buton_set3.addEventListener("click", () => {
+if (button_set3) {
+  button_set3.addEventListener("click", () => {
     hideAllSets();
     statistic_set3.forEach((el) => (el.style.display = "block"));
     console.log("button 3 clicked");
   });
 }
 
-buton_all_set.addEventListener("click", () => {
+button_all_set.addEventListener("click", () => {
   hideAllSets();
   statistic_all_set.forEach((el) => (el.style.display = "block"));
   console.log("button all");

@@ -1,5 +1,5 @@
 <div class="livescore_new">
-  <div class="livescore_player">
+  <div class="livescore_player player_p1_result">
     {% if match_type == "single" %}
     <p class="match {% if winner == p1 %}winner{% endif %}">
       <span class="flag">
@@ -30,7 +30,7 @@
     </p>
     {% endif %}
   </div>
-  <div class="livescore_score">
+  <div class="livescore_score score_p1_result">
     {% if not finish %}
     <div class="setside">
       <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p1.set_win}}</p>
@@ -75,7 +75,7 @@
     </div>
     {% endif %}
   </div>
-  <div class="livescore_player">
+  <div class="livescore_player player_p2_result">
     {% if match_type == "single" %}
     <p class="match {% if winner == 'p2' %}winner{% endif %}">
       <span class="flag">
@@ -107,7 +107,7 @@
     {% endif %}
   </div>
 
-  <div class="livescore_score">
+  <div class="livescore_score score_p2_result">
     {% if not finish %}
     <div class="setside">
       <p class="game set_win {% if match_type == 'double' %}game_double{% endif %}">{{p2.set_win}}</p>

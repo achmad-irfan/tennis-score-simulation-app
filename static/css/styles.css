@@ -321,6 +321,18 @@ table th .double_player img {
   gap: 10px;
 }
 
+.result .livescore_new .player_p1_result,
+.result .livescore_new .score_p1_result > div {
+  background-color: #3fb950;
+  color: black;
+}
+
+.result .livescore_new .player_p2_result,
+.result .livescore_new .score_p2_result > div {
+  background-color: #6c6aaa;
+  color: black;
+}
+
 /* ==============================
    HOVER EFFECT (optional)
    ============================== */
@@ -557,7 +569,7 @@ button:hover {
 /* player kanan */
 .statistic tbody td:last-child {
   font-weight: 600;
-  color: #6c6aaa; /* merah */
+  color: #6c6aaa;
   width: 40%;
 }
 
@@ -825,7 +837,7 @@ td {
   background: #00ff08;
 }
 
-#buton_set1,
+#button_set1,
 #button_set2,
 #button_set3,
 #all {
@@ -1265,10 +1277,6 @@ td {
     font-size: 12px;
   }
 
-  .result_name p {
-    font-size: 12px;
-  }
-
   .livescore_new .serve-icon img {
     width: 20px;
     height: 20px;
@@ -1328,7 +1336,7 @@ td {
     font-weight: normal;
   }
 
-  #buton_set1,
+  #button_set1,
   #button_set2,
   #button_set3,
   #all {
