@@ -309,7 +309,7 @@ class ScoringSystem:
             elif match.final_set_scoring == "normal":
                 tie_break_point_min_won = 7
         
-        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= rules['point_diff_to_win_tiebreak']:
+        if player.tiebreak_point_win >= tie_break_point_min_won and (player.tiebreak_point_win - opponent.tiebreak_point_win) >= match.rules['point_diff_to_win_tiebreak']:
             player.sets[match.current_set] = 7
             opponent.sets[match.current_set] = 6
             match.last_finished_set =  match.current_set
