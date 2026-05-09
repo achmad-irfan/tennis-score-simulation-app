@@ -1342,7 +1342,8 @@ td {
   #button_set1,
   #button_set2,
   #button_set3,
-  #all {
+  #all,
+  #button_live_stat {
     padding: 3px;
   }
 }
