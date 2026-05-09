@@ -23,8 +23,29 @@ def build_player_stats(player, opponent):
     data["sets"] = get_value(player, "sets")
     data["tiebreak_display_score"] = get_value(player, "tiebreak_display_score")
     data["name"] = get_value(player, "name")
+    data["live_stat"] = get_value(player, "live_stat")
 
     # service pct
+    update_data_stat(player, data)
+
+    # 🔥 total pct antar pemain
+    for stat in total_stats:
+        total = get_value(player, stat) + get_value(opponent, stat)
+
+        data[f"{stat}_pct"] = calc_pct(
+            get_value(player, stat),
+            total
+        )
+        
+    return data
+
+
+def add_stat(player, attr, value=1):
+    setattr(player, attr, getattr(player, attr) + value)
+    player.live_stat[attr] += value
+    
+    
+def update_data_stat(player, data):
     data.update({
         "first_serve_total_pct": calc_pct(
             get_value(player, "first_serve_total"),
@@ -47,16 +68,4 @@ def build_player_stats(player, opponent):
             get_value(player, "break_point")
         ),
     })
-
-    # 🔥 total pct antar pemain
-    for stat in total_stats:
-        total = get_value(player, stat) + get_value(opponent, stat)
-
-        data[f"{stat}_pct"] = calc_pct(
-            get_value(player, stat),
-            total
-        )
-        
-    return data
-
-
+    

@@ -5,7 +5,6 @@ pointForm.addEventListener("submit", function (e) {
   // Inisialisasi serve_type dan point
   const serveChecked = document.querySelector("input[name='serve_type']:checked");
   const pointChecked = document.querySelector("input[name='point']:checked");
- 
 
   // Jika salah satunya belum dipilih, hentikan submit
   if (!serveChecked || !pointChecked) {
@@ -42,11 +41,13 @@ const button_set1 = document.getElementById("button_set1");
 const button_set2 = document.getElementById("button_set2");
 const button_set3 = document.getElementById("button_set3");
 const button_all_set = document.getElementById("all");
+const button_live_stat = document.getElementById("button_live_stat");
 
 const statistic_set1 = document.querySelectorAll(".stat_set1");
 const statistic_set2 = document.querySelectorAll(".stat_set2");
 const statistic_set3 = document.querySelectorAll(".stat_set3");
 const statistic_all_set = document.querySelectorAll(".all_set");
+const live_stat = document.querySelectorAll(".live_stat");
 
 // Fungsi untuk hide semua set
 function hideAllSets() {
@@ -59,6 +60,12 @@ function hideAllSets() {
 document.addEventListener("DOMContentLoaded", () => {
   hideAllSets();
   statistic_all_set.forEach((el) => (el.style.display = "block"));
+});
+
+button_live_stat.addEventListener("click", () => {
+  hideAllSets();
+  live_stat.forEach((el) => (el.style.display = "block"));
+  console.log("button live stat clicked");
 });
 
 // Event listener tombol

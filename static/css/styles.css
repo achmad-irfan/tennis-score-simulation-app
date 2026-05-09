@@ -1111,6 +1111,9 @@ td {
     font-size: 12px !important;
   }
 
+  .footer{
+      margin-bottom: 20px;
+  }
   .pick-players select {
     font-size: 12px;
   }

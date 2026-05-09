@@ -21,21 +21,17 @@
         <p>Set</p>
         <p>
           {% if current_set >= 0 %}
-          <label>
+            {% if not finish %}
+            <input type="button" name="set_statistic" id="button_live_stat" value="Live">
+            {% endif %}
             <input type="button" name="set_statistic" id="button_set1" value="1" />
-          </label>
-          {% endif %} {% if current_set >= 1 %}
-          <label>
-            <input type="button" name="set_statistic" id="button_set2" value="2" />
-          </label>
           {% endif %} {% if current_set >= 2 %}
-          <label>
+            <input type="button" name="set_statistic" id="button_set2" value="2" />
+          {% endif %} {% if current_set >= 3 %}
             <input type="button" name="set_statistic" id="button_set3" value="3" />
-          </label>
-          {% endif %}
-          <label>
+          {% endif %} {% if finish %}
             <input type="button" name="set_statistic" id="all" value="All" />
-          </label>
+          {% endif %}
         </p>
       </th>
       {% if match_type == "single" %}
@@ -60,6 +56,7 @@
     {% elif stat.category == "general" %}
     <tr>
       <td>
+        <div class="containerp1 live_stat" style="width : {{live_stats.p1|get_item:stat.pct}}%;">{{live_stats.p1|get_item:stat.key}}</div>
         <div class="containerp1 all_set" style="width : {{all_set_snapshot.p1|get_item:stat.pct}}%;">{{ all_set_snapshot.p1|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
         <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.p1|get_item:stat.pct}}%;">{{ s.p1|get_item:stat.key }}</div>
@@ -67,6 +64,7 @@
       </td>
       <td>{{stat.label}}</td>
       <td>
+       <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.key}}</div>
         <div class="containerp2 all_set" style="width : {{all_set_snapshot.p2|get_item:stat.pct}}%;">{{ all_set_snapshot.p2|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
         <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.p2|get_item:stat.pct}}%;">{{ s.p2|get_item:stat.key }}</div>
@@ -76,6 +74,7 @@
     {% elif stat.category == "service" %}
     <tr>
       <td>
+        <div class="containerp1 live_stat" style="width : {{live_stats.p1|get_item:stat.pct}}%;">{{live_stats.p1|get_item:stat.pct}}%({{ live_stats.p1|get_item:stat.key}}/{{ live_stats.p1|get_item:stat.pair}}) </div>
         <div class="containerp1 all_set" style="width : {{all_set_snapshot.p1|get_item:stat.pct}}%;">{{all_set_snapshot.p1|get_item:stat.pct}}%({{ all_set_snapshot.p1|get_item:stat.key}}/{{ all_set_snapshot.p1|get_item:stat.pair}})</div>
         {% for s in set_snapshot %}
         <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.p1|get_item:stat.pct}}%;">{{s.p1|get_item:stat.pct}}%({{ s.p1|get_item:stat.key }}/{{ s.p1|get_item:stat.pair}})</div>
@@ -83,6 +82,7 @@
       </td>
       <td>{{stat.label}}</td>
       <td>
+          <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.pct}}%({{ live_stats.p2|get_item:stat.key}}/{{ live_stats.p2|get_item:stat.pair}}) </div>
         <div class="containerp2 all_set" style="width : {{all_set_snapshot.p2|get_item:stat.pct}}%;">{{all_set_snapshot.p2|get_item:stat.pct}}%({{ all_set_snapshot.p2|get_item:stat.key}}/{{ all_set_snapshot.p2|get_item:stat.pair}})</div>
         {% for s in set_snapshot %}
         <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.p2|get_item:stat.pct}}%;">{{s.p2|get_item:stat.pct}}%({{ s.p2|get_item:stat.key }}/{{ s.p2|get_item:stat.pair}})</div>

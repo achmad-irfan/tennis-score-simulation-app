@@ -4,6 +4,8 @@ from . import score, list_wta_players, utils
 from datetime import datetime
 from django.conf import settings
 from django.http import JsonResponse
+from .calculator import build_player_stats
+from . import calculator
 
 def Skor(request):
     # Reset Session
@@ -18,8 +20,6 @@ def Skor(request):
     else:
         rules = settings.MATCH_RULES
     
-    print(f"rules : {rules}")
-    
     # Membuat profile pemain 
     p1_profile = [utils.profile(list_wta_players.players, player) for player in p1]
     p2_profile = [utils.profile(list_wta_players.players, player) for player in p2]
@@ -27,6 +27,7 @@ def Skor(request):
     
     # Restrore session jika ada session sebelumnya
     restore_match = utils.restore_match(request, p1,p2,first_server, final_set_scoring, match_type, rules)            
+    
     
     # Cek Pemenang Poin dan panggil method winning_point
     pointWinner,serve_type= utils.post_winner(request,restore_match)
@@ -45,6 +46,7 @@ def Skor(request):
     
     # Memasukan nilai baru pada atribut
     new_value = score.MatchSerializer(restore_match).to_dict()
+    live_stats = utils.get_live_stats(restore_match)
     
     # Cek apakah ada cancel point
     if "cancel_point" in request.POST:
@@ -78,9 +80,10 @@ def Skor(request):
     "show_live_tb": utils.show_live_tb(new_value),
     "show_final_tb": utils.show_final_tb(new_value),
     "active_tab" : active_tab,
-    "first_server" : new_value['first_server' ],
+    "first_server" : new_value['first_server'],
     "match_type" : new_value['match_type'],
     "game_range": range(1, 7),
+    "live_stats": live_stats
     })
     
     for attr in score.player_attr_list:
@@ -97,6 +100,7 @@ def Skor(request):
     context.update({
         "flash" : flash
     })  
- 
+    
+    print(f"live stat : {context['live_stats']['p1']}")
     return render(request, 'index.html', context)
     
