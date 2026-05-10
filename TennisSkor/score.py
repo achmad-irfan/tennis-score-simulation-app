@@ -78,6 +78,7 @@ class Player:
         for attr in player_attrs:
             setattr(self,attr, 0)
         self.live_stat = {attr : 0 for attr in player_attrs}
+        self.win_probability = 50
         
     def __str__(self):
         return f'{self.name}'
@@ -236,6 +237,8 @@ class ScoringSystem:
         player.point = 0
         opponent.point = 0
         
+        self.calculate_win_probability(match, player, opponent)
+        
         self.check_last_set(match)
         self.check_set_finished(match, player, opponent)
         self.check_match_finish(match, player, opponent)
@@ -267,6 +270,9 @@ class ScoringSystem:
         if player.sets[match.current_set] >= match.rules['game_to_win_set'] and (player.sets[match.current_set] - opponent.sets[match.current_set] >= match.rules['game_diff_to_win_set']):
             match.is_set_finished = True
             player.set_win += 1
+            
+            
+            
             if player == match.p1:
                 match.set_winner.append("p1")
             else:
@@ -314,6 +320,7 @@ class ScoringSystem:
             opponent.sets[match.current_set] = 6
             match.last_finished_set =  match.current_set
             match.is_set_finished = True
+            
             
             player.set_win += 1
             if player == match.p1:
@@ -537,15 +544,38 @@ class ScoringSystem:
     def get_live_stats(self, match):
         
         p1_live = build_player_stats(match.p1.live_stat, match.p2.live_stat)
-        print(f"match.p1 : {match.p1.live_stat}")
         p2_live = build_player_stats(match.p2.live_stat, match.p1.live_stat)
-        print("                             ")
-        print(f"match.p2 : {match.p2.live_stat}")
+        
     def format_name_status(self, players):
         if not isinstance(players, list):
             players = [players]
         return  " / ".join(s.split()[-1] for s in players)
+    
+    def calculate_win_probability(self, match, player, opponent):        
+        win_prob_start_set = 100 - player.win_probability
         
+        dif_game = abs(player.sets[match.current_set] - opponent.sets[match.current_set])
+        if dif_game == 0:
+            player.win_probability = round(player.win_probability + 1/50*win_prob_start_set,0)
+        elif dif_game == 1:
+            player.win_probability = round(player.win_probability + 2/50*win_prob_start_set,0)
+        elif dif_game == 2:
+            player.win_probability = round(player.win_probability + 3/50*win_prob_start_set,0)
+        elif dif_game == 3:
+            player.win_probability = round(player.win_probability + 4/50*win_prob_start_set,0)
+        elif dif_game == 4:
+            player.win_probability = round(player.win_probability + 5/50*win_prob_start_set,0)
+        elif dif_game == 5:
+            player.win_probability = round(player.win_probability + 6/50*win_prob_start_set,0)
+        elif dif_game == 6:
+            player.win_probability = round(player.win_probability + 8/50*win_prob_start_set,0)
+            
+        if player.sets[match.current_set] in (6,7):
+            player.win_probability += round(5/50*win_prob_start_set,0)
+                
+        opponent.win_probability=  100 - player.win_probability
+            
+          
 class MatchSerializer:
     def __init__(self, match):
         self.match = match

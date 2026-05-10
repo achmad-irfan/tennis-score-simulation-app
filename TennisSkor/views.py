@@ -100,7 +100,7 @@ def Skor(request):
     context.update({
         "flash" : flash
     })  
-    
-    print(f"live stat : {context['live_stats']['p1']}")
+    print(context['p1']['win_probability'])
+    print(context['p2']['win_probability'])
     return render(request, 'index.html', context)
     

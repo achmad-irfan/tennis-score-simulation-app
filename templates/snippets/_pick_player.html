@@ -83,45 +83,45 @@
           </select>
         </div>
       </div>
-      {% if DEBUG %} 
-        <div class="debug_set">
+      {% if DEBUG %}
+      <div class="debug_set">
         <div class="debug__set_item">
           <label for="game_to_win_set">Game win per set</label>
           <select name="game_to_win_set" id="game_to_win_set">
-            <option value="" selected disabled>-- Select  --</option>
-          {% for i in game_range %}
-          <option value="{{i}}"> {{i}} </option>  
-          {% endfor %}
+            <option value="" selected disabled>-- Select --</option>
+            {% for i in game_range %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
           </select>
         </div>
         <div class="debug__set_item">
           <label for="game_diff_to_win_set">Diff Game per set</label>
           <select name="game_diff_to_win_set" id="game_diff_to_win_set">
             <option value="" selected disabled>-- Select --</option>
-             <option value="1"> 1 </option> 
-             <option value="2"> 2 </option>
+            <option value="1">1</option>
+            <option value="2">2</option>
           </select>
         </div>
         <div class="debug__set_item">
-          <label for="game_to_tiebreak">Game for tiebreak</label>
+          <label for="game_to_tiebreak">Game tiebreak</label>
           <select name="game_to_tiebreak" id="game_to_tiebreak">
             <option value="" selected disabled>-- Select --</option>
-          {% for i in game_range %}
-          <option value="{{i}}"> {{i}} </option>  
-          {% endfor %}
+            {% for i in game_range %}
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}
           </select>
         </div>
         <div class="debug__set_item">
-          <label for="point_diff_to_win_tiebreak">Point win tiebreak</label>
+          <label for="point_diff_to_win_tiebreak">Point tiebreak</label>
           <select name="point_diff_to_win_tiebreak" id="point_diff_to_win_tiebreak">
-             <option value="" selected disabled>-- Select --</option>
-            <option value="1"> 1 </option> 
-             <option value="2"> 2 </option>
+            <option value="" selected disabled>-- Select --</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
           </select>
         </div>
-        </div>
+      </div>
       {% endif %}
-      
+
       <div class="button">
         <button id="submit" type="button" onclick="validateAndShowPopup()">Submit</button>
         <button type="button" onclick="openResetForm()">Reset</button>
@@ -421,6 +421,4 @@
     document.getElementById("active_tab").value = "score";
     document.getElementById("playerForm").requestSubmit();
   }
-
- 
 </script>

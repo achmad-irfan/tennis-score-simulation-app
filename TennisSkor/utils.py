@@ -85,6 +85,8 @@ def restore_match(request,p1,p2,first_serve, final_set_scoring, match_type, rule
         m.match_type = match.get("match_type")
         m.p1.live_stat = p1_data.get("live_stat")
         m.p2.live_stat = p2_data.get("live_stat")
+        m.p1.win_probability = p1_data.get("win_probability")
+        m.p2.win_probability = p2_data.get("win_probability")
     
     
     

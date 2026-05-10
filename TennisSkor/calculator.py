@@ -24,6 +24,7 @@ def build_player_stats(player, opponent):
     data["tiebreak_display_score"] = get_value(player, "tiebreak_display_score")
     data["name"] = get_value(player, "name")
     data["live_stat"] = get_value(player, "live_stat")
+    data["win_probability"] = get_value(player, "win_probability")
 
     # service pct
     update_data_stat(player, data)
@@ -69,3 +70,4 @@ def update_data_stat(player, data):
         ),
     })
     
+

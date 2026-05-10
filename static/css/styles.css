@@ -21,6 +21,10 @@ body {
   margin-top: 20px;
 }
 
+.general > div {
+  margin-bottom: 10px;
+}
+
 h2 {
   color: white;
   background: #161b22;
@@ -90,7 +94,7 @@ p {
 .pick-players label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 400;
   color: #ffffff;
 }
 
@@ -118,7 +122,7 @@ p {
   padding: 12px;
   background-color: #5aa5f4;
   color: rgb(0, 0, 0);
-  font-weight: 600;
+  font-weight: 400;
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -223,7 +227,7 @@ table th .double_player img {
 .livescore h3 {
   width: 170px;
   text-align: right;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .livescore_new {
@@ -312,6 +316,53 @@ table th .double_player img {
 
 .checklist_winner {
   color: white;
+}
+
+.win-prob-graph {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  padding: 5px;
+  gap: 5px;
+  align-items: center;
+}
+
+.win-prob-graph .p1,
+.win-prob-graph .p2 {
+  background-color: #0d1117;
+  padding: 10px;
+}
+
+.player.p2 {
+  text-align: right;
+}
+
+.bar {
+  display: flex;
+  border-radius: 10px;
+  height: 20%;
+  gap: 0;
+}
+
+.p1-bar,
+.p2-bar {
+  text-align: center;
+  color: black;
+  font-size: 0.6rem;
+  align-self: center;
+}
+
+.p1-bar {
+  background-color: #3fb950;
+}
+.scroll {
+  width: 2%;
+  background-color: black;
+  height: 250%;
+  align-self: center;
+}
+
+.p2-bar {
+  background-color: #6c6aaa;
 }
 
 .result {
@@ -486,7 +537,7 @@ button {
   border-radius: 10px;
   color: white;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -561,14 +612,14 @@ button:hover {
 
 /* player kiri */
 .statistic tbody td:first-child {
-  font-weight: 600;
+  font-weight: 400;
   color: #3fb950; /* hijau */
   width: 40%;
 }
 
 /* player kanan */
 .statistic tbody td:last-child {
-  font-weight: 600;
+  font-weight: 400;
   color: #6c6aaa;
   width: 40%;
 }
@@ -685,7 +736,7 @@ td {
 .game.winner,
 .match.winner,
 .points.winner {
-  font-weight: 800;
+  font-weight: 200;
 }
 
 /* base dot */
@@ -710,6 +761,7 @@ td {
 }
 
 .cancel_last_point button {
+  margin-top: 20px;
   background: linear-gradient(135deg, #862323, #640303);
 }
 
@@ -1111,8 +1163,8 @@ td {
     font-size: 12px !important;
   }
 
-  .footer{
-      margin-bottom: 20px;
+  .footer {
+    margin-bottom: 20px;
   }
   .pick-players select {
     font-size: 12px;
@@ -1345,5 +1397,9 @@ td {
   #all,
   #button_live_stat {
     padding: 3px;
+  }
+
+  .checklist_winner {
+    color: black;
   }
 }

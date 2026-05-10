@@ -1,4 +1,5 @@
-<form class="general" id="pointForm" method="post">
+<div class="change-point general">
+<form id="pointForm" method="post">
   {% csrf_token %}
   <h4 class="generalh4">Pick Point</h4>
   <div class="form-point">
@@ -69,6 +70,15 @@
   </div>
   <button type="submit" name="submit_shot" value="1">Add Point</button>
 </form>
+
+<div class="cancel_last_point">
+  <form method="post" id="cancelForm">
+    {% csrf_token %}
+    <input type="hidden" name="cancel_point" value="1" />
+    <button id="cancel_point" type="button" onclick="confirm_cancel()">Cancel Last Point</button>
+  </form>
+</div>
+</div>
 {% if error %}
 <div id="error-msg" data-message="{{ error }}" style="display: none"></div>
 {% endif %}
