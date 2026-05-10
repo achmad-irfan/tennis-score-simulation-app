@@ -1200,7 +1200,7 @@ td {
     padding: 5px;
   }
 
-  .point h6 {
+  h6 {
     font-size: 12px;
   }
 
@@ -1280,6 +1280,7 @@ td {
     font-size: 12px;
   }
 
+  .last-points img,
   .livescore_new .status_status,
   .livescore_new .setside,
   .country_table,
@@ -1401,5 +1402,11 @@ td {
 
   .checklist_winner {
     color: black;
+  }
+
+  .player span.name,
+  .p1-bar span,
+  .p2-bar span {
+    font-size: 10px;
   }
 }
