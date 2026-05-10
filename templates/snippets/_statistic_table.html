@@ -5,13 +5,13 @@
     <tr>
       {% if match_type == "single" %}
       <th>
-        {{ p1_name_format.0 }} ({{p1_profile.0.country}}) <br />
+        {{ p1_name_format.0.short_name }} ({{p1_profile.0.country}}) <br />
         <img src="{{p1_profile.0.photo}}" alt="" />
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p1_name_format.0 }} / <br />
-        {{ p1_name_format.1 }} <br />
+        {{ p1_name_format.0.short_name }} / <br />
+        {{ p1_name_format.1.short_name }} <br />
         <img src="{{p1_profile.0.photo}}" alt="" /> <img src="{{p1_profile.1.photo}}" alt="" />
       </th>
       {% endif %}
@@ -20,29 +20,28 @@
         <p>{{total_duration}}</p>
         <p>Set</p>
         <p>
-          {% if current_set >= 0 %}
-            {% if not finish %}
-            <input type="button" name="set_statistic" id="button_live_stat" value="Live">
-            {% endif %}
-            <input type="button" name="set_statistic" id="button_set1" value="1" />
+          {% if current_set >= 0 %} {% if not finish %}
+          <input type="button" name="set_statistic" id="button_live_stat" value="Live" />
+          {% endif %}
+          <input type="button" name="set_statistic" id="button_set1" value="1" />
           {% endif %} {% if current_set >= 2 %}
-            <input type="button" name="set_statistic" id="button_set2" value="2" />
+          <input type="button" name="set_statistic" id="button_set2" value="2" />
           {% endif %} {% if current_set >= 3 %}
-            <input type="button" name="set_statistic" id="button_set3" value="3" />
+          <input type="button" name="set_statistic" id="button_set3" value="3" />
           {% endif %} {% if finish %}
-            <input type="button" name="set_statistic" id="all" value="All" />
+          <input type="button" name="set_statistic" id="all" value="All" />
           {% endif %}
         </p>
       </th>
       {% if match_type == "single" %}
       <th>
-        {{ p1_name_format.0 }} ({{p2_profile.0.country}}) <br />
+        {{ p1_name_format.0.short_name }} ({{p2_profile.0.country}}) <br />
         <img src="{{p2_profile.0.photo}}" alt="" />
       </th>
       {% endif %} {% if match_type == "double" %}
       <th>
-        {{ p2_name_format.0 }} / <br />
-        {{ p2_name_format.1 }} <br />
+        {{ p2_name_format.0.short_name }} / <br />
+        {{ p2_name_format.1.short_name }} <br />
         <img src="{{p2_profile.0.photo}}" alt="" /> <img src="{{p2_profile.1.photo}}" alt="" />
       </th>
       {% endif %}
@@ -64,7 +63,7 @@
       </td>
       <td>{{stat.label}}</td>
       <td>
-       <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.key}}</div>
+        <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.key}}</div>
         <div class="containerp2 all_set" style="width : {{all_set_snapshot.p2|get_item:stat.pct}}%;">{{ all_set_snapshot.p2|get_item:stat.key}}</div>
         {% for s in set_snapshot %}
         <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.p2|get_item:stat.pct}}%;">{{ s.p2|get_item:stat.key }}</div>
@@ -74,7 +73,7 @@
     {% elif stat.category == "service" %}
     <tr>
       <td>
-        <div class="containerp1 live_stat" style="width : {{live_stats.p1|get_item:stat.pct}}%;">{{live_stats.p1|get_item:stat.pct}}%({{ live_stats.p1|get_item:stat.key}}/{{ live_stats.p1|get_item:stat.pair}}) </div>
+        <div class="containerp1 live_stat" style="width : {{live_stats.p1|get_item:stat.pct}}%;">{{live_stats.p1|get_item:stat.pct}}%({{ live_stats.p1|get_item:stat.key}}/{{ live_stats.p1|get_item:stat.pair}})</div>
         <div class="containerp1 all_set" style="width : {{all_set_snapshot.p1|get_item:stat.pct}}%;">{{all_set_snapshot.p1|get_item:stat.pct}}%({{ all_set_snapshot.p1|get_item:stat.key}}/{{ all_set_snapshot.p1|get_item:stat.pair}})</div>
         {% for s in set_snapshot %}
         <div class="containerp1 stat_set{{ forloop.counter }}" style="width : {{s.p1|get_item:stat.pct}}%;">{{s.p1|get_item:stat.pct}}%({{ s.p1|get_item:stat.key }}/{{ s.p1|get_item:stat.pair}})</div>
@@ -82,7 +81,7 @@
       </td>
       <td>{{stat.label}}</td>
       <td>
-          <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.pct}}%({{ live_stats.p2|get_item:stat.key}}/{{ live_stats.p2|get_item:stat.pair}}) </div>
+        <div class="containerp2 live_stat" style="width : {{live_stats.p2|get_item:stat.pct}}%;">{{live_stats.p2|get_item:stat.pct}}%({{ live_stats.p2|get_item:stat.key}}/{{ live_stats.p2|get_item:stat.pair}})</div>
         <div class="containerp2 all_set" style="width : {{all_set_snapshot.p2|get_item:stat.pct}}%;">{{all_set_snapshot.p2|get_item:stat.pct}}%({{ all_set_snapshot.p2|get_item:stat.key}}/{{ all_set_snapshot.p2|get_item:stat.pair}})</div>
         {% for s in set_snapshot %}
         <div class="containerp2 stat_set{{ forloop.counter }}" style="width : {{s.p2|get_item:stat.pct}}%;">{{s.p2|get_item:stat.pct}}%({{ s.p2|get_item:stat.key }}/{{ s.p2|get_item:stat.pair}})</div>
