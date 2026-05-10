@@ -126,15 +126,21 @@ def show_final_tb(match):
 
 def format_name(names):
     if not names:
-        return ""
-    
-    players =[]
+        return []
+
+    players = []
+
     for name in names:
         part = name.split()
+
         inisial = part[0][0].upper()
         last_name = " ".join(part[1:]).title()
-        players.append(f"{inisial}. {last_name}")
-        
+
+        players.append({
+            "last_name": last_name,
+            "short_name": f"{inisial}. {last_name}"
+        })
+
     return players
                 
   

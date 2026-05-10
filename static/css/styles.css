@@ -524,6 +524,16 @@ label:hover {
 .serve_type label:has(input:checked) {
   background: #1f6feb;
 }
+.info_last_set {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.info_last_set span {
+  padding: 10px;
+  background-color: #0d1117;
+  width: 100%;
+  border-radius: 10px;
+}
 
 /* ==============================
    SUBMIT BUTTON
@@ -1166,6 +1176,7 @@ td {
   .footer {
     margin-bottom: 20px;
   }
+
   .pick-players select {
     font-size: 12px;
   }
@@ -1407,6 +1418,10 @@ td {
   .player span.name,
   .p1-bar span,
   .p2-bar span {
+    font-size: 10px;
+  }
+
+  .info_last_set span {
     font-size: 10px;
   }
 }

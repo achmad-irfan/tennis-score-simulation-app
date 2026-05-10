@@ -263,7 +263,7 @@ class ScoringSystem:
             match.is_tiebreak = False
             
     def check_set_finished(self, match, player, opponent):
-        if player.sets[match.current_set] == match.rules['game_to_tiebreak'] and opponent.sets[match.current_set] == match.rules['point_diff_to_win_tiebreak']:
+        if player.sets[match.current_set] == match.rules['game_to_tiebreak'] and opponent.sets[match.current_set] == match.rules['game_to_tiebreak']:
             self.check_tiebreak(match, player, opponent)
             return
 
